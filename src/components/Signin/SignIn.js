@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { authService } from '../../firebase/mainbase';
+import Auth from './auth';
 import './SignIn.css';
 
 const SignIn = ({ handleClose, show }) => {
@@ -49,11 +50,12 @@ const SignIn = ({ handleClose, show }) => {
           </form>
           <div>{error}</div>
         </div>
-        <div className="social-login container">
+        {/* <div className="social-login container">
           <button>페이스북 로그인</button>
           <button>구글 로그인</button>
           <button>깃허브 로그인</button>
-        </div>
+        </div> */}
+        <Auth />
         <div>
           <a href="#" className="link">
             이메일로 회원가입

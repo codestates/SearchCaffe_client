@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { authService, firebaseInstance } from '../../firebase/mainbase';
-import '../../styles/signin.css';
+import '../../styles/oauth.css';
 
 const Auth = () => {
   const onSocialClick = async (event) => {
@@ -27,20 +27,20 @@ const Auth = () => {
     <div className="account-login">
       <button className="button--google" onClick={onSocialClick} name="google">
         <span className="social-logo" onClick={onSocialClick} name="google">
-          <img src="https://img.icons8.com/fluent/48/000000/google-logo.png" />
+          <img src="https://img.icons8.com/fluent/35/000000/google-logo.png" />
         </span>
         <span className="social-text" onClick={onSocialClick}>구글로 로그인하기</span>
       </button>
       <button className="button--github" onClick={onSocialClick} name="github">
         <span className="social-logo" onClick={onSocialClick}>
-          <img src="https://img.icons8.com/fluent/48/000000/github.png" />
+          <img src="https://img.icons8.com/fluent/35/000000/github.png" />
         </span>
         <span className="social-text" onClick={onSocialClick}>깃허브로 로그인하기</span>
       </button>
       <button
         className="button--facebook" onClick={onSocialClick} name="facebook">
         <span className="social-logo" onClick={onSocialClick}>
-          <img src="https://img.icons8.com/fluent/48/000000/facebook-new.png" />
+          <img src="https://img.icons8.com/fluent/35/000000/facebook-new.png" />
         </span>
         <span className="social-text" onClick={onSocialClick}>페이스북으로 로그인하기</span>
       </button>
