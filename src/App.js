@@ -8,11 +8,9 @@ function App() {
   console.log(fire);
   return (
     <div>
-      <div>
-        <Main></Main>
-        {/* <Auth />
-        <Signin show={true} /> */}
-      </div>
+
+      <Signup show={true}></Signup>
+
     </div>
   );
 }

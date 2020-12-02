@@ -1,7 +1,6 @@
 import Tag from '../utils/Tag/index';
 import SearchBar from '../utils/SearchBar/index';
 import tagnames from '../utils/Tag/tagnames';
-
 import styled from 'styled-components';
 
 const SearchWrapperStyle = styled.div`
