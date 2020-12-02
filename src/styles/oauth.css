@@ -1,10 +1,9 @@
-
 .account-login {
   display: flex;
   flex-direction: column;
 }
 
-button {
+.siginin-button {
   width: 17rem;
   height: 2.7rem;
   margin-bottom: 20px;
@@ -31,20 +30,53 @@ button {
 }
 
 .social-logo {
-    border: 1px solid black;
-    background-color: #fff;
-    border-radius: 10px;
-    margin-left: 0px;
-    pointer-events: none;
+  border: 1px solid black;
+  background-color: #fff;
+  border-radius: 10px;
+  margin-left: 0px;
+  pointer-events: none;
 }
 
 .button--google {
-    background-color: #5893EF;
+  background-color: #5893ef;
+  width: 17rem;
+  height: 2.7rem;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  margin-top: 12px;
+  padding-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
 }
 .button--github {
-    background-color: #516CA4;
+  background-color: #516ca4;
+  width: 17rem;
+  height: 2.7rem;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  margin-top: 12px;
+  padding-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
 }
 
 .button--facebook {
-    background-color: #007fff
+  background-color: #007fff;
+  width: 17rem;
+  height: 2.7rem;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  margin-top: 12px;
+  padding-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
 }

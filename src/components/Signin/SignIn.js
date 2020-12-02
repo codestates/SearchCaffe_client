@@ -4,7 +4,7 @@ import Auth from './auth';
 import './SignIn.css';
 
 const SignIn = ({ handleClose, show }) => {
-  const showHideClassName = show ? 'modal display-block' : 'modal display-none';
+  const showHideClassName = show ? 'modal-signin display-block' : 'modal-signin display-none';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -34,8 +34,8 @@ const SignIn = ({ handleClose, show }) => {
 
   return (
     <div className={showHideClassName}>
-      <section className="modal-main">
-        <h1 className="header">로그인</h1>
+      <section className="modal-signin-main">
+        <h1 className="header-signin">로그인</h1>
         <div className="email-login container">
           <form className="login-form" onSubmit={handleLogin}>
             <input type="text" className="input-login" name="email" onChange={handleChange} placeholder="email" required />
@@ -44,18 +44,16 @@ const SignIn = ({ handleClose, show }) => {
               <input type="checkbox" id="chk" />
               <label for="chk">이메일 기억하기</label>
             </div>
-            <button type="submit" className="btn">
+            <button className="signin-button" type="submit" className="btn">
               이메일 로그인
             </button>
           </form>
           <div>{error}</div>
         </div>
         <Auth />
-        <div>
-          <a href="#" className="link">
-            이메일로 회원가입
-          </a>
-        </div>
+        <a href="#" className="link-signup">
+          이메일로 회원가입
+        </a>
       </section>
     </div>
   );
