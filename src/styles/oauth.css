@@ -1,0 +1,82 @@
+.account-login {
+  display: flex;
+  flex-direction: column;
+}
+
+.siginin-button {
+  width: 17rem;
+  height: 2.7rem;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  margin-top: 12px;
+  padding-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+}
+
+.social-text {
+  text-decoration: none;
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-weight: 400;
+  padding-top: 0.8rem;
+  color: #fff;
+  pointer-events: none;
+}
+
+.social-logo {
+  border: 1px solid black;
+  background-color: #fff;
+  border-radius: 10px;
+  margin-left: 0px;
+  pointer-events: none;
+}
+
+.button--google {
+  background-color: #5893ef;
+  width: 17rem;
+  height: 2.7rem;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  margin-top: 12px;
+  padding-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+}
+.button--github {
+  background-color: #516ca4;
+  width: 17rem;
+  height: 2.7rem;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  margin-top: 12px;
+  padding-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+}
+
+.button--facebook {
+  background-color: #007fff;
+  width: 17rem;
+  height: 2.7rem;
+  margin-bottom: 20px;
+  margin-left: 60px;
+  margin-top: 12px;
+  padding-left: 0px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+}
