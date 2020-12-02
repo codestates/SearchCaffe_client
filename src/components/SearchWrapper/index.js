@@ -1,3 +1,3 @@
-import Button from './Button.js'
+import SearchWrapper from './SearchWrapper.js';
 
-export default Button
+export default SearchWrapper;

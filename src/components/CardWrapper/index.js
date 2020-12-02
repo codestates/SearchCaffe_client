@@ -1,3 +1,3 @@
-import Button from './Button.js'
+import CardWrapper from './CardWrapper.js';
 
-export default Button
+export default CardWrapper;
