@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import SearchImg from './Search.png';
 
@@ -49,11 +50,17 @@ const SearchBarButton = styled.button`
 `;
 
 const SearchBar = (props) => {
+  const [input, setInput] = useState('');
+
   return (
     <SearchBarStyle>
       <SearchBarImg src={SearchImg}></SearchBarImg>
-      <SearchBarInput></SearchBarInput>
-      <SearchBarButton>찾기</SearchBarButton>
+      <SearchBarInput
+        onChange={(e) => setInput(e.target.value)}
+      ></SearchBarInput>
+      <SearchBarButton onClick={() => props.setKeyword(input)}>
+        찾기
+      </SearchBarButton>
     </SearchBarStyle>
   );
 };
