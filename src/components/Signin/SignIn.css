@@ -1,4 +1,4 @@
-.header {
+.header-signin {
   margin-top: 50px;
 }
 
@@ -36,22 +36,25 @@
   cursor: pointer;
 }
 
-.link {
+.link-signup {
   text-decoration: none;
   color: #727272;
   font-size: 15px;
+  display: inline-block;
+  transform: translate(-200px, 20px);
 }
 
-.modal {
+.modal-signin {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: #e5e5e5;
+  text-align: center;
 }
 
-.modal-main {
+.modal-signin-main {
   position: fixed;
   background: white;
   width: 800px;
