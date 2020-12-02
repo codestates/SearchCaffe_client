@@ -24,12 +24,10 @@ const SearchWrapper = (props) => {
     if (selectedTags.indexOf(tag) === -1) {
       let newTags = selectedTags;
       newTags.push(tag);
-      console.log(newTags);
       setTags(newTags);
     } else {
       let newTags = selectedTags;
       newTags.splice(selectedTags.indexOf(tag), 1);
-      console.log(newTags);
       setTags(newTags);
     }
   };
