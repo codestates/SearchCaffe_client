@@ -1,8 +1,8 @@
-h1 {
+.header {
   margin-top: 50px;
 }
 
-input {
+.input-signup {
   border: none;
   border-bottom: 1.5px solid #959292;
   outline: none;
@@ -10,7 +10,7 @@ input {
   width: 250px;
 }
 
-form {
+.signup-form {
   display: flex;
   flex-direction: column;
   align-items: center;

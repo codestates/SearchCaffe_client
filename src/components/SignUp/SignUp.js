@@ -33,10 +33,10 @@ const SignUp = ({ handleClose, show }) => {
   return (
     <div className={showHideClassName}>
       <section className="modal-main">
-        <h1>회원가입</h1>
-        <form onSubmit={handleSubmit}>
-          <input type="text" name="email" onChange={handleChange} placeholder="email" required />
-          <input type="password" name="password" onChange={handleChange} placeholder="password" required />
+        <h1 className="header">회원가입</h1>
+        <form className="signup-form" onSubmit={handleSubmit}>
+          <input className="input-signup" type="text" name="email" onChange={handleChange} placeholder="email" required />
+          <input className="input-signup" type="password" name="password" onChange={handleChange} placeholder="password" required />
           <button type="submit" className="btn">
             이메일 회원가입
           </button>
