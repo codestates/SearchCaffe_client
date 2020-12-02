@@ -18,7 +18,7 @@ import tomtom from './asset/tomtom.png';
 import twosome from './asset/twosome.png';
 import conversation from './asset/conversation.png';
 import styled from 'styled-components';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 // props
 // tagName: 태그 이름이 들어갑니다. 들어갈 수 있는 목록은 figma 메인 페이지 태그 그대로 입니다.
@@ -107,8 +107,6 @@ const SmallTagName = styled(TagName)`
 
 const Tag = (props) => {
   const [isClick, setClick] = useState(false);
-  const tagValue = useRef(null);
-  const handleTags = props.handleTags ? props.handleTags : () => {};
   if (props.isSmall) {
     return (
       <SmallTagStyle
@@ -128,10 +126,7 @@ const Tag = (props) => {
   }
   return (
     <TagStyle
-      onClick={() => {
-        setClick(!isClick);
-        handleTags(tagValue.current.textContent);
-      }}
+      onClick={() => setClick(!isClick)}
       isClicked={props.isButton ? isClick : undefined}
       tagName={props.tagName || ''}
       isButton={props.isButton}
@@ -141,7 +136,7 @@ const Tag = (props) => {
         src={tagName[props.tagName] || ''}
         tagName={props.tagName}
       ></TagImg>
-      <TagName ref={tagValue}>{props.tagName}</TagName>
+      <TagName>{props.tagName}</TagName>
     </TagStyle>
   );
 };
