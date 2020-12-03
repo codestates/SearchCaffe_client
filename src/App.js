@@ -8,9 +8,7 @@ function App() {
   console.log(fire);
   return (
     <div>
-
-      <Signup show={true}></Signup>
-
+      <Main />
     </div>
   );
 }
