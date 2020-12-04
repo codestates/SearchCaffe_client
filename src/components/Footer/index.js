@@ -1,3 +1,3 @@
-import Button from './Button.js'
+import Footer from './Footer.js';
 
-export default Button
+export default Footer;

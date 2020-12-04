@@ -10,13 +10,7 @@ color(string) 색을 지정하면 default가 아닌 다른 색으로 바뀝니�
 ## Example
 
 ```js
-<Tag
-  tagName={스타벅스}
-  isClicked={true}
-  isSmall={true}
-  isButton={true}
-  color="#ffffff"
-></Tag>
+<Tag tagName={스타벅스} isSmall={true} isButton={true} color="#ffffff"></Tag>
 ```
 
 # Card
@@ -37,4 +31,18 @@ cafeTag(array) - 카페 태그 배열
   cafeAddress="삼성역"
   cafeTag={['편안한', '애완 동물 동반', '스타벅스']}
 ></Card>
+```
+
+# Scope
+
+## Option
+
+isScope(boolean) - 고정된 점수 보여줌
+size - 크기
+scope - 점수
+
+## Example
+
+```js
+<Scope isScope={true} size="22px" scope={5}></Scope>
 ```

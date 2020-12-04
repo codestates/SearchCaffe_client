@@ -1,3 +1,3 @@
-import Button from './Button.js'
+import Comment from './Comment.js';
 
-export default Button
+export default Comment;

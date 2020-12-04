@@ -18,10 +18,7 @@ import tomtom from './asset/tomtom.png';
 import twosome from './asset/twosome.png';
 import conversation from './asset/conversation.png';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { dbService } from '../../../firebase/mainbase';
-import { connect } from 'react-redux';
-import { actionCreators } from '../../../reducer/store';
+import { useState, useRef } from 'react';
 
 // props
 // tagName: 태그 이름이 들어갑니다. 들어갈 수 있는 목록은 figma 메인 페이지 태그 그대로 입니다.
@@ -133,22 +130,8 @@ const SmallTagName = styled(TagName)`
 const Tag = (props) => {
   console.log(props);
   const [isClick, setClick] = useState(false);
-  const [tagNameArr, setTagNameArr] = useState([]);
-  const [tagNameObj, setTagNameObj] = useState({});
-  const getCollection = async () => {
-    const data = await (
-      await dbService.collection('스타벅스').doc('상현점').get()
-    ).data().CafeTag;
-    console.log(data);
-    tagNameArr.push(data[0]);
-  };
-  // firebase에서 collection 불러오는 로직 추가
-  if (isClick) {
-    console.log(props.name);
-    props.togleTagName(props.name,isClick);
-    getCollection();
-    console.log(tagNameArr);
-  }
+  const tagValue = useRef(null);
+  const handleTags = props.handleTags ? props.handleTags : () => {};
   if (props.isSmall) {
     return (
       <SmallTagStyle
@@ -168,7 +151,10 @@ const Tag = (props) => {
   }
   return (
     <TagStyle
-      onClick={() => setClick(!isClick)}
+      onClick={() => {
+        setClick(!isClick);
+        handleTags(tagValue.current.textContent);
+      }}
       isClicked={props.isButton ? isClick : undefined}
       tagName={props.tagName || ''}
       isButton={props.isButton}
@@ -178,7 +164,7 @@ const Tag = (props) => {
         src={tagName[props.tagName] || ''}
         tagName={props.tagName}
       ></TagImg>
-      <TagName>{props.tagName}</TagName>
+      <TagName ref={tagValue}>{props.tagName}</TagName>
     </TagStyle>
   );
 };
