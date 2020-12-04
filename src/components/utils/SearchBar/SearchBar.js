@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import SearchImg from './Search.png';
+import { useState } from 'react';
 
 const SearchBarStyle = styled.div`
   background: white;
@@ -51,7 +51,6 @@ const SearchBarButton = styled.button`
 
 const SearchBar = (props) => {
   const [input, setInput] = useState('');
-
   return (
     <SearchBarStyle>
       <SearchBarImg src={SearchImg}></SearchBarImg>

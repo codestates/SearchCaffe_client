@@ -24,13 +24,14 @@ const SearchWrapper = (props) => {
       let newTags = selectedTags;
       newTags.push(tag);
       setTags(newTags);
+      console.log(newTags);
     } else {
       let newTags = selectedTags;
       newTags.splice(selectedTags.indexOf(tag), 1);
       setTags(newTags);
+      console.log(newTags);
     }
   };
-
   return (
     <SearchWrapperStyle>
       <TagWrapperStyle>

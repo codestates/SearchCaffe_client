@@ -18,7 +18,7 @@ import tomtom from './asset/tomtom.png';
 import twosome from './asset/twosome.png';
 import conversation from './asset/conversation.png';
 import styled from 'styled-components';
-import { useRef, useState } from 'react';
+import { useState, useRef } from 'react';
 
 // props
 // tagName: 태그 이름이 들어갑니다. 들어갈 수 있는 목록은 figma 메인 페이지 태그 그대로 입니다.

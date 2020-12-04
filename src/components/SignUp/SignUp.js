@@ -42,7 +42,7 @@ const SignUp = ({ handleClose, show }) => {
           </button>
         </form>
         <div>{error}</div>
-        <a href="#" className="link-signin">
+        <a href="javascript" className="link-signin">
           이미 아이디가 있으신가요?
         </a>
       </section>
