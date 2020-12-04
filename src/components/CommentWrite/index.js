@@ -1,3 +1,3 @@
-import Button from './Button.js'
+import CommentWrite from './CommentWrite.js';
 
-export default Button
+export default CommentWrite;
