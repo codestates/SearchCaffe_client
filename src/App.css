@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.cafe {
+  display: flex;
+}
+
+.map {
+  float: left;
+}
