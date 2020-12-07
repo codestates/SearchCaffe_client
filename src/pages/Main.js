@@ -2,6 +2,9 @@ import SearchWrapper from '../components/SearchWrapper/index';
 import CardWrapper from '../components/CardWrapper/index';
 import mainImg from './main.jpeg';
 import styled from 'styled-components';
+import { dbService } from '../firebase/mainbase';
+import { actionCreators } from '../reducer/store';
+import { connect } from 'react-redux';
 
 const MainImg = styled.img`
   display: inline-block;
@@ -10,7 +13,7 @@ const MainImg = styled.img`
   height: 30%;
 `;
 
-export default function Main(props) {
+const Main = (props) => {
   return (
     <main>
       <MainImg src={mainImg}></MainImg>
@@ -18,4 +21,16 @@ export default function Main(props) {
       <CardWrapper></CardWrapper>
     </main>
   );
+};
+
+function mapStateToProps(state, ownProps) {
+  return { tagArray: state };
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    cardList: (card) => dispatch(actionCreators.addCardList(card)),
+  };
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Main);

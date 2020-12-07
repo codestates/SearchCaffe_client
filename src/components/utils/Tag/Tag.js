@@ -19,6 +19,8 @@ import twosome from './asset/twosome.png';
 import conversation from './asset/conversation.png';
 import styled from 'styled-components';
 import { useState, useRef } from 'react';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../../reducer/store';
 
 // props
 // tagName: 태그 이름이 들어갑니다. 들어갈 수 있는 목록은 figma 메인 페이지 태그 그대로 입니다.
@@ -47,6 +49,28 @@ const tagName = {
   탐앤탐스: tomtom,
   커피빈: coffeebean,
   폴바셋: paul,
+};
+
+const tagObj = {
+  가까운: false,
+  '주차 가능': false,
+  단체석: false,
+  '배달 가능': false,
+  '애완 동물 동반': false,
+  '테이크 아웃 전문': false,
+  '커피가 맛있는': false,
+  '디저트가 맛있는': false,
+  편안한: false,
+  '작업하기 좋은': false,
+  '대화하기 좋은': false,
+  '바다가 보이는': false,
+  스타벅스: false,
+  투썸플레이스: false,
+  이디야: false,
+  할리스: false,
+  탐앤탐스: false,
+  커피빈: false,
+  폴바셋: false,
 };
 
 const TagStyle = styled.button`
@@ -146,4 +170,14 @@ const Tag = (props) => {
   );
 };
 
-export default Tag;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    togleTagName: (tagName, isTrue) =>
+      dispatch(actionCreators.togleTagName(tagName, isTrue)),
+  };
+}
+export default connect(mapStateToProps)(Tag);
