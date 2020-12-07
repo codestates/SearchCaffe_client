@@ -1,36 +1,36 @@
 import { createStore } from 'redux';
 
-const ADD = 'ADD';
-const DELETE = 'DELETE';
+const TAGARRAY = 'TAGARRAY';
+const CARDARRAY = 'CARDARRAY';
 
-const addToDo = (text) => {
+const tagNameArray = (tagName) => {
   return {
-    type: ADD,
-    text,
+    type: TAGARRAY,
+    tagName,
   };
 };
-const togleTagName = (tagName ,isTrue) => {
-    return {
-        type: tagName,
-        isTrue
-    }
-}
 
-const deleteToDo = (id) => {
+const addCardList = (card) => {
   return {
-    type: DELETE,
-    id: parseInt(id)
+    type: CARDARRAY,
+    card,
   };
 };
 
 const reducer = (state = [], action) => {
   switch (action.type) {
-    case ADD:
-      return [{ text: action.text, id: Date.now() }, ...state];
-    case DELETE:
-      return state.filter((toDo) => toDo.id !== action.id);
-    case '스타벅스':
-        return [{'스타벅스':action.isTrue},...state];
+    case TAGARRAY:
+      let tagArr = action.tagName
+      console.log('tagArr :' + tagArr);
+      return Object.assign({}, state, {
+        tagArr,
+        ...state,
+      });
+    case CARDARRAY:
+      let cardArr = action.card.slice();
+      return {
+        cardArr,
+      };
     default:
       return state;
   }
@@ -39,8 +39,8 @@ const reducer = (state = [], action) => {
 const store = createStore(reducer);
 
 export const actionCreators = {
-  addToDo,
-  deleteToDo,
+  tagNameArray,
+  addCardList,
 };
 
 export default store;

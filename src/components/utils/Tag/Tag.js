@@ -19,6 +19,8 @@ import twosome from './asset/twosome.png';
 import conversation from './asset/conversation.png';
 import styled from 'styled-components';
 import { useState, useRef } from 'react';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../../reducer/store';
 
 // props
 // tagName: 태그 이름이 들어갑니다. 들어갈 수 있는 목록은 figma 메인 페이지 태그 그대로 입니다.
@@ -128,7 +130,6 @@ const SmallTagName = styled(TagName)`
 `;
 
 const Tag = (props) => {
-  console.log(props);
   const [isClick, setClick] = useState(false);
   const tagValue = useRef(null);
   const handleTags = props.handleTags ? props.handleTags : () => {};
@@ -170,8 +171,6 @@ const Tag = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log('state' + state);
-  console.log('ownProps' + ownProps);
   return { state };
 }
 
