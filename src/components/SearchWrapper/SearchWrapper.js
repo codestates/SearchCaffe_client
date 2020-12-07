@@ -3,6 +3,8 @@ import SearchBar from '../utils/SearchBar/index';
 import tagnames from '../utils/Tag/tagnames';
 import styled from 'styled-components';
 import { useState } from 'react';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../reducer/store';
 
 const SearchWrapperStyle = styled.div`
   text-align: center;
@@ -24,12 +26,12 @@ const SearchWrapper = (props) => {
       let newTags = selectedTags;
       newTags.push(tag);
       setTags(newTags);
-      console.log(newTags);
+      props.tagNameArray(selectedTags);
     } else {
       let newTags = selectedTags;
       newTags.splice(selectedTags.indexOf(tag), 1);
       setTags(newTags);
-      console.log(newTags);
+      props.tagNameArray(selectedTags);
     }
   };
   return (
@@ -163,4 +165,15 @@ const SearchWrapper = (props) => {
   );
 };
 
-export default SearchWrapper;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    tagNameArray: (tagName) => {
+      dispatch(actionCreators.tagNameArray(tagName));
+    },
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SearchWrapper);
