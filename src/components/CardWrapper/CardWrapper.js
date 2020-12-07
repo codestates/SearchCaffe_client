@@ -22,17 +22,6 @@ const CardWrapper = (props) => {
       <Card></Card>
       <Card></Card>
       <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
     </CardWrapperStyle>
   );
 };

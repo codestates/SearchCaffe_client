@@ -56,7 +56,7 @@ const Scope = (props) => {
           key={i}
           index={i}
           size={size}
-          color="red"
+          color="#f5b342"
         ></Star>
       );
     }
@@ -87,7 +87,7 @@ const Scope = (props) => {
           key={i}
           index={i}
           size={size}
-          color="red"
+          color="#f59642"
         ></Star>
       );
     }

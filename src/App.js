@@ -6,7 +6,6 @@ import Mypage from './pages/Mypage';
 import Nav from './components/Nav/index';
 import Footer from './components/Footer/index';
 import Scope from './components/utils/Scope/index';
-
 import { dbService } from './firebase/mainbase';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
