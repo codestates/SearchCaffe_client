@@ -2,9 +2,8 @@ import styled from 'styled-components';
 import Card from '../utils/Card/index';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
-import { dbService, storageService } from '../../firebase/mainbase';
-import { useEffect, useState, useMemo } from 'react';
-import { useForm } from './useForm';
+import { dbService } from '../../firebase/mainbase';
+import { useEffect, useState } from 'react';
 
 const CardWrapperStyle = styled.div`
   text-align: center;
@@ -13,13 +12,12 @@ const CardWrapperStyle = styled.div`
 `;
 
 const CardWrapper = ({ state, cardList }) => {
-  console.log('state.tagArr :' + state.tagArr);
-  const [isTag, setisTag] = useState(false);
   const [cards, setCards] = useState([]);
   let cardListArr = [];
+  let tags = state.tagArr ? state.tagArr.join() : '';
   useEffect(() => {
     dbService
-      .collection('cafeTestInfo')
+      .collection('TestInfo')
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -34,29 +32,33 @@ const CardWrapper = ({ state, cardList }) => {
         setCards(cardListArr);
       });
   }, []);
-  useMemo(() => {
-    console.log("work!!");
-  },[state.tagArr])
+  useEffect(() => {
+    let results = state.cardArr;
+    let tags = state.tagArr ? state.tagArr : [];
+    for (let tag of tags) {
+      results = results.filter((card) => {
+        if (!card.cafeTag) {
+          card.cafeTag = [];
+        }
+        return card.cafeTag.indexOf(tag) !== -1;
+      });
+    }
+    setCards(results);
+  }, [tags]);
   return (
-    <>
-      {isTag ? (
-        <CardWrapperStyle>
-          <Card />
-        </CardWrapperStyle>
-      ) : (
-        <CardWrapperStyle>
-          {cards.map((card) => (
+    <CardWrapperStyle>
+      {!cards
+        ? ''
+        : cards.map((card) => (
             <Card
               key={card.id}
               cardName={card.cafeName}
               cafeTag={card.cafeTag}
               cafeAddress={card.cafeAddress}
-              cafeImage={card.cafeImg[0]}
+              // cafeImage={card.cafeImg[0]}
             />
           ))}
-        </CardWrapperStyle>
-      )}
-    </>
+    </CardWrapperStyle>
   );
 };
 function mapStateToProps(state, ownProps) {
