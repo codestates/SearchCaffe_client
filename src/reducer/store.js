@@ -1,3 +1,4 @@
+import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
 import { createStore } from 'redux';
 
 const TAGARRAY = 'TAGARRAY';
@@ -17,14 +18,14 @@ const addCardList = (card) => {
   };
 };
 
-const reducer = (state = [], action) => {
+const reducer = (state = {}, action) => {
   switch (action.type) {
     case TAGARRAY:
-      let tagArr = action.tagName
+      let tagArr = action.tagName;
       console.log('tagArr :' + tagArr);
       return Object.assign({}, state, {
-        tagArr,
         ...state,
+        tagArr,
       });
     case CARDARRAY:
       let cardArr = action.card.slice();

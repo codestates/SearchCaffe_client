@@ -13,6 +13,7 @@ import { dbService } from './firebase/mainbase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
+import cafes from './cafeInfos';
 
 const App = () => {
   return (
