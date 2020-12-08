@@ -2,7 +2,7 @@ import Tag from '../utils/Tag/index';
 import SearchBar from '../utils/SearchBar/index';
 import tagnames from '../utils/Tag/tagnames';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 
@@ -40,6 +40,9 @@ const SearchWrapper = (props) => {
       props.tagNameArray(selectedTags);
     }
   };
+  useEffect(() => {
+    props.searchKeyword(searchKeyword);
+  }, [searchKeyword]);
   return (
     <SearchWrapperStyle>
       <WrapperTitle>어떤 카페를 찾으시나요?</WrapperTitle>
@@ -181,6 +184,9 @@ function mapDispatchToProps(dispatch) {
   return {
     tagNameArray: (tagName) => {
       dispatch(actionCreators.tagNameArray(tagName));
+    },
+    searchKeyword: (keyword) => {
+      dispatch(actionCreators.searchKeyword(keyword));
     },
   };
 }
