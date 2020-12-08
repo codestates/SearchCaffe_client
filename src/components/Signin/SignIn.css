@@ -1,5 +1,6 @@
 .header-signin {
-  margin-top: 50px;
+  margin-top: 25px;
+  color: black;
 }
 
 .input-login {
@@ -23,7 +24,7 @@
   margin-bottom: 20px;
 }
 
-.btn {
+.signin-btn {
   border-radius: 30px;
   margin: 20px;
   border: none;
@@ -37,11 +38,11 @@
 }
 
 .link-signup {
-  text-decoration: none;
   color: #727272;
   font-size: 15px;
   display: inline-block;
   transform: translate(-200px, 20px);
+  cursor: pointer;
 }
 
 .modal-signin {
@@ -50,7 +51,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #e5e5e5;
+  background: rgba(0, 0, 0, 0.5);
   text-align: center;
 }
 
@@ -89,4 +90,19 @@
   margin: auto;
   font-size: 12px;
   color: #959292;
+}
+
+.close-btn {
+  font-size: 20px;
+  color: black;
+  font-weight: bold;
+  display: absolute;
+  margin-right: 10px;
+  float: right;
+  cursor: pointer;
+}
+
+.errorMsg {
+  color: black;
+  margin: 10px;
 }
