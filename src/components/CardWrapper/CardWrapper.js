@@ -2,20 +2,47 @@ import styled from 'styled-components';
 import Card from '../utils/Card/index';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
-import { dbService } from '../../firebase/mainbase';
-import { useEffect, useState } from 'react';
+import { dbService, storageService } from '../../firebase/mainbase';
+import { useEffect, useState, useMemo } from 'react';
+
+import {
+  CSSTransition,
+  TransitionGroup,
+  Transition,
+} from 'react-transition-group';
 
 const CardWrapperStyle = styled.div`
-  text-align: center;
-  position: relative;
-  top: 30px;
+  display: grid;
+  background-color: blue;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  grid-auto-columns: minmax(10px, auto);
+  transition: opacity 0.3s;
+  &.appearingCard-enter {
+    opacity: 0;
+  }
+  &.appearingCard-enter-active {
+    opacity: 1;
+  }
+  &.appearingCard-exit {
+    opacity: 1;
+  }
+  &.appearingCard-exit-active {
+    opacity: 0;
+  }
+  &.appearingCard-appear {
+    opacity: 1;
+  }
+  &.appearingCard-appear-active {
+    opacity: 0;
+  }
 `;
 
 const CardWrapper = ({ state, cardList }) => {
   const [cards, setCards] = useState([]);
   const [currentKeyword, setCurrentKeyword] = useState('');
   let cardListArr = [];
-  let tags = state.tagArr ? state.tagArr.join() : '';
+
   useEffect(() => {
     dbService
       .collection('CafeInformation')
@@ -33,6 +60,8 @@ const CardWrapper = ({ state, cardList }) => {
         setCards(cardListArr);
       });
   }, []);
+
+  let tags = state.tagArr ? state.tagArr.join() : '';
   useEffect(() => {
     let results = state.cardArr;
     let tags = state.tagArr ? state.tagArr : [];
@@ -62,19 +91,43 @@ const CardWrapper = ({ state, cardList }) => {
     }
   }, [state.keyword]);
   return (
-    <CardWrapperStyle>
-      {!cards
-        ? ''
-        : cards.map((card) => (
-            <Card
-              key={card.id}
-              cafeName={card.cafeName}
-              cafeTag={card.cafeTag}
-              cafeAddress={card.cafeAddress}
-              cafeImage={card.cafeImg[0]}
-            />
-          ))}
-    </CardWrapperStyle>
+    <CSSTransition
+      in={true}
+      timeout={300}
+      classNames="appearingCard"
+      mountOnEnter
+      unmountOnExit
+    >
+      <CardWrapperStyle>
+        <TransitionGroup component={null}>
+          {!cards ? (
+            <Card></Card>
+          ) : (
+            cards.map((card) => {
+              return (
+                <CSSTransition
+                  timeout={300}
+                  in={true}
+                  key={card.id}
+                  classNames="fadeCard"
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <Card
+                    key={card.id}
+                    cafeName={card.cafeName}
+                    cafeTag={card.cafeTag}
+                    cafeAddress={card.cafeAddress}
+                    cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                    cafeStar={card.cafeStar}
+                  />
+                </CSSTransition>
+              );
+            })
+          )}
+        </TransitionGroup>
+      </CardWrapperStyle>
+    </CSSTransition>
   );
 };
 function mapStateToProps(state, ownProps) {
