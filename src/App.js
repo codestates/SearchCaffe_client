@@ -27,7 +27,7 @@ const App = () => {
         <Route path="content">
           <Content></Content>
         </Route>
-        <Route path="mypage">
+        <Route path="/mypage">
           <Mypage></Mypage>
         </Route>
       </Switch>

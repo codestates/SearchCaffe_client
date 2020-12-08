@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import { dbService, storageService } from '../../firebase/mainbase';
 import { useEffect, useState, useMemo } from 'react';
-import { useForm } from './useForm';
+
 import {
   CSSTransition,
   TransitionGroup,
@@ -39,10 +39,9 @@ const CardWrapperStyle = styled.div`
 `;
 
 const CardWrapper = ({ state, cardList }) => {
-  console.log('state.tagArr :' + state.tagArr);
-  const [isTag, setisTag] = useState(false);
   const [cards, setCards] = useState([]);
   let cardListArr = [];
+
   useEffect(() => {
     dbService
       .collection('CafeInformation')
