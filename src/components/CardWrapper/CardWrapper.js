@@ -17,7 +17,7 @@ const CardWrapper = ({ state, cardList }) => {
   let tags = state.tagArr ? state.tagArr.join() : '';
   useEffect(() => {
     dbService
-      .collection('TestInfo')
+      .collection('CafeInformation')
       .get()
       .then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
@@ -45,6 +45,21 @@ const CardWrapper = ({ state, cardList }) => {
     }
     setCards(results);
   }, [tags]);
+  useEffect(() => {
+    let keyword = state.keyword || '';
+    let returnArr = [];
+    let cardArr = state.cardArr || [];
+    cardArr.forEach((card) => {
+      if (card.cafeName.indexOf(keyword) !== -1) {
+        returnArr.push(card);
+      } else if (card.cafeAddress.indexOf(keyword) !== -1) {
+        returnArr.push(card);
+      }
+    });
+    if (returnArr.length > 0) {
+      setCards(returnArr);
+    }
+  }, [state.keyword]);
   return (
     <CardWrapperStyle>
       {!cards
@@ -52,10 +67,10 @@ const CardWrapper = ({ state, cardList }) => {
         : cards.map((card) => (
             <Card
               key={card.id}
-              cardName={card.cafeName}
+              cafeName={card.cafeName}
               cafeTag={card.cafeTag}
               cafeAddress={card.cafeAddress}
-              // cafeImage={card.cafeImg[0]}
+              cafeImage={card.cafeImg[0]}
             />
           ))}
     </CardWrapperStyle>
