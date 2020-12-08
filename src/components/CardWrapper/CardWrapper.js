@@ -13,6 +13,7 @@ const CardWrapperStyle = styled.div`
 
 const CardWrapper = ({ state, cardList }) => {
   const [cards, setCards] = useState([]);
+  const [currentKeyword, setCurrentKeyword] = useState('');
   let cardListArr = [];
   let tags = state.tagArr ? state.tagArr.join() : '';
   useEffect(() => {
@@ -77,7 +78,6 @@ const CardWrapper = ({ state, cardList }) => {
   );
 };
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { state };
 }
 

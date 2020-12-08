@@ -51,20 +51,19 @@ const SearchBarButton = styled.button`
 
 const SearchBar = (props) => {
   const [input, setInput] = useState('');
-  const [enter, setEnter] = useState();
-  
-  const get = (event) => {
-    if(event.key === 'Enter') {
-      console.log("Work");
+  const enterPress = (e) => {
+    if (e.key === 'Enter') {
+      props.setKeyword(input);
     }
-  }
+  };
   return (
     <SearchBarStyle>
       <SearchBarImg src={SearchImg}></SearchBarImg>
       <SearchBarInput
         onChange={(e) => setInput(e.target.value)}
+        onKeyPress={(e) => enterPress(e)}
       ></SearchBarInput>
-      <SearchBarButton onClick={() => props.setKeyword(input)} onKeyPress={(event) => get(event)}>
+      <SearchBarButton onClick={() => props.setKeyword(input)}>
         찾기
       </SearchBarButton>
     </SearchBarStyle>
