@@ -51,28 +51,6 @@ const tagName = {
   폴바셋: paul,
 };
 
-const tagObj = {
-  가까운: false,
-  '주차 가능': false,
-  단체석: false,
-  '배달 가능': false,
-  '애완 동물 동반': false,
-  '테이크 아웃 전문': false,
-  '커피가 맛있는': false,
-  '디저트가 맛있는': false,
-  편안한: false,
-  '작업하기 좋은': false,
-  '대화하기 좋은': false,
-  '바다가 보이는': false,
-  스타벅스: false,
-  투썸플레이스: false,
-  이디야: false,
-  할리스: false,
-  탐앤탐스: false,
-  커피빈: false,
-  폴바셋: false,
-};
-
 const TagStyle = styled.button`
   background: ${(props) =>
     props.isClicked ? '#5A403A' : props.color || '#EFEFEF'};

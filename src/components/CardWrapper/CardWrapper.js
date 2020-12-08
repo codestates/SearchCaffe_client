@@ -40,6 +40,7 @@ const CardWrapperStyle = styled.div`
 
 const CardWrapper = ({ state, cardList }) => {
   const [cards, setCards] = useState([]);
+  const [currentKeyword, setCurrentKeyword] = useState('');
   let cardListArr = [];
 
   useEffect(() => {
@@ -74,6 +75,21 @@ const CardWrapper = ({ state, cardList }) => {
     }
     setCards(results);
   }, [tags]);
+  useEffect(() => {
+    let keyword = state.keyword || '';
+    let returnArr = [];
+    let cardArr = state.cardArr || [];
+    cardArr.forEach((card) => {
+      if (card.cafeName.indexOf(keyword) !== -1) {
+        returnArr.push(card);
+      } else if (card.cafeAddress.indexOf(keyword) !== -1) {
+        returnArr.push(card);
+      }
+    });
+    if (returnArr.length > 0) {
+      setCards(returnArr);
+    }
+  }, [state.keyword]);
   return (
     <CSSTransition
       in={true}
@@ -98,6 +114,7 @@ const CardWrapper = ({ state, cardList }) => {
                   unmountOnExit
                 >
                   <Card
+                    key={card.id}
                     cafeName={card.cafeName}
                     cafeTag={card.cafeTag}
                     cafeAddress={card.cafeAddress}
@@ -114,7 +131,6 @@ const CardWrapper = ({ state, cardList }) => {
   );
 };
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { state };
 }
 
