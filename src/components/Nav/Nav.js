@@ -41,8 +41,16 @@ const Nav = () => {
         <Link to="/">LOGO</Link>
       </span>
       <div className="login">
-        <SignIn show={showSignin} handleClose={closeSignin} handleOpen={openSignup} />
-        <SignUp show={showSignup} handleClose={closeSignup} handleOpen={openSignin} />
+        <SignIn
+          show={showSignin}
+          handleClose={closeSignin}
+          handleOpen={openSignup}
+        />
+        <SignUp
+          show={showSignup}
+          handleClose={closeSignup}
+          handleOpen={openSignin}
+        />
         {isLogin ? (
           <span className="mypage-btn">
             <Link to="mypage">마이페이지</Link>

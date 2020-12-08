@@ -56,7 +56,7 @@ const Scope = (props) => {
           key={i}
           index={i}
           size={size}
-          color="red"
+          color="#f5b342"
         ></Star>
       );
     }
@@ -87,7 +87,7 @@ const Scope = (props) => {
           key={i}
           index={i}
           size={size}
-          color="red"
+          color="#f59642"
         ></Star>
       );
     }
@@ -99,13 +99,17 @@ const Scope = (props) => {
   }, [scope]);
 
   if (props.isScope) {
+    let PropsScope = props.scope;
+    if ((PropsScope > 5) | (PropsScope < 0)) {
+      PropsScope = 0;
+    }
     let contentsScope = [];
-    for (let i = 0; i <= props.scope - 1; i++) {
+    for (let i = 0; i <= PropsScope - 1; i++) {
       contentsScope.push(
-        <Star key={i} index={i} size={props.size} color="red"></Star>
+        <Star key={i} index={i} size={props.size} color="#f59642"></Star>
       );
     }
-    for (let i = props.scope; i < 5; i++) {
+    for (let i = PropsScope; i < 5; i++) {
       contentsScope.push(
         <Star color="#dddddd" key={i} index={i} size={props.size}></Star>
       );
