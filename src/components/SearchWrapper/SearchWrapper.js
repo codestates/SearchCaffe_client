@@ -6,10 +6,15 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 
+const WrapperTitle = styled.div`
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 1.7rem;
+  font-weight: bold;
+`;
 const SearchWrapperStyle = styled.div`
   text-align: center;
 `;
-
 const TagWrapperStyle = styled.div``;
 const TagWrapperStyleDiv = styled.div`
   margin-top: 5px;
@@ -21,7 +26,7 @@ const SearchBarWrapperStyle = styled.div``;
 const SearchWrapper = (props) => {
   const [selectedTags, setTags] = useState([]);
   const [searchKeyword, setKeyword] = useState('');
-  console.log(searchKeyword);
+
   const handleTags = (tag) => {
     if (selectedTags.indexOf(tag) === -1) {
       let newTags = selectedTags;
@@ -40,6 +45,7 @@ const SearchWrapper = (props) => {
   }, [searchKeyword]);
   return (
     <SearchWrapperStyle>
+      <WrapperTitle>어떤 카페를 찾으시나요?</WrapperTitle>
       <TagWrapperStyle>
         <TagWrapperStyleDiv>
           <Tag
@@ -162,6 +168,7 @@ const SearchWrapper = (props) => {
           ></Tag>
         </TagWrapperStyleDiv>
       </TagWrapperStyle>
+      <WrapperTitle>찾는 카페가 있으신가요?</WrapperTitle>
       <SearchBarWrapperStyle>
         <SearchBar setKeyword={setKeyword}></SearchBar>
       </SearchBarWrapperStyle>
