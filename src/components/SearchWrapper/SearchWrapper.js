@@ -21,6 +21,7 @@ const SearchBarWrapperStyle = styled.div``;
 const SearchWrapper = (props) => {
   const [selectedTags, setTags] = useState([]);
   const [searchKeyword, setKeyword] = useState('');
+  console.log(searchKeyword);
   const handleTags = (tag) => {
     if (selectedTags.indexOf(tag) === -1) {
       let newTags = selectedTags;

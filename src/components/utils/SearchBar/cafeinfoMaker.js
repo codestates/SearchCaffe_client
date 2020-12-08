@@ -7,6 +7,19 @@ useEffect(() => {
 
   script.onload = () => {
     kakao.maps.load(() => {
+      let tags = [
+        '가까운',
+        '주차 가능',
+        '단체석',
+        '배달 가능',
+        '애완 동물 동반',
+        '테이크 아웃 전문',
+        '커피가 맛있는',
+        '디저트가 맛있는',
+        '편안한',
+        '작업하기 좋은',
+        '대화하기 좋은',
+      ];
       var ps = new kakao.maps.services.Places();
       // 키워드로 장소를 검색합니다
       let one = [
@@ -64,6 +77,7 @@ useEffect(() => {
       }
       async function placesSearchCB(data, status, pagination) {
         if (status === kakao.maps.services.Status.OK) {
+          console.log(data);
           for (let result of data) {
             let toDatabase = {
               cafeAddress: result.road_address_name,
@@ -74,6 +88,13 @@ useEffect(() => {
               cafeStar: -1,
               cafeid: result.id,
             };
+            for (let i = 0; i < 5; i++) {
+              let newtag = tags[parseInt(Math.random() * tags.length)];
+              if (toDatabase.cafeTag.indexOf(newtag) === -1) {
+                toDatabase.cafeTag.push(newtag);
+              }
+            }
+
             if (toDatabase.cafeName.includes('스타벅스')) {
               toDatabase.cafeTag.push('스타벅스');
             }
@@ -96,7 +117,7 @@ useEffect(() => {
               toDatabase.cafeTag.push('폴바셋');
             }
             const res = await dbService
-              .collection('cafeInfo')
+              .collection('TestInfo')
               .doc(result.place_name)
               .set(toDatabase);
           }
