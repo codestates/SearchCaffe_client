@@ -272,9 +272,44 @@ border-bottom: 1px solid #e9ecef;
           <ul>
             <li>
               <p>
-                <span></span>
-                <span></span>
-                <span></span>
+                <span>에스프레소</span>
+                <span>핫</span>
+                <span>5.0</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                <span>아메리카노</span>
+                <span>핫 / 아이스</span>
+                <span>5.0</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                <span>카푸치노</span>
+                <span>핫 / 아이스</span>
+                <span>6.0</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                <span>카페라떼</span>
+                <span>핫 / 아이스</span>
+                <span>6.0</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                <span>바닐라라뗴</span>
+                <span>핫 / 아이스</span>
+                <span>7.0</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                <span>넛라떼</span>
+                <span>핫 / 아이스</span>
+                <span>7.0</span>
               </p>
             </li>
           </ul>
