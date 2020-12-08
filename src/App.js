@@ -22,10 +22,10 @@ function App() {
         <Route exact path="/">
           <Main></Main>
         </Route>
-        <Route path="content">
+        <Route path="/content">
           <Content></Content>
         </Route>
-        <Route path="mypage">
+        <Route path="/mypage">
           <Mypage></Mypage>
         </Route>
       </Switch>
