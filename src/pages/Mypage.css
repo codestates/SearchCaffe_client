@@ -1,0 +1,19 @@
+.tabs-contents {
+  font-family: 'Nanum Pen Script', cursive;
+  margin-left: 60px;
+  color: black;
+  font-size: 40px;
+  cursor: pointer;
+  display: inline;
+}
+.tabs-contents:hover {
+  color: red;
+}
+
+.tabs {
+  height: 200px;
+  width: 100%;
+  vertical-align: middle;
+  color: black;
+  line-height: 200px;
+}
