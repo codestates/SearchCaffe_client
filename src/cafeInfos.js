@@ -26,13 +26,52 @@ let cafes = [
     cafeName: '늘솜당',
     cafeAddress: '경기 시흥시 하우로122번길 50-3 (우)14900',
     cafeTag: [tagName['디저트가 맛있는'], tagName['주차 가능']],
-    cafeStar: -1,
+    cafeStar: [3, 4, 2, 6],
     cafeImg: [
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2019081408428713.jpg?alt=media&token=183071eb-1657-486d-9eb9-c1c6fa133659',
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F20208172316_editor_image.jpg?alt=media&token=c5b05234-8a38-4f0a-9054-42565f2f7d2f',
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
     ],
-    cafeComment: [],
+    cafeComment: [
+      {
+        username: 'ranisol',
+        userStar: 5,
+        userComment: '좋아요 너무',
+        userTag: ['커피가 맛있는', '디저트가 맛있는'],
+        userImg: [
+          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+        ],
+      },
+      {
+        username: 'ransol',
+        userStar: 5,
+        userComment: '좋아요 너무',
+        userTag: ['커피가 맛있는', '디저트가 맛있는'],
+        userImg: [
+          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+        ],
+      },
+      {
+        username: 'ransol',
+        userStar: -1,
+        userComment: '',
+
+        userImg: [
+          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+        ],
+      },
+      {
+        username: 'ransol',
+        userStar: 3,
+        userComment: '',
+        userTag: [],
+        userImg: [],
+      },
+    ],
     cafeDetail: ['10:00 ~ 22:00'],
     cafePhoneNumber: '',
   },

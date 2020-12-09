@@ -2,14 +2,20 @@ import Tag from '../utils/Tag/index';
 import SearchBar from '../utils/SearchBar/index';
 import tagnames from '../utils/Tag/tagnames';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 
+const WrapperTitle = styled.div`
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 1.7rem;
+  font-weight: bold;
+`;
 const SearchWrapperStyle = styled.div`
   text-align: center;
+  margin-bottom: 70px;
 `;
-
 const TagWrapperStyle = styled.div``;
 const TagWrapperStyleDiv = styled.div`
   margin-top: 5px;
@@ -21,7 +27,7 @@ const SearchBarWrapperStyle = styled.div``;
 const SearchWrapper = (props) => {
   const [selectedTags, setTags] = useState([]);
   const [searchKeyword, setKeyword] = useState('');
-  console.log(searchKeyword);
+
   const handleTags = (tag) => {
     if (selectedTags.indexOf(tag) === -1) {
       let newTags = selectedTags;
@@ -35,8 +41,12 @@ const SearchWrapper = (props) => {
       props.tagNameArray(selectedTags);
     }
   };
+  useEffect(() => {
+    props.searchKeyword(searchKeyword);
+  }, [searchKeyword]);
   return (
     <SearchWrapperStyle>
+      <WrapperTitle>어떤 카페를 찾으시나요?</WrapperTitle>
       <TagWrapperStyle>
         <TagWrapperStyleDiv>
           <Tag
@@ -159,6 +169,7 @@ const SearchWrapper = (props) => {
           ></Tag>
         </TagWrapperStyleDiv>
       </TagWrapperStyle>
+      <WrapperTitle>찾는 카페가 있으신가요?</WrapperTitle>
       <SearchBarWrapperStyle>
         <SearchBar setKeyword={setKeyword}></SearchBar>
       </SearchBarWrapperStyle>
@@ -174,6 +185,9 @@ function mapDispatchToProps(dispatch) {
   return {
     tagNameArray: (tagName) => {
       dispatch(actionCreators.tagNameArray(tagName));
+    },
+    searchKeyword: (keyword) => {
+      dispatch(actionCreators.searchKeyword(keyword));
     },
   };
 }
