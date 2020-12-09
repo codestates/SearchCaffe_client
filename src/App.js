@@ -7,12 +7,13 @@ import Cafe from './Cafe';
 import fakeData from './fakeData';
 import getCurrentPosition from './getCurrentPosition';
 function App() {
-  getCurrentPosition();
-  const cafes = fakeData.map((cafe, i) => <Cafe place={cafe.address} key={i} />);
+  // getCurrentPosition();
+  // const cafes = fakeData.map((cafe, i) => <Cafe place={cafe.address} key={i} />);
 
   return (
     <div className="cafe">
-      {cafes}
+      {/* {cafes} */}
+      <SearchPlace />
       <div></div>
     </div>
   );

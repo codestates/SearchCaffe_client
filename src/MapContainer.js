@@ -31,6 +31,7 @@ const MapContainer = ({ searchPlace }) => {
           }
         }
         map.setBounds(bounds);
+        console.log(bounds);
       }
     }
     function displayMarker(place) {
