@@ -141,28 +141,28 @@ const CardWrapper = ({ state, cardList }) => {
             {!cards ? (
               <Card></Card>
             ) : (
-              cards.map((card) => {
-                return (
-                  <CSSTransition
-                    timeout={300}
-                    in={true}
-                    key={card.id}
-                    classNames="fadeCard"
-                    mountOnEnter
-                    unmountOnExit
-                  >
-                    <Card
-                      cafeid={card.id}
-                      cafeName={card.cafeName}
-                      cafeTag={card.cafeTag}
-                      cafeAddress={card.cafeAddress}
-                      cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                      cafeStar={card.cafeStar}
-                    />
-                  </CSSTransition>
-                );
-              })
-            )}
+                cards.map((card) => {
+                  return (
+                    <CSSTransition
+                      timeout={300}
+                      in={true}
+                      key={card.id}
+                      classNames="fadeCard"
+                      mountOnEnter
+                      unmountOnExit
+                    >
+                      <Card
+                        cafeid={card.id}
+                        cafeName={card.cafeName}
+                        cafeTag={card.cafeTag}
+                        cafeAddress={card.cafeAddress}
+                        cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                        cafeStar={card.cafeStar}
+                      />
+                    </CSSTransition>
+                  );
+                })
+              )}
           </TransitionGroup>
         </CardWrapperStyle>
       </CSSTransition>

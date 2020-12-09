@@ -127,6 +127,7 @@ export default function Content(props) {
 
   const DetailBox = styled.div`
   float:left;
+
   strong{
     padding-left:1rem;
     &:after {
@@ -140,7 +141,28 @@ export default function Content(props) {
     margin-top: 3px;
     }
   }
+
+    ul li{
+      list-style:none;
+      width:100%;
+      margin : 12px 0 30px;
+    }
+      p{
+        display:table;
+        width:100%;
+        }
+
+      span{
+        display: table-cell;
+    width: auto;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    vertical-align: middle;
+        }
+
 `
+
   const Detail3 = styled.div`
 width: 90%;
 height: 100%;
