@@ -10,30 +10,35 @@ import Scope from '../Scope/index';
 // cafeTag:array - 카페 태그 배열
 
 const CardStyle = styled.span`
-  width: 400px;
-  height: ${(props) =>
-    !props.tag ? '470px' : 470 + props.tag.length * 25 + 'px'};
+  width: 345px;
+  display: block; // inline-block => block으로 바꿨더니 해결
+  box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
+  margin: 13px 20px 10px 10px;
+  padding: 8px;
+  padding-bottom: 10px;
+  font-size: 1rem;
+  page-break-inside: avoid;
   background-color: #ffffff;
-  font-size: 0.8rem;
-
-  text-align: left;
-  transition: 0.2s;
-  box-shadow: 1.2px 1.2px 1.2px 1.2px gray;
+  break-inside: avoid;
+  transition: opacity 0.4s ease-in-out;
+  transition: 0.3s;
+  :hover {
+    box-shadow: 5px 8px 8px 5px rgba(34, 25, 25, 0.4);
+    transition: 0.3s;
+    background-color: #b9aea1;
+  }
 
   &.fadeCard-enter {
     opacity: 0;
   }
-  // enter to
   &.fadeCard-enter-active {
     opacity: 1;
     transform: translateX(0);
     transition: opacity 300ms, transform 300ms;
   }
-  // exit from
   &.fadeCard-exit {
     opacity: 1;
   }
-  // exit to
   &.fadeCard-exit-active {
     opacity: 0;
     transform: scale(0.9);
@@ -48,52 +53,51 @@ const CardStyle = styled.span`
 `;
 
 const CardImg = styled.img`
-  transition: 0.2s;
-  text-align: center;
-  position: relative;
-  top: 1%;
-  left: 1.5%;
-  width: 97%;
-  height: 65%;
+  width: 345px;
+  max-height: 400px;
+  height: auto;
+
+  border-bottom: 1px solid #dfdfdf;
+  padding-bottom: 13px;
+  margin-bottom: 5px;
 `;
 
 const CardName = styled.div`
-  position: relative;
-  top: 3%;
-  left: 4%;
   font-size: 1.2rem;
+  padding-left: 15px;
+  margin: 10px 0;
 `;
 
 const CardAddress = styled.div`
-  position: relative;
-  top: 5%;
-  left: 4%;
+  margin: 10px 0;
+  padding-left: 15px;
 `;
 const CardLocationImg = styled.img`
+  position: relative;
+  top: 3px;
   width: 20px;
   height: 20px;
 `;
 const CardAddressDetail = styled.span`
-  position: relative;
-  bottom: 5px;
-  left: 2%;
+  margin: 10px 0;
+  padding-right: 10px;
+  padding-left: 2px;
+  font-size: 0.85rem;
 `;
 
 const CardTags = styled.div`
-  position: relative;
-  top: 7%;
-  left: 3%;
+  margin: 10px 0;
+  padding-left: 15px;
 `;
 
 const ScopeContain = styled.div`
-  position: relative;
-  top: 6%;
-  left: 4%;
+  margin: 10px 0;
+  padding-left: 15px;
 `;
 
 const Card = (props) => {
   return (
-    <CardStyle tag={props.cafeTag}>
+    <CardStyle cafeid={props.cafeid} tag={props.cafeTag}>
       <CardImg src={props.cafeImage || defaultImg} />
       <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
       <CardAddress>
