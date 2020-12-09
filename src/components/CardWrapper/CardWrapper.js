@@ -11,12 +11,13 @@ import {
   Transition,
 } from 'react-transition-group';
 
+const CardWrapperCover = styled.div``;
+
 const WrapperLine = styled.span`
   display: inline-block;
   width: 100%;
   border-top: 1px solid black;
 `;
-
 const WrapperLineLeft = styled(WrapperLine)`
   width: 20%;
   max-width: 350px;
@@ -24,7 +25,6 @@ const WrapperLineLeft = styled(WrapperLine)`
   left: 30px;
   bottom: 10px;
 `;
-
 const WrapperLineRight = styled(WrapperLine)`
   max-width: 350px;
   width: 20%;
@@ -32,23 +32,25 @@ const WrapperLineRight = styled(WrapperLine)`
   right: 30px;
   bottom: 10px;
 `;
-
 const WrapperTitle = styled.div`
   width: 100%;
-  margin-top: 50px;
+  display: inline-block;
   font-size: 1.7rem;
   font-weight: bold;
   text-align: center;
 `;
-
 const CardWrapperStyle = styled.div`
-  column-width: 350px;
-  column-gap: 15px;
+  column-width: 340px;
+
+  column-gap: 20px;
+  column-count: 3;
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
+  break-inside: avoid;
+  page-break-inside: avoid;
   background-color: #ebebeb;
-
+  display: block;
   &.appearingCard-enter {
     opacity: 0;
   }
@@ -70,10 +72,15 @@ const CardWrapperStyle = styled.div`
 `;
 
 const CardWrapper = ({ state, cardList }) => {
+  const [isTag, setIsTag] = useState(false);
   const [cards, setCards] = useState([]);
+  const [isCozyCafe, setCozyCafe] = useState([]);
+  const [isGoodForTask, setGoodForTask] = useState([]);
   const [currentKeyword, setCurrentKeyword] = useState('');
-  let cardListArr = [];
 
+  let cardListArr = [];
+  let cozyCafe = [];
+  let goodForTask = [];
   useEffect(() => {
     dbService
       .collection('CafeInformation')
@@ -89,22 +96,49 @@ const CardWrapper = ({ state, cardList }) => {
       .finally(function () {
         cardList(cardListArr);
         setCards(cardListArr);
+        cozyCafe = cardListArr.filter((card) =>
+          !card.cafeTag
+            ? (card.cafeTag = [])
+            : card.cafeTag.indexOf('편안한') !== -1
+        );
+        goodForTask = cardListArr.filter((card) =>
+          !card.cafeTag
+            ? (card.cafeTag = [])
+            : card.cafeTag.indexOf('작업하기 좋은') !== -1
+        );
+        cozyCafe.length > 6
+          ? (cozyCafe = cozyCafe.slice(0, 6))
+          : cozyCafe.length > 3
+          ? cozyCafe.slice(0, 3)
+          : (cozyCafe = []);
+        goodForTask.length > 6
+          ? (goodForTask = goodForTask.slice(0, 6))
+          : goodForTask.length > 3
+          ? goodForTask.slice(0, 3)
+          : (goodForTask = []);
+        setCozyCafe(cozyCafe);
+        setGoodForTask(goodForTask);
       });
   }, []);
 
   let tags = state.tagArr ? state.tagArr.join() : '';
   useEffect(() => {
-    let results = state.cardArr;
-    let tags = state.tagArr ? state.tagArr : [];
-    for (let tag of tags) {
-      results = results.filter((card) => {
-        if (!card.cafeTag) {
-          card.cafeTag = [];
-        }
-        return card.cafeTag.indexOf(tag) !== -1;
-      });
+    if (tags !== '') {
+      let results = state.cardArr;
+      let tags = state.tagArr ? state.tagArr : [];
+      for (let tag of tags) {
+        results = results.filter((card) => {
+          if (!card.cafeTag) {
+            card.cafeTag = [];
+          }
+          return card.cafeTag.indexOf(tag) !== -1;
+        });
+      }
+      setCards(results);
     }
-    setCards(results);
+
+    if (tags === '') {
+    }
   }, [tags]);
 
   useEffect(() => {
@@ -122,8 +156,46 @@ const CardWrapper = ({ state, cardList }) => {
       setCards(returnArr);
     }
   }, [state.keyword]);
-  return (
-    <div>
+
+  return tags === '' ? (
+    <CardWrapperCover>
+      <WrapperTitle>
+        <WrapperLineRight />
+        <span>분위기 좋은 카페</span>
+        <WrapperLineLeft />
+      </WrapperTitle>
+      <CardWrapperStyle key={1}>
+        {isCozyCafe.map((card) => (
+          <Card
+            cafeid={card.id}
+            cafeName={card.cafeName}
+            cafeTag={card.cafeTag}
+            cafeAddress={card.cafeAddress}
+            cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+            cafeStar={card.cafeStar}
+          ></Card>
+        ))}
+      </CardWrapperStyle>
+      <WrapperTitle>
+        <WrapperLineRight />
+        <span>작업하기 좋은 카페</span>
+        <WrapperLineLeft />
+      </WrapperTitle>
+      <CardWrapperStyle key={2}>
+        {isGoodForTask.map((card) => (
+          <Card
+            cafeid={card.id}
+            cafeName={card.cafeName}
+            cafeTag={card.cafeTag}
+            cafeAddress={card.cafeAddress}
+            cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+            cafeStar={card.cafeStar}
+          ></Card>
+        ))}
+      </CardWrapperStyle>
+    </CardWrapperCover>
+  ) : (
+    <CardWrapperCover>
       <WrapperTitle>
         <WrapperLineRight />
         <span>검색 결과</span>
@@ -138,35 +210,31 @@ const CardWrapper = ({ state, cardList }) => {
       >
         <CardWrapperStyle>
           <TransitionGroup component={null}>
-            {!cards ? (
-              <Card></Card>
-            ) : (
-              cards.map((card) => {
-                return (
-                  <CSSTransition
-                    timeout={300}
-                    in={true}
-                    key={card.id}
-                    classNames="fadeCard"
-                    mountOnEnter
-                    unmountOnExit
-                  >
-                    <Card
-                      cafeid={card.id}
-                      cafeName={card.cafeName}
-                      cafeTag={card.cafeTag}
-                      cafeAddress={card.cafeAddress}
-                      cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                      cafeStar={card.cafeStar}
-                    />
-                  </CSSTransition>
-                );
-              })
-            )}
+            {cards.map((card) => {
+              return (
+                <CSSTransition
+                  timeout={300}
+                  in={true}
+                  key={card.id}
+                  classNames="fadeCard"
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <Card
+                    cafeid={card.id}
+                    cafeName={card.cafeName}
+                    cafeTag={card.cafeTag}
+                    cafeAddress={card.cafeAddress}
+                    cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                    cafeStar={card.cafeStar}
+                  />
+                </CSSTransition>
+              );
+            })}
           </TransitionGroup>
         </CardWrapperStyle>
       </CSSTransition>
-    </div>
+    </CardWrapperCover>
   );
 };
 function mapStateToProps(state, ownProps) {

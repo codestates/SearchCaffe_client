@@ -11,16 +11,17 @@ import Scope from '../Scope/index';
 
 const CardStyle = styled.span`
   width: 345px;
-  /* border: 1.5px solid #fefefe; */
+  display: block; // inline-block => block으로 바꿨더니 해결
   box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
-  margin: 10px 20px 10px 10px;
+  margin: 13px 20px 10px 10px;
   padding: 8px;
   padding-bottom: 10px;
+  font-size: 1rem;
+  page-break-inside: avoid;
+  background-color: #ffffff;
+  break-inside: avoid;
   transition: opacity 0.4s ease-in-out;
   transition: 0.3s;
-  font-size: 1rem;
-  display: inline-block;
-  background-color: #ffffff;
   :hover {
     box-shadow: 5px 8px 8px 5px rgba(34, 25, 25, 0.4);
     transition: 0.3s;
@@ -55,6 +56,7 @@ const CardImg = styled.img`
   width: 345px;
   max-height: 400px;
   height: auto;
+
   border-bottom: 1px solid #dfdfdf;
   padding-bottom: 13px;
   margin-bottom: 5px;
@@ -94,7 +96,6 @@ const ScopeContain = styled.div`
 `;
 
 const Card = (props) => {
-  console.log(props.cafeid);
   return (
     <CardStyle cafeid={props.cafeid} tag={props.cafeTag}>
       <CardImg src={props.cafeImage || defaultImg} />

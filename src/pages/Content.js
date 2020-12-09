@@ -1,143 +1,139 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import Tag from '../components/utils/Tag'
+import Tag from '../components/utils/Tag';
 import tagnames from '../components/utils/Tag/tagnames';
-import { ReactComponent as Table } from './Table.svg'
-import { ReactComponent as Cup } from './Cup.svg'
-import { ReactComponent as Time } from './Time.svg'
-import Slider from "react-slick";
-import img from './main.jpeg'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
+import { ReactComponent as Table } from './Table.svg';
+import { ReactComponent as Cup } from './Cup.svg';
+import { ReactComponent as Time } from './Time.svg';
+import Slider from 'react-slick';
+import img from './main.jpeg';
+import CommentWrite from '../components/CommentWrite/index';
+import Comment from '../components/Comment/index';
+import cafes from '../cafeInfos';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export default function Content(props) {
-
   const GlobalStyle = createGlobalStyle`
   body {
     background: #e9ecef;
   }
 `;
 
-
   const Detail = styled.div`
-  width: 90%;
-  height: 100%;
-  background: white;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+    width: 90%;
+    height: 100%;
+    background: white;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
 
-  margin: auto;
+    margin: auto;
 
-  padding-top: 48px;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 24px;
+    padding-top: 48px;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-bottom: 24px;
 
-  h1{
-    margin: 0;
-    font-size: 40px;
-    color: #343a40;
-  }
+    h1 {
+      margin: 0;
+      font-size: 40px;
+      color: #343a40;
+    }
 
-  .adress {
-    margin-top: 4px;
-    color: #929191;
-    font-size: 15px;
-  }
+    .adress {
+      margin-top: 4px;
+      color: #929191;
+      font-size: 15px;
+    }
 
-  .describe {
-    margin-top:30px;
-    font-size: 18px
-  }
+    .describe {
+      margin-top: 30px;
+      font-size: 18px;
+    }
 
-  .block{
-    width : 200px;
-    height :200px;
-    background: green;
-  }
-  `
+    .block {
+      width: 200px;
+      height: 200px;
+      background: green;
+    }
+  `;
   const Line = styled.div`
-  border: 1px solid #000000;
-  `
+    border: 1px solid #000000;
+  `;
 
   const SvgContainer = styled.div`
-  display:flexbox;
-  flex-direction:row;
-  `
+    display: flexbox;
+    flex-direction: row;
+  `;
 
   const MainImg = styled.img`
-float: right;
-width: 30%;
-height: 30%;
-`;
+    float: right;
+    width: 30%;
+    height: 30%;
+  `;
 
   const Detail2 = styled.div`
-  width: 90%;
-  height: 100%;
-  display:flexbox;
-  flex-direction: column;
+    width: 90%;
+    height: 100%;
+    display: flexbox;
+    flex-direction: column;
 
-  margin: auto;
+    margin: auto;
 
-  position: relative; 
-  background: white;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+    position: relative;
+    background: white;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
 
-  margin-top: 5rem;
-  padding-top: 48px;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #e9ecef;
-    
-  .Line2 {
-  display: flex;
-	flex-basis: 100%;
-	align-items: center;
-	color: black;
-	font-size: 40px;
-  margin: 8px 0px;
-  &:before,
-  &:after {
-	content: "";
-	flex-grow: 1;
-	background: black;
-	height: 2px;
-	font-size: 0px;
-	line-height: 0px;
-	margin: 0px 16px;
-}
-  
-  }
-`
+    margin-top: 5rem;
+    padding-top: 48px;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e9ecef;
+
+    .Line2 {
+      display: flex;
+      flex-basis: 100%;
+      align-items: center;
+      color: black;
+      font-size: 40px;
+      margin: 8px 0px;
+      &:before,
+      &:after {
+        content: '';
+        flex-grow: 1;
+        background: black;
+        height: 2px;
+        font-size: 0px;
+        line-height: 0px;
+        margin: 0px 16px;
+      }
+    }
+  `;
   const Detail3 = styled.div`
-width: 90%;
-height: 100%;
+    width: 90%;
+    height: 100%;
 
-margin: auto;
+    margin: auto;
 
-position: relative; 
-background: white;
-box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+    position: relative;
+    background: #fafafa;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
 
-margin-top: 5rem;
-padding-top: 48px;
-padding-left: 32px;
-padding-right: 32px;
-padding-bottom: 24px;
-border-bottom: 1px solid #e9ecef;
-
-
-`
-
+    margin-top: 5rem;
+    padding-top: 48px;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e9ecef;
+  `;
 
   const StyledSlider = styled(Slider)`
     width: 40%;
     position: relative;
     left: 55%;
 
-  .slick-slide div{
+    .slick-slide div {
       outline: none;
-  }
+    }
   `;
 
   const settings = {
@@ -153,14 +149,14 @@ border-bottom: 1px solid #e9ecef;
   };
 
   const ImageContainer = styled.div`
-  margin-right: 100%;
- `
+    margin-right: 100%;
+  `;
 
   const Image = styled.img`
-  max-width : 30%;
-  max-height: 30%;
-  `
-  const imgUrl = require('./Table.svg')
+    max-width: 30%;
+    max-height: 30%;
+  `;
+  const imgUrl = require('./Table.svg');
 
   const items = [
     { id: 1, url: imgUrl },
@@ -168,14 +164,15 @@ border-bottom: 1px solid #e9ecef;
     { id: 3, url: imgUrl },
   ];
 
-
   return (
     <>
       <GlobalStyle />
       <Detail>
         <h1>나주 공간 카페</h1>
         <div className="adress">전남 나주시 그린로 331</div>
-        <div className="describe">모던한 인테리어와 수제 디저트가 특징인 카페</div>
+        <div className="describe">
+          모던한 인테리어와 수제 디저트가 특징인 카페
+        </div>
         <StyledSlider {...settings}>
           <div>
             <div className="block">1</div>
@@ -192,7 +189,8 @@ border-bottom: 1px solid #e9ecef;
               </div>
             )
           })}
-*/}        </StyledSlider>
+*/}{' '}
+        </StyledSlider>
         <SvgContainer>
           <Table />
           <Line />
@@ -209,12 +207,19 @@ border-bottom: 1px solid #e9ecef;
       </Detail>
       <Detail2>
         <div className="Line2">MEUN</div>
-
       </Detail2>
       <Detail3>
         <div className="Line2">REVEIW</div>
-
+        <CommentWrite cafe={cafes[0]}></CommentWrite>
+        {cafes[0].cafeComment.length !== 0
+          ? cafes[0].cafeComment.map((userComment) => (
+              <Comment
+                key={userComment.username}
+                userComment={userComment}
+              ></Comment>
+            ))
+          : ''}
       </Detail3>
     </>
-  )
+  );
 }
