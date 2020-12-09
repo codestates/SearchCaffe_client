@@ -1,5 +1,6 @@
 import { authService } from '../../firebase/mainbase';
 import { useHistory } from 'react-router-dom';
+<<<<<<< HEAD
 import { useEffect, useState } from 'react';
 import './Profile.css';
 
@@ -10,10 +11,16 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [newDisplayName, setNewDisplayName] = useState('');
+=======
+
+const Profile = ({ userInfo }) => {
+  const history = useHistory();
+>>>>>>> a4b257752d6b002df108f71fd1118436415cde16
   const handleLogOut = () => {
     authService.signOut();
     history.push('/');
   };
+<<<<<<< HEAD
   const onChange = (event) => {
     const {
       target: { value, name },
@@ -153,6 +160,16 @@ const Profile = () => {
           </div>
         </>
       )}
+=======
+  console.log(userInfo.photoURL);
+  return (
+    <div>
+      <h3>프로필 사진 변경</h3>
+      <div className="avatar">
+        <img src={userInfo.photoURL} />
+      </div>
+      <button onClick={handleLogOut}>Log Out</button>
+>>>>>>> a4b257752d6b002df108f71fd1118436415cde16
     </div>
   );
 };
