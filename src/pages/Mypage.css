@@ -1,22 +1,13 @@
 .tabs-contents {
   font-family: 'Nanum Pen Script', cursive;
   margin-left: 60px;
-<<<<<<< HEAD
   color: #727272;
   font-size: 20px;
-=======
-  color: black;
-  font-size: 40px;
->>>>>>> a4b257752d6b002df108f71fd1118436415cde16
   cursor: pointer;
   display: inline;
 }
 .tabs-contents:hover {
-<<<<<<< HEAD
   color: black;
-=======
-  color: red;
->>>>>>> a4b257752d6b002df108f71fd1118436415cde16
 }
 
 .tabs {
@@ -26,12 +17,9 @@
   color: black;
   line-height: 200px;
 }
-<<<<<<< HEAD
 
 .content-profile {
   margin: auto;
   /* text-align: center; */
   width: 80%;
 }
-=======
->>>>>>> a4b257752d6b002df108f71fd1118436415cde16

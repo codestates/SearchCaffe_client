@@ -15,7 +15,6 @@ export default function Mypage() {
   };
   const tabName = ['정보수정', '찜한 카페', '리뷰관리'];
   return (
-<<<<<<< HEAD
     <>
       <div className="tabs-wrapper">
         <div className="tabs">
@@ -34,19 +33,5 @@ export default function Mypage() {
       </div>
       <div className="content-profile">{content[activeTab]}</div>
     </>
-=======
-    <div className="tabs-wrapper">
-      <div className="tabs">
-        {tabName.map((tab, i) => {
-          return (
-            <div key={i} className="tabs-contents" onClick={() => handleTabClick(i)}>
-              {tab}
-            </div>
-          );
-        })}
-      </div>
-      <div className="content">{content[activeTab]}</div>
-    </div>
->>>>>>> a4b257752d6b002df108f71fd1118436415cde16
   );
 }
