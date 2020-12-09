@@ -5,7 +5,7 @@ import Content from './pages/Content';
 import Mypage from './pages/Mypage';
 import Nav from './components/Nav/index';
 import Footer from './components/Footer/index';
-import Scope from './components/utils/Scope/index';
+import CommentWrite from './components/CommentWrite/index';
 import { actionCreators } from './reducer/store';
 import { connect } from 'react-redux';
 import { dbService } from './firebase/mainbase';
@@ -32,7 +32,7 @@ const App = () => {
         </Route>
       </Switch>
       <Footer></Footer>
-      <Scope></Scope>
+      <Content cafe={cafes[0]}></Content>
     </BrowserRouter>
   );
 };

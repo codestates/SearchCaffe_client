@@ -23,7 +23,9 @@ const MainImg = styled.div`
   height: 600px;
 `;
 
-const MainStyle = styled.main``;
+const MainStyle = styled.main`
+  min-height: 1000px;
+`;
 
 const Main = (props) => {
   return (

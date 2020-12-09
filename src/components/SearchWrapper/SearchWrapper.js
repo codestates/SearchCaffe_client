@@ -14,6 +14,7 @@ const WrapperTitle = styled.div`
 `;
 const SearchWrapperStyle = styled.div`
   text-align: center;
+  margin-bottom: 70px;
 `;
 const TagWrapperStyle = styled.div``;
 const TagWrapperStyleDiv = styled.div`

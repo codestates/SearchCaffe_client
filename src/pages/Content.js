@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import Tag from '../components/utils/Tag'
+import Tag from '../components/utils/Tag';
 import tagnames from '../components/utils/Tag/tagnames';
 import { ReactComponent as Table } from './Table.svg'
 import { ReactComponent as Cup } from './Cup.svg'
@@ -8,10 +8,11 @@ import Slider from "react-slick";
 import { img } from './main.jpeg'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Comment from "../components/Comment";
+import CommentWrite from '../components/CommentWrite';
 
 
 export default function Content(props) {
-
   const GlobalStyle = createGlobalStyle`
   body {
     background: #e9ecef;
@@ -173,12 +174,7 @@ position: relative;
 background: white;
 box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
 
-margin-top: 5rem;
-padding-top: 48px;
-padding-left: 32px;
-padding-right: 32px;
-padding-bottom: 24px;
-border-bottom: 1px solid #e9ecef;
+    margin: auto;
 
 .Line3 {
   display: flex;
@@ -223,17 +219,16 @@ border-bottom: 1px solid #e9ecef;
  `
 
   const Image = styled.img`
-  max-width : 30%;
-  max-height: 30%;
-  `
-  const imgUrl = require('./Table.svg')
+    max-width: 30%;
+    max-height: 30%;
+  `;
+  const imgUrl = require('./Table.svg');
 
   const items = [
     { id: 1, url: imgUrl },
     { id: 2, url: imgUrl },
     { id: 3, url: imgUrl },
   ];
-
 
   return (
     <>
@@ -258,7 +253,8 @@ border-bottom: 1px solid #e9ecef;
               </div>
             )
           })}
-*/}        </StyledSlider>
+*/}{' '}
+        </StyledSlider>
         <SvgContainer>
           <Table />
           <Line />
@@ -352,8 +348,9 @@ border-bottom: 1px solid #e9ecef;
       </Detail2>
       <Detail3>
         <div className="Line3">REVEIW</div>
-
+        <Comment />
+        <CommentWrite />
       </Detail3>
     </>
-  )
+  );
 }
