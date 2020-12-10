@@ -7,12 +7,16 @@ const places = new kakao.maps.services.Places();
 const SearchPlace = () => {
   const callback = (result, status) => {
     if (status === kakao.maps.services.Status.OK) {
-      mapData = result;
-      console.log(mapData);
+      console.log(result);
       const staticMapContainer = document.getElementById('staticMap'), // 이미지 지도를 표시할 div
         staticMapOption = {
           center: new kakao.maps.LatLng(result[0].y, result[0].x), // 이미지 지도의 중심좌표
-          level: 3, // 이미지 지도의 확대 레벨
+          level: 2, // 이미지 지도의 확대 레벨
+          marker: {
+            position: new kakao.maps.LatLng(result[0].y, result[0].x),
+            text: `${result[0].place_name}
+             ${result[0].road_address_name}`,
+          },
         };
       var staticMap = new kakao.maps.StaticMap(
         staticMapContainer,
@@ -20,6 +24,7 @@ const SearchPlace = () => {
       );
     }
   };
+  const displayMarker = () => {};
   const [inputText, setInputText] = useState('');
   const [place, setPlace] = useState('');
   let mapData;
