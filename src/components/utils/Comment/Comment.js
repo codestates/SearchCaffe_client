@@ -1,7 +1,7 @@
-import Tag from '../utils/Tag/Tag';
-import Scope from '../utils/Scope/index';
+import Tag from '../Tag/index';
+import Scope from '../Scope/index';
 import styled from 'styled-components';
-import { storageService } from '../../firebase/mainbase';
+import { storageService } from '../../../firebase/mainbase';
 const CommentStyle = styled.div`
   display: block;
   margin: auto;

@@ -5,7 +5,7 @@ import Content from './pages/Content';
 import Mypage from './pages/Mypage';
 import Nav from './components/Nav/index';
 import Footer from './components/Footer/index';
-import CommentWrite from './components/CommentWrite/index';
+
 import { actionCreators } from './reducer/store';
 import { connect } from 'react-redux';
 import { dbService } from './firebase/mainbase';
@@ -32,7 +32,7 @@ const App = () => {
         <Route exact path="/">
           <Main></Main>
         </Route>
-        <Route path="content">
+        <Route path="/content">
           <Content></Content>
         </Route>
         <Route path="/mypage">
@@ -40,7 +40,6 @@ const App = () => {
         </Route>
       </Switch>
       <Footer></Footer>
-      <Content cafe={cafeComment[0]}></Content>
     </BrowserRouter>
   );
 };

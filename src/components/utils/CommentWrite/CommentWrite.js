@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Scope from '../utils/Scope/index';
-import Tag from '../utils/Tag/index';
+import Scope from '../Scope/index';
+import Tag from '../Tag/index';
 import Blank from './BlankImg.png';
-import { storageService } from '../../firebase/mainbase';
+import { storageService } from '../../../firebase/mainbase';
 
 const CommentWriteStyle = styled.div`
   display: block;

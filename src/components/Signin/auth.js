@@ -2,7 +2,7 @@ import React from 'react';
 import { authService, firebaseInstance } from '../../firebase/mainbase';
 import '../../styles/oauth.css';
 
-const Auth = () => {
+const Auth = ({ handleClose }) => {
   const onSocialClick = async (event) => {
     const {
       target: { name },
@@ -16,6 +16,7 @@ const Auth = () => {
       provider = new firebaseInstance.auth.FacebookAuthProvider();
     }
     const data = await authService.signInWithPopup(provider);
+    handleClose();
     console.log(data);
   };
   return (
