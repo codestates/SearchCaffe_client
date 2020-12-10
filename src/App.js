@@ -32,7 +32,6 @@ const App = () => {
         </Route>
       </Switch>
       <Footer></Footer>
-      <Content cafe={cafes[0]}></Content>
     </BrowserRouter>
   );
 };
