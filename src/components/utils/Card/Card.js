@@ -3,7 +3,11 @@ import defaultImg from './dummyImg/defaultCafe.jpeg';
 import Tag from '../Tag/Tag';
 import styled from 'styled-components';
 import Scope from '../Scope/index';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../../reducer/store';
+import { dbService } from '../../../firebase/mainbase';
 import { Link } from 'react-router-dom';
+
 // props
 // cafeImage:? 카페 대표 이미지
 // cafeName:string - 카페 이름
@@ -108,9 +112,27 @@ a{
 `
 
 const Card = (props) => {
+  const addCurrentCafe = async () => {
+    let currnetCafeObj = {};
+    let cafeCommentArr = [];
+    currnetCafeObj['cafeid'] = props.cafeid;
+    currnetCafeObj['cafeTag'] = props.cafeTag;
+    currnetCafeObj['cafeName'] = props.cafeName;
+    currnetCafeObj['cafeAddress'] = props.cafeAddress;
+    currnetCafeObj['cafeImage'] = props.cafeImage;
+    currnetCafeObj['cafeStar'] = props.cafeStar;
+    props.currentCafe(currnetCafeObj);
+    const data = await dbService.collection('CafeComment').get();
+    data.forEach((doc) => {
+      if (props.cafeid === doc.data().cafeId) {
+        cafeCommentArr.push(doc.data());
+      }
+    });
+    props.currentCafeComment(cafeCommentArr);
+  };
   return (
     <LinkContent to={`/content/${props.cafeid}`}>
-      <CardStyle cafeid={props.cafeid} tag={props.cafeTag}>
+      <CardStyle cafeid={props.cafeid} tag={props.cafeTag} onClick={addCurrentCafe}>
         <CardImg src={props.cafeImage || defaultImg} />
         <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
         <CardAddress>
@@ -133,4 +155,18 @@ const Card = (props) => {
   );
 };
 
-export default Card;
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    currentCafe: (currentCafe) =>
+      dispatch(actionCreators.currentCafeClick(currentCafe)),
+      currentCafeComment: (cafeComment) =>
+      dispatch(actionCreators.currentCafeComment(cafeComment)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

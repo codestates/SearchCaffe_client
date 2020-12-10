@@ -148,6 +148,35 @@ const CommentWrite = (props) => {
     );
   };
 
+  const [isFile, setIsFile] = useState();
+  const getData = async () => {
+    const data = await storageService.ref().child('cafeImage');
+    console.log(data);
+  };
+  const onFileChange = (e) => {
+    const {
+      target: { files },
+    } = e;
+    const theFile = files[0];
+    const reader = new FileReader();
+    reader.onloadend = (e) => {
+      const {
+        currentTarget: { result },
+      } = e;
+      setIsFile(result);
+    };
+    reader.readAsDataURL(theFile);
+  };
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const fileRef = storageService.ref().child(`cafeImage/practice`);
+    const response = await fileRef.putString(isFile, 'data_url');
+    const publirUrl = await response.ref.getDownloadURL();
+    console.log(publirUrl);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <CommentWriteStyle>
       <UserAndScope>
