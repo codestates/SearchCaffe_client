@@ -1,4 +1,4 @@
-const tagName = {
+export const tagName = {
   가까운: '가까운',
   '주차 가능': '주차 가능',
   단체석: '단체석',
@@ -21,7 +21,7 @@ const tagName = {
   '24시': '24시',
 };
 
-let cafes = [
+export const cafes = [
   {
     cafeName: '늘솜당',
     cafeAddress: '경기 시흥시 하우로122번길 50-3 (우)14900',
@@ -32,46 +32,7 @@ let cafes = [
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F20208172316_editor_image.jpg?alt=media&token=c5b05234-8a38-4f0a-9054-42565f2f7d2f',
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
     ],
-    cafeComment: [
-      {
-        username: 'ranisol',
-        userStar: 5,
-        userComment: '좋아요 너무',
-        userTag: ['커피가 맛있는', '디저트가 맛있는'],
-        userImg: [
-          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
-          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
-          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
-        ],
-      },
-      {
-        username: 'ransol',
-        userStar: 5,
-        userComment: '좋아요 너무',
-        userTag: ['커피가 맛있는', '디저트가 맛있는'],
-        userImg: [
-          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
-          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
-        ],
-      },
-      {
-        username: 'ransol',
-        userStar: -1,
-        userComment: '',
 
-        userImg: [
-          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
-          'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
-        ],
-      },
-      {
-        username: 'ransol',
-        userStar: 3,
-        userComment: '',
-        userTag: [],
-        userImg: [],
-      },
-    ],
     cafeDetail: ['10:00 ~ 22:00'],
     cafePhoneNumber: '',
   },
@@ -663,7 +624,153 @@ let cafes = [
   },
 ];
 
-export default cafes;
+export const cafeComment = [
+  {
+    cafeId: 0,
+    commentId: 0,
+    username: 'aamm10@naver.com',
+    userStar: 5,
+    userComment: '좋아요 너무',
+    userTag: ['커피가 맛있는', '디저트가 맛있는'],
+    userImg: [
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+    ],
+  },
+  {
+    cafeId: 0,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 5,
+    userComment: '좋아요 너무',
+    userTag: ['커피가 맛있는', '디저트가 맛있는'],
+    userImg: [
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+    ],
+  },
+  {
+    cafeId: 0,
+    commentId: 2,
+    username: 'aamm10@naver.com',
+    userStar: -1,
+    userComment: '좋아서 또 갔어요',
+
+    userImg: [
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+    ],
+  },
+  {
+    cafeId: 0,
+    commentId: 3,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 1,
+    commentId: 0,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 1,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 1,
+    commentId: 2,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 2,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 5,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 8,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 10,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 12,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 15,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 17,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 19,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+];
 
 // useEffect(() => {
 //   for (let i = 0; i < cafes.length; i++) {

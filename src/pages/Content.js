@@ -8,7 +8,7 @@ import Slider from 'react-slick';
 import img from './main.jpeg';
 import CommentWrite from '../components/CommentWrite/index';
 import Comment from '../components/Comment/index';
-import cafes from '../cafeInfos';
+import { cafeComment } from '../cafeInfos';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -16,6 +16,8 @@ export default function Content(props) {
   const GlobalStyle = createGlobalStyle`
   body {
     background: #e9ecef;
+    max-width: 1700px;
+    margin:auto;
   }
 `;
 
@@ -111,7 +113,6 @@ export default function Content(props) {
   const Detail3 = styled.div`
     width: 90%;
     height: 100%;
-
     margin: auto;
 
     position: relative;
@@ -210,14 +211,16 @@ export default function Content(props) {
       </Detail2>
       <Detail3>
         <div className="Line2">REVEIW</div>
-        <CommentWrite cafe={cafes[0]}></CommentWrite>
-        {cafes[0].cafeComment.length !== 0
-          ? cafes[0].cafeComment.map((userComment) => (
-              <Comment
-                key={userComment.username}
-                userComment={userComment}
-              ></Comment>
-            ))
+        <CommentWrite></CommentWrite>
+        {cafeComment.filter((comment) => comment.cafeId === 0).length !== 0
+          ? cafeComment
+              .filter((comment) => comment.cafeId === 0)
+              .map((userComment) => (
+                <Comment
+                  key={userComment.username}
+                  userComment={userComment}
+                ></Comment>
+              ))
           : ''}
       </Detail3>
     </>

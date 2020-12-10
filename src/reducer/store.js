@@ -41,8 +41,8 @@ const reducer = (state = [], action) => {
       };
     case KEYWORD:
       let keyword = action.keyword;
-      for(let i in state) {
-        if(i === 'keyword') {
+      for (let i in state) {
+        if (i === 'keyword') {
           state[i] = keyword;
         }
       }

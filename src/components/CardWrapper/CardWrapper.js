@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import { dbService, storageService } from '../../firebase/mainbase';
 import { useEffect, useState, useMemo, Fragment } from 'react';
-
+import { cafes } from '../../cafeInfos';
 import {
   CSSTransition,
   TransitionGroup,
@@ -41,15 +41,14 @@ const WrapperTitle = styled.div`
 `;
 const CardWrapperStyle = styled.div`
   column-width: 340px;
+  columns: 3;
 
   column-gap: 20px;
-  column-count: 3;
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
-  break-inside: avoid;
-  page-break-inside: avoid;
   background-color: #ebebeb;
+
   display: block;
   &.appearingCard-enter {
     opacity: 0;
@@ -92,6 +91,7 @@ const CardWrapper = ({ state, cardList }) => {
       })
       .catch(function (error) {
         console.log('Error getting documents: ', error);
+        cardList = cafes;
       })
       .finally(function () {
         cardList(cardListArr);

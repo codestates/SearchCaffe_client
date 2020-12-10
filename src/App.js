@@ -13,9 +13,17 @@ import { dbService } from './firebase/mainbase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
-import cafes from './cafeInfos';
+import { cafeComment } from './cafeInfos';
 
 const App = () => {
+  useEffect(() => {
+    for (let i = 0; i < cafeComment.length; i++) {
+      dbService
+        .collection('CafeComment')
+        .doc(cafeComment[i].cafeId + '&' + cafeComment[i].commentId)
+        .set(cafeComment[i]);
+    }
+  }, []);
   return (
     <BrowserRouter>
       <Nav></Nav>
@@ -32,7 +40,7 @@ const App = () => {
         </Route>
       </Switch>
       <Footer></Footer>
-      <Content cafe={cafes[0]}></Content>
+      <Content cafe={cafeComment[0]}></Content>
     </BrowserRouter>
   );
 };
