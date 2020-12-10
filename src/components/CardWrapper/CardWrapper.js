@@ -94,7 +94,7 @@ const CardWrapper = ({ state, cardList }) => {
         console.log('Error getting documents: ', error);
       })
       .finally(function () {
-        cardList(cardListArr);
+        cardListArr && cardList(cardListArr);
         setCards(cardListArr);
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag

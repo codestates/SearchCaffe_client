@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Scope from '../utils/Scope/index';
 import Tag from '../utils/Tag/index';
 import Blank from './BlankImg.png';
+import { storageService } from '../../firebase/mainbase';
 
 const CommentWriteStyle = styled.div`
   display: block;
@@ -94,7 +95,7 @@ const UploadImg = styled.span`
   margin: 20px 20px 15px 20px;
   background-image: url(${Blank});
 `;
-const UploadedImg = styled.span`
+const UploadedImg = styled.input`
   display: inline-block;
   width: 120px;
   height: 120px;
@@ -116,7 +117,35 @@ const CommentWrite = (props) => {
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [comment, setComment] = useState('');
-
+  const [isFile, setIsFile] = useState();
+  const getData = async () => {
+    const data = await storageService.ref().child('cafeImage');
+    console.log(data);
+  };
+  const onFileChange = (e) => {
+    const {
+      target: { files },
+    } = e;
+    const theFile = files[0];
+    const reader = new FileReader();
+    reader.onloadend = (e) => {
+      const {
+        currentTarget: { result },
+      } = e;
+      setIsFile(result);
+    };
+    reader.readAsDataURL(theFile);
+  };
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const fileRef = storageService.ref().child(`cafeImage/practice`);
+    const response = await fileRef.putString(isFile, 'data_url');
+    const publirUrl = await response.ref.getDownloadURL();
+    console.log(publirUrl);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <CommentWriteStyle>
       <UserAndScope>
@@ -157,8 +186,16 @@ const CommentWrite = (props) => {
         }}
       ></CommentInput>
       <CommentImgWrapper>
+        <form onSubmit={onSubmit}>
+          {isFile && <img src={isFile} width="200px" height="200px" />}
+          <input type="submit" value="제출하기" />
+        </form>
         <UploadImg></UploadImg>
-        <UploadedImg></UploadedImg>
+        <UploadedImg
+          type="file"
+          accept="image/*"
+          onChange={onFileChange}
+        ></UploadedImg>
         <UploadedImg></UploadedImg>
         <UploadedImg></UploadedImg>
         <CommentSubmitButton>제출</CommentSubmitButton>

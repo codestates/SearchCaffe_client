@@ -4,6 +4,8 @@ import { createStore } from 'redux';
 const TAGARRAY = 'TAGARRAY';
 const CARDARRAY = 'CARDARRAY';
 const KEYWORD = 'KEYWORD';
+const CURRENTCAFE = 'CURRENTCAFE';
+const CURRENTCAFECOMMENT = 'CURRENTCAFECOMMENT';
 
 const tagNameArray = (tagName) => {
   return {
@@ -26,6 +28,20 @@ const searchKeyword = (keyword) => {
   };
 };
 
+const currentCafeClick = (currentCafe) => {
+  return {
+    type: CURRENTCAFE,
+    currentCafe,
+  };
+};
+
+const currentCafeComment = (currentCafeComment) => {
+  return {
+    type: CURRENTCAFECOMMENT,
+    currentCafeComment,
+  };
+};
+
 const reducer = (state = [], action) => {
   switch (action.type) {
     case TAGARRAY:
@@ -41,13 +57,35 @@ const reducer = (state = [], action) => {
       };
     case KEYWORD:
       let keyword = action.keyword;
-      for(let i in state) {
-        if(i === 'keyword') {
+      for (let i in state) {
+        if (i === 'keyword') {
           state[i] = keyword;
         }
       }
       return Object.assign({}, state, {
         keyword,
+        ...state,
+      });
+    case CURRENTCAFECOMMENT:
+      let currentCafeComment = action.currentCafeComment;
+      for (let i in state) {
+        if (i === 'currentCafeComment') {
+          state[i] = currentCafeComment;
+        }
+      }
+      return Object.assign({}, state, {
+        currentCafeComment,
+        ...state,
+      });
+    case CURRENTCAFE:
+      let currentCafe = action.currentCafe;
+      for (let i in state) {
+        if (i === 'currentCafe') {
+          state[i] = currentCafe;
+        }
+      }
+      return Object.assign({}, state, {
+        currentCafe,
         ...state,
       });
     default:
@@ -61,6 +99,8 @@ export const actionCreators = {
   tagNameArray,
   addCardList,
   searchKeyword,
+  currentCafeClick,
+  currentCafeComment,
 };
 
 export default store;
