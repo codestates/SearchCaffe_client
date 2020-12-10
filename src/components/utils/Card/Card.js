@@ -6,6 +6,8 @@ import Scope from '../Scope/index';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import { dbService } from '../../../firebase/mainbase';
+import { Link } from 'react-router-dom';
+
 // props
 // cafeImage:? 카페 대표 이미지
 // cafeName:string - 카페 이름
@@ -98,6 +100,16 @@ const ScopeContain = styled.div`
   padding-left: 15px;
 `;
 
+const LinkContent = styled(Link)`
+a{
+  text-decoration: none; 
+  &:before {
+  color:#24292e;
+  cursor: default !important;
+  }
+}
+`
+
 const Card = (props) => {
   const addCurrentCafe = async () => {
     let currnetCafeObj = {};
@@ -118,29 +130,27 @@ const Card = (props) => {
     props.currentCafeComment(cafeCommentArr);
   };
   return (
-    <CardStyle
-      cafeid={props.cafeid}
-      tag={props.cafeTag}
-      onClick={addCurrentCafe}
-    >
-      <CardImg src={props.cafeImage || defaultImg} />
-      <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
-      <CardAddress>
-        <CardLocationImg src={LocationImg}></CardLocationImg>
-        <CardAddressDetail>
-          {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
-        </CardAddressDetail>
-      </CardAddress>
-      <ScopeContain>
-        <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
-      </ScopeContain>
+    <LinkContent to={`/content/${props.cafeid}`}>
+      <CardStyle cafeid={props.cafeid} tag={props.cafeTag} onClick={addCurrentCafe}>
+        <CardImg src={props.cafeImage || defaultImg} />
+        <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
+        <CardAddress>
+          <CardLocationImg src={LocationImg}></CardLocationImg>
+          <CardAddressDetail>
+            {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
+          </CardAddressDetail>
+        </CardAddress>
+        <ScopeContain>
+          <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
+        </ScopeContain>
 
-      <CardTags>
-        {props.cafeTag
-          ? props.cafeTag.map((tag) => <Tag isSmall={true} tagName={tag}></Tag>)
-          : '관련 태그가 없습니다'}
-      </CardTags>
-    </CardStyle>
+        <CardTags>
+          {props.cafeTag
+            ? props.cafeTag.map((tag) => <Tag isSmall={true} tagName={tag}></Tag>)
+            : '관련 태그가 없습니다'}
+        </CardTags>
+      </CardStyle>
+    </LinkContent>
   );
 };
 

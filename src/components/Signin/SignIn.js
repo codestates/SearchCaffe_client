@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { authService } from '../../firebase/mainbase';
+import { authService, storageService } from '../../firebase/mainbase';
 import Auth from './auth';
 import './SignIn.css';
 
 const SignIn = ({ handleClose, handleOpen, show }) => {
-  const showHideClassName = show ? 'modal-signin display-block' : 'modal-signin display-none';
+  const showHideClassName = show
+    ? 'modal-signin display-block'
+    : 'modal-signin display-none';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,7 +21,13 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
     e.preventDefault();
     try {
       await authService.signInWithEmailAndPassword(email, password);
-
+      const user = authService.currentUser;
+      if (!user.photoURL) {
+        user.updateProfile({
+          photoURL:
+            'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/images%2FdefaultImage.svg?alt=media&token=090d4e95-0b21-4838-ae05-f6c34b34ff84',
+        });
+      }
       setEmail('');
       setError('');
       setPassword('');
@@ -80,7 +88,7 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
           </form>
           <div className="errorMsg">{error}</div>
         </div>
-        <Auth />
+        <Auth handleClose={handleClose} />
         <span className="link-signup" onClick={onClick}>
           이메일로 회원가입
         </span>

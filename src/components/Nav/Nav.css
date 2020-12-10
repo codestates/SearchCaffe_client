@@ -11,6 +11,7 @@
 .login {
   margin-right: 30px;
   color: white;
+  z-index: 1;
 }
 
 .login-btn {

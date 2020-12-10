@@ -24,7 +24,7 @@ const App = () => {
         <Route exact path="/">
           <Main></Main>
         </Route>
-        <Route path="content">
+        <Route path="/content">
           <Content></Content>
         </Route>
         <Route path="/mypage">
@@ -32,7 +32,6 @@ const App = () => {
         </Route>
       </Switch>
       <Footer></Footer>
-      <Content cafe={cafes[0]}></Content>
     </BrowserRouter>
   );
 };
