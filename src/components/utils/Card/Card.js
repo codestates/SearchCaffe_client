@@ -17,14 +17,15 @@ import { Link } from 'react-router-dom';
 const CardStyle = styled.span`
   width: 345px;
   display: block; // inline-block => block으로 바꿨더니 해결
+  break-inside: avoid-column;
   box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
   margin: 13px 20px 10px 10px;
   padding: 8px;
   padding-bottom: 10px;
   font-size: 1rem;
-  page-break-inside: avoid;
+
   background-color: #ffffff;
-  break-inside: avoid;
+
   transition: opacity 0.4s ease-in-out;
   transition: 0.3s;
   :hover {

@@ -1,7 +1,7 @@
-import Tag from '../utils/Tag/Tag';
-import Scope from '../utils/Scope/index';
+import Tag from '../Tag/index';
+import Scope from '../Scope/index';
 import styled from 'styled-components';
-
+import { storageService } from '../../../firebase/mainbase';
 const CommentStyle = styled.div`
   display: block;
   margin: auto;
@@ -47,6 +47,7 @@ const UploadedImg = styled.span`
   height: 120px;
   margin: 10px 30px 10px 10px;
   background-image: ${(props) => 'url(' + props.img + ')'};
+  background-size: 100%;
 `;
 
 const Divide = styled.div`
@@ -57,6 +58,8 @@ const Divide = styled.div`
 `;
 
 const Comment = (props) => {
+  const upLoadTask = storageService.ref('images');
+
   return (
     <CommentStyle>
       <UserAndScope>
@@ -75,7 +78,6 @@ const Comment = (props) => {
       <TagWrapper>
         {props.userComment.userTag
           ? props.userComment.userTag.map((tag) => {
-              console.log(tag);
               return (
                 <Tag
                   key={tag}

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Scope from '../utils/Scope/index';
-import Tag from '../utils/Tag/index';
+import Scope from '../Scope/index';
+import Tag from '../Tag/index';
 import Blank from './BlankImg.png';
-import { storageService } from '../../firebase/mainbase';
+import { storageService } from '../../../firebase/mainbase';
 
 const CommentWriteStyle = styled.div`
   display: block;
@@ -14,7 +14,6 @@ const CommentWriteStyle = styled.div`
   height: auto;
   border: 1px solid black;
 `;
-
 const UserAndScope = styled.h3`
   display: inline;
   font-weight: initial;
@@ -87,23 +86,27 @@ const CommentSubmitButton = styled.button`
     float: none;
   }
 `;
-
-const UploadImg = styled.span`
+const UploadImg = styled.label`
   display: inline-block;
   width: 120px;
   height: 120px;
   margin: 20px 20px 15px 20px;
+  border: 1px solid #b1b1b1;
+  background-size: cover;
   background-image: url(${Blank});
+  background-color: #dfdfdf;
 `;
-const UploadedImg = styled.input`
+const UploadImgInput = styled.input`
+  display: none;
+`;
+const UploadedImg = styled.img`
   display: inline-block;
   width: 120px;
   height: 120px;
   margin: 10px 30px 15px 10px;
-
-  background-image: url(${Blank});
+  border: 1px solid #b1b1b1;
+  src: ${(props) => 'url(' + props.image + ')'};
 `;
-
 const commentTags = [
   '커피가 맛있는',
   '디저트가 맛있는',
@@ -117,6 +120,34 @@ const CommentWrite = (props) => {
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [comment, setComment] = useState('');
+  const [images, setImages] = useState([]);
+
+  const upLoadTaskHandler = (inputImage) => {
+    if (images.length > 2) {
+      return;
+    }
+    const upLoadTask = storageService
+      .ref(`commentImage/${inputImage.name}`)
+      .put(inputImage);
+    console.log(upLoadTask);
+    upLoadTask.on(
+      'state_changed',
+      (snapshot) => {},
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        storageService
+          .ref('commentImage')
+          .child(inputImage.name)
+          .getDownloadURL()
+          .then((url) => {
+            setImages((preimages) => [...preimages, url]);
+          });
+      }
+    );
+  };
+
   const [isFile, setIsFile] = useState();
   const getData = async () => {
     const data = await storageService.ref().child('cafeImage');
@@ -186,18 +217,20 @@ const CommentWrite = (props) => {
         }}
       ></CommentInput>
       <CommentImgWrapper>
-        <form onSubmit={onSubmit}>
-          {isFile && <img src={isFile} width="200px" height="200px" />}
-          <input type="submit" value="제출하기" />
-        </form>
-        <UploadImg></UploadImg>
-        <UploadedImg
-          type="file"
-          accept="image/*"
-          onChange={onFileChange}
-        ></UploadedImg>
-        <UploadedImg></UploadedImg>
-        <UploadedImg></UploadedImg>
+        <UploadImg>
+          <UploadImgInput
+            type="file"
+            onChange={(e) => {
+              if (e.target.files[0]) {
+                upLoadTaskHandler(e.target.files[0]);
+              }
+            }}
+          ></UploadImgInput>
+        </UploadImg>
+
+        {images.map((image) => {
+          return <UploadedImg src={image} key={image.name}></UploadedImg>;
+        })}
         <CommentSubmitButton>제출</CommentSubmitButton>
       </CommentImgWrapper>
     </CommentWriteStyle>
