@@ -3,6 +3,8 @@ import defaultImg from './dummyImg/defaultCafe.jpeg';
 import Tag from '../Tag/Tag';
 import styled from 'styled-components';
 import Scope from '../Scope/index';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../../reducer/store';
 // props
 // cafeImage:? 카페 대표 이미지
 // cafeName:string - 카페 이름
@@ -22,7 +24,7 @@ const CardStyle = styled.span`
   break-inside: avoid;
   transition: opacity 0.4s ease-in-out;
   transition: 0.3s;
-  :hover {
+  :hover{
     box-shadow: 5px 8px 8px 5px rgba(34, 25, 25, 0.4);
     transition: 0.3s;
     background-color: #b9aea1;
@@ -95,9 +97,21 @@ const ScopeContain = styled.div`
   padding-left: 15px;
 `;
 
+
 const Card = (props) => {
+
+  const addCurrentCafe = () => {
+    let currnetCafeObj = {};
+    currnetCafeObj['cafeid'] = props.cafeid;
+    currnetCafeObj['cafeTag'] = props.cafeTag;
+    currnetCafeObj['cafeName'] = props.cafeName;
+    currnetCafeObj['cafeAddress'] = props.cafeAddress;
+    currnetCafeObj['cafeImage'] = props.cafeImage;
+    currnetCafeObj['cafeStar'] = props.cafeStar;
+    props.currentCafe(currnetCafeObj);
+  }
   return (
-    <CardStyle cafeid={props.cafeid} tag={props.cafeTag}>
+    <CardStyle cafeid={props.cafeid} tag={props.cafeTag} onClick={addCurrentCafe}>
       <CardImg src={props.cafeImage || defaultImg} />
       <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
       <CardAddress>
@@ -119,4 +133,16 @@ const Card = (props) => {
   );
 };
 
-export default Card;
+
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    currentCafe: (currentCafe) => dispatch(actionCreators.currentCafeClick(currentCafe)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);
