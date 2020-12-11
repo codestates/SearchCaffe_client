@@ -169,12 +169,12 @@ const CardWrapper = ({ state, cardList }) => {
 
   return tags === '' ? (
     <CardWrapperCover>
-      <WrapperTitle key={1}>
+      <WrapperTitle>
         <WrapperLineRight />
         <span>분위기 좋은 카페</span>
         <WrapperLineLeft />
       </WrapperTitle>
-      <CardWrapperStyle key={2}>
+      <CardWrapperStyle>
         {isCozyCafe.map((card, index) => (
           <Card
             key={index}
@@ -187,12 +187,12 @@ const CardWrapper = ({ state, cardList }) => {
           ></Card>
         ))}
       </CardWrapperStyle>
-      <WrapperTitle key={3}>
+      <WrapperTitle>
         <WrapperLineRight />
         <span>작업하기 좋은 카페</span>
         <WrapperLineLeft />
       </WrapperTitle>
-      <CardWrapperStyle key={4}>
+      <CardWrapperStyle>
         {isGoodForTask.map((card, index) => (
           <Card
             key={index}
