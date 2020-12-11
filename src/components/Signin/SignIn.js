@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import './SignIn.css';
 
 const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
-  console.log(state, userHandler);
   const showHideClassName = show
     ? 'modal-signin display-block'
     : 'modal-signin display-none';
@@ -38,10 +37,15 @@ const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
               userData.forEach((doc) => {
                 if (doc.data().email === email) {
                   currentUserData = doc.data();
+                  console.log(currentUserData);
                   userHandler(currentUserData);
                 }
               });
-
+              setEmail('');
+              setError('');
+              setPassword('');
+            })
+            .then((res) => {
               handleClose();
             });
         });
@@ -58,11 +62,11 @@ const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
     }
   };
   const onClick = () => {
-    handleClose();
-    handleOpen();
     setEmail('');
     setError('');
     setPassword('');
+    handleClose();
+    handleOpen();
   };
   return (
     <div className={showHideClassName}>

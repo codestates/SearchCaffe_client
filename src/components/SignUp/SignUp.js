@@ -4,9 +4,11 @@ import {
   dbService,
   storageService,
 } from '../../firebase/mainbase';
+import { actionCreators } from '../../reducer/store';
+import { connect } from 'react-redux';
 import './SignUp.css';
 
-const SignUp = ({ handleClose, handleOpen, show }) => {
+const SignUp = ({ handleClose, handleOpen, show, userHandler }) => {
   const showHideClassName = show
     ? 'modal-signup display-block'
     : 'modal-signup display-none';
@@ -24,6 +26,7 @@ const SignUp = ({ handleClose, handleOpen, show }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let currentUserData;
     try {
       await authService.createUserWithEmailAndPassword(email, password);
       await authService.onAuthStateChanged(async (user) => {
@@ -43,6 +46,24 @@ const SignUp = ({ handleClose, handleOpen, show }) => {
             photoURL: user.photoURL,
             providerId: user.providerId,
           });
+          await dbService
+            .collection('users')
+            .get()
+            .then((userdatas) => {
+              userdatas.forEach((doc) => {
+                if (doc.data().uid === user.uid) {
+                  currentUserData = doc.data();
+                  userHandler(currentUserData);
+                }
+              });
+            });
+          // userHandler({
+          //   uid: user.uid,
+          //   email: user.email,
+          //   displayName: user.displayName,
+          //   photoURL: user.photoURL,
+          //   providerId: user.providerId,
+          // })
         }
       });
       handleClose();
@@ -107,4 +128,14 @@ const SignUp = ({ handleClose, handleOpen, show }) => {
   );
 };
 
-export default SignUp;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
