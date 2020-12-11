@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ImageModal } from '../ImageModal/ImageModal';
 import Scope from '../Scope/index';
 import Tag from '../Tag/index';
-
+import { connect } from 'react-redux';
 import Blank from './images/BlankImg.png';
 import enlargeImg from './images/enlarge.png';
 import removeImg from './images/remove.png';
@@ -174,6 +174,7 @@ const commentTags = [
 ];
 
 const CommentWrite = (props) => {
+  console.log(props);
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [comment, setComment] = useState('');
@@ -322,7 +323,6 @@ const CommentWrite = (props) => {
 };
 
 export default CommentWrite;
-
 // useEffect(() => {
 //   getData();
 // }, []);
@@ -353,3 +353,9 @@ export default CommentWrite;
 //   const publirUrl = await response.ref.getDownloadURL();
 //   console.log(publirUrl);
 // };
+
+// function mapStateToProps(state, ownProps) {
+//   return { state };
+// }
+
+// export default connect(mapStateToProps)(CommentWrite);

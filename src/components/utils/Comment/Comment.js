@@ -146,9 +146,8 @@ const Comment = (props) => {
       <CommentImages>
         {images
           ? images.map((img, index) => {
-              console.log(img);
               return (
-                <Uploaded>
+                <Uploaded key={index}>
                   <UploadedImgCover>
                     <EnlargeImg
                       data-index={index}
