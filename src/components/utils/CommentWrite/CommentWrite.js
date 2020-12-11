@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
+import { ImageModal } from '../ImageModal/ImageModal';
 import Scope from '../Scope/index';
 import Tag from '../Tag/index';
-import Blank from './BlankImg.png';
+
+import Blank from './images/BlankImg.png';
+import enlargeImg from './images/enlarge.png';
+import removeImg from './images/remove.png';
+import loading from './images/loading.svg';
 import { storageService } from '../../../firebase/mainbase';
 
 const CommentWriteStyle = styled.div`
@@ -10,9 +16,14 @@ const CommentWriteStyle = styled.div`
   margin: auto;
   min-width: 400px;
   max-width: 1000px;
+
   width: 60%;
+  position: relative;
+  top: 10%;
   height: auto;
   border: 1px solid black;
+  background-color: #fafafa;
+  z-index: 2;
 `;
 const UserAndScope = styled.h3`
   display: inline;
@@ -42,9 +53,9 @@ const CommentImgWrapper = styled.div`
   min-width: 400px;
   width: 70%;
   height: 30%;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   position: relative;
-  display: inline;
+  display: block;
   left: 5%;
   @media (max-width: 1750px) {
     display: inline-block;
@@ -53,17 +64,19 @@ const CommentImgWrapper = styled.div`
     left: 10%;
   }
 `;
+const ButtonWrapper = styled.span`
+  display: flex;
+  margin: 5px 0px 20px 0px;
+  flex-direction: column;
+
+  position: absolute;
+  bottom: 2%;
+  left: 100%;
+`;
 const CommentSubmitButton = styled.button`
-  float: right;
-  display: block;
-  position: relative;
-  right: 20%;
-  top: 15px;
-  margin-top: 10px;
-  margin-bottom: 20px;
   width: 110px;
   height: 40px;
-  @media (max-width: 1750px) {
+  /* @media (max-width: 1750px) {
     position: absolute;
     bottom: 30%;
     margin: 30px;
@@ -84,29 +97,73 @@ const CommentSubmitButton = styled.button`
     position: relative;
     left: 160px;
     float: none;
-  }
+  } */
+`;
+const CommentOutButton = styled(CommentSubmitButton)`
+  margin-top: 30px;
 `;
 const UploadImg = styled.label`
   display: inline-block;
   width: 120px;
   height: 120px;
   margin: 20px 20px 15px 20px;
-  border: 1px solid #b1b1b1;
+  border: 1px solid #d1d1d1;
   background-size: cover;
   background-image: url(${Blank});
-  background-color: #dfdfdf;
+  background-color: #f1f1f1;
+  transition: 0.2s;
+  :hover {
+    background-color: #dfdfdf;
+    transition: 0.2s;
+  }
 `;
 const UploadImgInput = styled.input`
   display: none;
 `;
+
+const UploadedImgCover = styled.span`
+  background-color: rgba(207, 204, 201, 0.61);
+  position: absolute;
+  width: 122px;
+  height: 122px;
+  margin-top: 11px;
+  margin-left: 11px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s linear, opacity 0.2s linear;
+`;
+const RemoveImg = styled.img`
+  width: 25px;
+  position: absolute;
+  margin-left: 90px;
+  margin-top: 5px;
+`;
+const EnlargeImg = styled.img`
+  width: 20px;
+  position: absolute;
+  margin-top: 93px;
+  margin-left: 9px;
+`;
+
 const UploadedImg = styled.img`
+  border: 1px solid #d1d1d1;
   display: inline-block;
   width: 120px;
   height: 120px;
   margin: 10px 30px 15px 10px;
-  border: 1px solid #b1b1b1;
-  src: ${(props) => 'url(' + props.image + ')'};
 `;
+
+const Uploaded = styled.span`
+  display: inline-block;
+  width: 122px;
+  height: 122px;
+  margin: 10px 30px 15px 10px;
+  &:hover ${UploadedImgCover} {
+    visibility: visible;
+    opacity: 1;
+  }
+`;
+
 const commentTags = [
   '커피가 맛있는',
   '디저트가 맛있는',
@@ -121,15 +178,17 @@ const CommentWrite = (props) => {
   const [scope, setScope] = useState(-1);
   const [comment, setComment] = useState('');
   const [images, setImages] = useState([]);
+  const [imageModal, setModal] = useState(false);
+  const [currentImg, setCurrentImg] = useState('');
 
   const upLoadTaskHandler = (inputImage) => {
     if (images.length > 2) {
       return;
     }
+    setImages((preImages) => [...preImages, loading]);
     const upLoadTask = storageService
       .ref(`commentImage/${inputImage.name}`)
       .put(inputImage);
-    console.log(upLoadTask);
     upLoadTask.on(
       'state_changed',
       (snapshot) => {},
@@ -142,41 +201,44 @@ const CommentWrite = (props) => {
           .child(inputImage.name)
           .getDownloadURL()
           .then((url) => {
-            setImages((preimages) => [...preimages, url]);
+            setImages((preImages) => {
+              preImages.splice(preImages.length - 1, 1, url);
+              return [...preImages];
+            });
           });
       }
     );
   };
 
-  const [isFile, setIsFile] = useState();
-  const getData = async () => {
-    const data = await storageService.ref().child('cafeImage');
-    console.log(data);
+  const handleTags = (tag) => {
+    if (selectedTags.indexOf(tag) === -1) {
+      setTags((pres) => {
+        let tempTags = pres;
+        tempTags.push(tag);
+        setTags(tempTags);
+      });
+    } else {
+      setTags((pres) => {
+        let tempTags = pres;
+        tempTags.splice(pres.indexOf(tag), 1);
+        setTags(tempTags);
+      });
+    }
   };
-  const onFileChange = (e) => {
-    const {
-      target: { files },
-    } = e;
-    const theFile = files[0];
-    const reader = new FileReader();
-    reader.onloadend = (e) => {
-      const {
-        currentTarget: { result },
-      } = e;
-      setIsFile(result);
-    };
-    reader.readAsDataURL(theFile);
+  const handleImageRemove = (index) => {
+    setImages((pres) => {
+      pres.splice(index, 1);
+      return [...pres];
+    });
   };
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    const fileRef = storageService.ref().child(`cafeImage/practice`);
-    const response = await fileRef.putString(isFile, 'data_url');
-    const publirUrl = await response.ref.getDownloadURL();
-    console.log(publirUrl);
+  const handleImageEnlarge = (index) => {
+    setCurrentImg(images[index]);
+    setModal((pres) => !pres);
   };
-  useEffect(() => {
-    getData();
-  }, []);
+  const handleUnEnlarge = () => {
+    setModal((pres) => !pres);
+  };
+
   return (
     <CommentWriteStyle>
       <UserAndScope>
@@ -191,15 +253,7 @@ const CommentWrite = (props) => {
           <span
             key={tag}
             onClick={() => {
-              if (selectedTags.indexOf(tag) === -1) {
-                let tempTags = selectedTags;
-                tempTags.push(tag);
-                setTags(tempTags);
-              } else {
-                let tempTags = selectedTags;
-                tempTags.splice(selectedTags.indexOf(tag), 1);
-                setTags(tempTags);
-              }
+              handleTags(tag);
             }}
           >
             <Tag
@@ -228,13 +282,74 @@ const CommentWrite = (props) => {
           ></UploadImgInput>
         </UploadImg>
 
-        {images.map((image) => {
-          return <UploadedImg src={image} key={image.name}></UploadedImg>;
+        {images.map((image, index) => {
+          return (
+            <Uploaded>
+              <UploadedImgCover>
+                <RemoveImg
+                  data-index={index}
+                  onClick={(e) => {
+                    handleImageRemove(e.target.dataset.index);
+                  }}
+                  src={removeImg}
+                ></RemoveImg>
+                <EnlargeImg
+                  data-index={index}
+                  onClick={(e) => {
+                    handleImageEnlarge(e.target.dataset.index);
+                  }}
+                  src={enlargeImg}
+                ></EnlargeImg>
+              </UploadedImgCover>
+              <UploadedImg src={image} key={image.name}></UploadedImg>
+            </Uploaded>
+          );
         })}
-        <CommentSubmitButton>제출</CommentSubmitButton>
+        <ButtonWrapper>
+          <CommentSubmitButton>제출</CommentSubmitButton>
+          <CommentOutButton onClick={props.handleModal}>
+            나가기{' '}
+          </CommentOutButton>
+        </ButtonWrapper>
       </CommentImgWrapper>
+      {imageModal ? (
+        <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
+      ) : (
+        ''
+      )}
     </CommentWriteStyle>
   );
 };
 
 export default CommentWrite;
+
+// useEffect(() => {
+//   getData();
+// }, []);
+// const getData = async () => {
+//   const data = await storageService.ref().child('cafeImage');
+//   console.log(data);
+// };
+
+// const [isFile, setIsFile] = useState();
+// const onFileChange = (e) => {
+//   const {
+//     target: { files },
+//   } = e;
+//   const theFile = files[0];
+//   const reader = new FileReader();
+//   reader.onloadend = (e) => {
+//     const {
+//       currentTarget: { result },
+//     } = e;
+//     setIsFile(result);
+//   };
+//   reader.readAsDataURL(theFile);
+// };
+// const onSubmit = async (event) => {
+//   event.preventDefault();
+//   const fileRef = storageService.ref().child(`cafeImage/practice`);
+//   const response = await fileRef.putString(isFile, 'data_url');
+//   const publirUrl = await response.ref.getDownloadURL();
+//   console.log(publirUrl);
+// };
