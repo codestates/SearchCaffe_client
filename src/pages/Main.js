@@ -2,7 +2,6 @@ import SearchWrapper from '../components/SearchWrapper/index';
 import CardWrapper from '../components/CardWrapper/index';
 import mainImg from './main.jpeg';
 import styled from 'styled-components';
-import { dbService } from '../firebase/mainbase';
 import { actionCreators } from '../reducer/store';
 import { connect } from 'react-redux';
 

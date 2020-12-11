@@ -158,7 +158,7 @@ const Card = (props) => {
         <CardTags>
           {props.cafeTag
             ? props.cafeTag.map((tag) => (
-                <Tag isSmall={true} tagName={tag}></Tag>
+                <Tag key={tag} isSmall={true} tagName={tag}></Tag>
               ))
             : '관련 태그가 없습니다'}
         </CardTags>
@@ -168,7 +168,7 @@ const Card = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log("state : " + state);
+  console.log(state);
   return { state };
 }
 

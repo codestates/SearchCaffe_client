@@ -73,7 +73,7 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
             />
             <div className="wrap-checkbox">
               <input type="checkbox" id="chk" />
-              <label for="chk">이메일 기억하기</label>
+              <label htmlFor="chk">이메일 기억하기</label>
             </div>
             <button className="signin-btn" type="submit">
               이메일 로그인

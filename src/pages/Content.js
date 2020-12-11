@@ -1,9 +1,8 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { dbService, storageService } from '../firebase/mainbase';
-import { useEffect, useState, useMemo, Fragment } from 'react';
+import { dbService } from '../firebase/mainbase';
+
 import { connect } from 'react-redux';
-import Tag from '../components/utils/Tag';
-import tagnames from '../components/utils/Tag/tagnames';
+
 import ContentHeader from '../components/ContentHeader/index';
 import ContentDetail from '../components/ContentDetail/index';
 import ContentComment from '../components/ContentComment/index';
@@ -19,8 +18,6 @@ body {
   margin: auto;
 }
 `;
-
-const ImageContainer = styled.div``;
 
 let cardListArr = [];
 const Content = ({ state }) => {

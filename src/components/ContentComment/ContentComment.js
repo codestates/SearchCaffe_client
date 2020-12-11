@@ -53,11 +53,8 @@ const ContentComment = (props) => {
       {cafeComment.filter((comment) => comment.cafeId === 0).length !== 0
         ? cafeComment
             .filter((comment) => comment.cafeId === 0)
-            .map((userComment) => (
-              <Comment
-                key={userComment.username}
-                userComment={userComment}
-              ></Comment>
+            .map((userComment, index) => (
+              <Comment key={index} userComment={userComment}></Comment>
             ))
         : ''}
     </Detail3>
