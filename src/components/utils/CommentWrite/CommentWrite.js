@@ -174,7 +174,6 @@ const commentTags = [
 ];
 
 const CommentWrite = (props) => {
-  console.log(props);
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [comment, setComment] = useState('');

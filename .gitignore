@@ -38,3 +38,5 @@ typings/
 .env
 
 .eslintcache
+
+.vscode
