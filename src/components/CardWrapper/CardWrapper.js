@@ -89,7 +89,7 @@ const NoSearchResultTitle = styled.div`
   font-weight: bold;
 `;
 const NoSearchResultImg = styled.img`
-  width: 40px;
+  width: 30px;
   display: inline;
   position: relative;
   top: 6px;
@@ -200,38 +200,40 @@ const CardWrapper = ({ state, cardList }) => {
     }
   }, [state.keyword]);
 
-  // NOTE 검색 결과 없음
-  if (
-    (!tags | (tags !== '')) &
-    (!state.keyword | (state.keyword !== '')) &
-    (!cards | (cards.length === 0))
-  ) {
-    return (
-      <NoSearchResultContainer>
-        <NoSearchResultTitle>
-          검색 결과가 없어요.
-          <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런 카페는
-          어떠신가요?
-        </NoSearchResultTitle>
-        <CardWrapperStyle>
-          {isGoodForTask.map((card, index) => (
-            <Card
-              key={index}
-              cafeid={card.id}
-              cafeName={card.cafeName}
-              cafeTag={card.cafeTag}
-              cafeAddress={card.cafeAddress}
-              cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-              cafeStar={card.cafeStar}
-            ></Card>
-          ))}
-        </CardWrapperStyle>
-      </NoSearchResultContainer>
-    );
+  // NOTE 검색 결과 없음'
+  if (cards) {
+    if (
+      (!tags | (tags !== '')) &
+      (!state.keyword | (state.keyword !== '')) &
+      (!cards | (cards.length === 0))
+    ) {
+      return (
+        <NoSearchResultContainer>
+          <NoSearchResultTitle>
+            검색 결과가 없어요.
+            <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런 카페는
+            어떠신가요?
+          </NoSearchResultTitle>
+          <CardWrapperStyle>
+            {isGoodForTask.map((card, index) => (
+              <Card
+                key={index}
+                cafeid={card.id}
+                cafeName={card.cafeName}
+                cafeTag={card.cafeTag}
+                cafeAddress={card.cafeAddress}
+                cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                cafeStar={card.cafeStar}
+              ></Card>
+            ))}
+          </CardWrapperStyle>
+        </NoSearchResultContainer>
+      );
+    }
   }
-
+  console.log(tags, state.keyword);
   // NOTE 메인화면
-  return (tags === '') & (state.keyword === '') ? (
+  return (!tags | (tags === '')) & (!state.keyword | (state.keyword === '')) ? (
     <CardWrapperCover>
       <WrapperTitle>
         <WrapperLineRight />
@@ -287,27 +289,28 @@ const CardWrapper = ({ state, cardList }) => {
       >
         <CardWrapperStyle>
           <TransitionGroup component={null}>
-            {cards.map((card, index) => {
-              return (
-                <CSSTransition
-                  timeout={300}
-                  in={true}
-                  classNames="fadeCard"
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <Card
-                    key={index}
-                    cafeid={card.id}
-                    cafeName={card.cafeName}
-                    cafeTag={card.cafeTag}
-                    cafeAddress={card.cafeAddress}
-                    cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                    cafeStar={card.cafeStar}
-                  />
-                </CSSTransition>
-              );
-            })}
+            {cards &&
+              cards.map((card, index) => {
+                return (
+                  <CSSTransition
+                    timeout={300}
+                    in={true}
+                    classNames="fadeCard"
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <Card
+                      key={index}
+                      cafeid={card.id}
+                      cafeName={card.cafeName}
+                      cafeTag={card.cafeTag}
+                      cafeAddress={card.cafeAddress}
+                      cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                      cafeStar={card.cafeStar}
+                    />
+                  </CSSTransition>
+                );
+              })}
           </TransitionGroup>
         </CardWrapperStyle>
       </CSSTransition>
@@ -315,6 +318,7 @@ const CardWrapper = ({ state, cardList }) => {
   );
 };
 function mapStateToProps(state, ownProps) {
+  console.log(state);
   return { state };
 }
 
