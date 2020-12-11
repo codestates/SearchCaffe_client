@@ -127,13 +127,15 @@ const Card = (props) => {
     data.forEach((doc) => {
       if (props.cafeid === doc.data().cafeId) {
         cafeCommentArr.push(doc.data());
+        console.log("data :" + data);
       }
     });
+
     props.currentCafeComment(cafeCommentArr);
   };
-  if (!props.cafeid) {
-    return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
-  }
+  // if (!props.cafeid) {
+  //   return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
+  // }
   return (
     <LinkContent to={`/content/${props.cafeid}`}>
       <CardStyle
@@ -166,6 +168,7 @@ const Card = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
+  console.log("state : " + state);
   return { state };
 }
 
@@ -173,8 +176,8 @@ function mapDispatchToProps(dispatch) {
   return {
     currentCafe: (currentCafe) =>
       dispatch(actionCreators.currentCafeClick(currentCafe)),
-    currentCafeComment: (cafeComment) =>
-      dispatch(actionCreators.currentCafeComment(cafeComment)),
+    currentCafeComment: (currentCafeComment) =>
+      dispatch(actionCreators.currentCafeComment(currentCafeComment)),
   };
 }
 

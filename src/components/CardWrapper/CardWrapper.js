@@ -103,7 +103,7 @@ const CardWrapper = ({ state, cardList }) => {
         cardList = cafes;
       })
       .finally(function () {
-        cardListArr && cardList(cardListArr);
+        cardList(cardListArr);
         setCards(cardListArr);
 
         cozyCafe = cardListArr.filter((card) =>
