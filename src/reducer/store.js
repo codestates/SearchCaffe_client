@@ -60,6 +60,7 @@ const reducer = (state = [], action) => {
     case CARDARRAY:
       let cardArr = action.card.slice();
       return {
+        ...state,
         cardArr,
       };
     case KEYWORD:
@@ -70,8 +71,8 @@ const reducer = (state = [], action) => {
         }
       }
       return Object.assign({}, state, {
-        keyword,
         ...state,
+        keyword,
       });
     case CURRENTCAFECOMMENT:
       let currentCafeComment = action.currentCafeComment;
@@ -81,8 +82,8 @@ const reducer = (state = [], action) => {
         }
       }
       return Object.assign({}, state, {
-        currentCafeComment,
         ...state,
+        currentCafeComment,
       });
     case CURRENTCAFE:
       let currentCafe = action.currentCafe;
@@ -92,8 +93,8 @@ const reducer = (state = [], action) => {
         }
       }
       return Object.assign({}, state, {
-        currentCafe,
         ...state,
+        currentCafe,
       });
     case CURRENTUSER:
       let user = action.user;
@@ -103,8 +104,8 @@ const reducer = (state = [], action) => {
         }
       }
       return Object.assign({}, state, {
-        user,
         ...state,
+        user,
       });
     default:
       return state;

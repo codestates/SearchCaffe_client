@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './Profile.css';
 
-const Profile = () => {
+const Profile = (props) => {
   const history = useHistory();
   const [userInfo, setUserInfo] = useState(null);
   const [attachment, setAttachment] = useState('');
@@ -12,6 +12,7 @@ const Profile = () => {
   const [newDisplayName, setNewDisplayName] = useState('');
   const handleLogOut = () => {
     authService.signOut();
+    props.userHandler(null);
     history.push('/');
   };
   const onChange = (event) => {
