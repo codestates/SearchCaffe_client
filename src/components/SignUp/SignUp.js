@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { authService } from '../../firebase/mainbase';
+import {
+  authService,
+  dbService,
+  storageService,
+} from '../../firebase/mainbase';
 import './SignUp.css';
 
 const SignUp = ({ handleClose, handleOpen, show }) => {
-  const showHideClassName = show ? 'modal-signup display-block' : 'modal-signup display-none';
+  const showHideClassName = show
+    ? 'modal-signup display-block'
+    : 'modal-signup display-none';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [userInfo, setUserInfo] = useState('');
 
   const handleChange = (e) => {
     if (e.target.name === 'email') {
@@ -19,6 +26,29 @@ const SignUp = ({ handleClose, handleOpen, show }) => {
     e.preventDefault();
     try {
       await authService.createUserWithEmailAndPassword(email, password);
+      await authService.onAuthStateChanged(async (user) => {
+        if (user) {
+          const image = await storageService
+            .ref()
+            .child('images/defaultImage.svg')
+            .getDownloadURL();
+          await user.updateProfile({
+            displayName: user.email,
+            photoURL: image,
+          });
+          await dbService.collection('users').doc(user.uid).set({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            providerId: user.providerId,
+          });
+        }
+      });
+      handleClose();
+      setEmail('');
+      setPassword('');
+      setError('');
     } catch (error) {
       let code = error.code;
       if (code === 'auth/email-already-in-use') {
@@ -30,6 +60,7 @@ const SignUp = ({ handleClose, handleOpen, show }) => {
       }
     }
   };
+
   const onClick = () => {
     handleClose();
     handleOpen();

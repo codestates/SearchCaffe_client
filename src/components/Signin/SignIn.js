@@ -21,13 +21,6 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
     e.preventDefault();
     try {
       await authService.signInWithEmailAndPassword(email, password);
-      const user = authService.currentUser;
-      if (!user.photoURL) {
-        user.updateProfile({
-          photoURL:
-            'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/images%2FdefaultImage.svg?alt=media&token=090d4e95-0b21-4838-ae05-f6c34b34ff84',
-        });
-      }
       setEmail('');
       setError('');
       setPassword('');
