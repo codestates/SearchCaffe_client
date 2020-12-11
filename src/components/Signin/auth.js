@@ -30,13 +30,6 @@ const Auth = ({ handleClose }) => {
         .doc(user.uid)
         .set({ ...user.providerData[0], uid: user.uid });
     }
-    // {
-    //   uid: user.uid,
-    //   email: user.email,
-    //   displayName: user.displayName,
-    //   photoURL: user.photoURL,
-    //   providerId: user.providerId,
-    // }
     handleClose();
   };
   return (
