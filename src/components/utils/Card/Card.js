@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import { dbService } from '../../../firebase/mainbase';
 import { Link } from 'react-router-dom';
-
+import CardSkeleton from '../Card/CardSkeleton';
 // props
 // cafeImage:? 카페 대표 이미지
 // cafeName:string - 카페 이름
@@ -17,14 +17,15 @@ import { Link } from 'react-router-dom';
 const CardStyle = styled.span`
   width: 345px;
   display: block; // inline-block => block으로 바꿨더니 해결
+  break-inside: avoid-column;
   box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
   margin: 13px 20px 10px 10px;
   padding: 8px;
   padding-bottom: 10px;
   font-size: 1rem;
-  page-break-inside: avoid;
+
   background-color: #ffffff;
-  break-inside: avoid;
+
   transition: opacity 0.4s ease-in-out;
   transition: 0.3s;
   :hover {
@@ -61,6 +62,7 @@ const CardImg = styled.img`
   width: 345px;
   max-height: 400px;
   height: auto;
+  min-height: 250px;
 
   border-bottom: 1px solid #dfdfdf;
   padding-bottom: 13px;
@@ -101,14 +103,14 @@ const ScopeContain = styled.div`
 `;
 
 const LinkContent = styled(Link)`
-a{
-  text-decoration: none; 
-  &:before {
-  color:#24292e;
-  cursor: default !important;
+  a {
+    text-decoration: none;
+    &:before {
+      color: #24292e;
+      cursor: default !important;
+    }
   }
-}
-`
+`;
 
 const Card = (props) => {
   const addCurrentCafe = async () => {
@@ -129,9 +131,16 @@ const Card = (props) => {
     });
     props.currentCafeComment(cafeCommentArr);
   };
+  if (!props.cafeid) {
+    return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
+  }
   return (
     <LinkContent to={`/content/${props.cafeid}`}>
-      <CardStyle cafeid={props.cafeid} tag={props.cafeTag} onClick={addCurrentCafe}>
+      <CardStyle
+        cafeid={props.cafeid}
+        tag={props.cafeTag}
+        onClick={addCurrentCafe}
+      >
         <CardImg src={props.cafeImage || defaultImg} />
         <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
         <CardAddress>
@@ -146,7 +155,9 @@ const Card = (props) => {
 
         <CardTags>
           {props.cafeTag
-            ? props.cafeTag.map((tag) => <Tag isSmall={true} tagName={tag}></Tag>)
+            ? props.cafeTag.map((tag) => (
+                <Tag isSmall={true} tagName={tag}></Tag>
+              ))
             : '관련 태그가 없습니다'}
         </CardTags>
       </CardStyle>
@@ -155,7 +166,6 @@ const Card = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { state };
 }
 
@@ -163,7 +173,7 @@ function mapDispatchToProps(dispatch) {
   return {
     currentCafe: (currentCafe) =>
       dispatch(actionCreators.currentCafeClick(currentCafe)),
-      currentCafeComment: (cafeComment) =>
+    currentCafeComment: (cafeComment) =>
       dispatch(actionCreators.currentCafeComment(cafeComment)),
   };
 }

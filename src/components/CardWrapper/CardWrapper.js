@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import Card from '../utils/Card/index';
+import CardSkeleton from '../utils/Card/CardSkeleton';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import { dbService, storageService } from '../../firebase/mainbase';
 import { useEffect, useState, useMemo, Fragment } from 'react';
-
+import { cafes } from '../../cafeInfos';
 import {
   CSSTransition,
   TransitionGroup,
@@ -41,15 +42,14 @@ const WrapperTitle = styled.div`
 `;
 const CardWrapperStyle = styled.div`
   column-width: 340px;
+  columns: 3;
 
   column-gap: 20px;
-  column-count: 3;
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
-  break-inside: avoid;
-  page-break-inside: avoid;
   background-color: #ebebeb;
+
   display: block;
   &.appearingCard-enter {
     opacity: 0;
@@ -72,10 +72,18 @@ const CardWrapperStyle = styled.div`
 `;
 
 const CardWrapper = ({ state, cardList }) => {
+  let Skeleton = [
+    <Card skeletonSize="445px"></Card>,
+    <Card skeletonSize="460px"></Card>,
+    <Card skeletonSize="430px"></Card>,
+    <Card skeletonSize="470px"></Card>,
+    <Card skeletonSize="420px"></Card>,
+    <Card skeletonSize="445px"></Card>,
+  ];
   const [isTag, setIsTag] = useState(false);
   const [cards, setCards] = useState([]);
-  const [isCozyCafe, setCozyCafe] = useState([]);
-  const [isGoodForTask, setGoodForTask] = useState([]);
+  const [isCozyCafe, setCozyCafe] = useState(Skeleton);
+  const [isGoodForTask, setGoodForTask] = useState(Skeleton);
   const [currentKeyword, setCurrentKeyword] = useState('');
 
   let cardListArr = [];
@@ -92,10 +100,12 @@ const CardWrapper = ({ state, cardList }) => {
       })
       .catch(function (error) {
         console.log('Error getting documents: ', error);
+        cardList = cafes;
       })
       .finally(function () {
         cardListArr && cardList(cardListArr);
         setCards(cardListArr);
+
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
@@ -109,13 +119,13 @@ const CardWrapper = ({ state, cardList }) => {
         cozyCafe.length > 6
           ? (cozyCafe = cozyCafe.slice(0, 6))
           : cozyCafe.length > 3
-            ? cozyCafe.slice(0, 3)
-            : (cozyCafe = []);
+          ? cozyCafe.slice(0, 3)
+          : (cozyCafe = []);
         goodForTask.length > 6
           ? (goodForTask = goodForTask.slice(0, 6))
           : goodForTask.length > 3
-            ? goodForTask.slice(0, 3)
-            : (goodForTask = []);
+          ? goodForTask.slice(0, 3)
+          : (goodForTask = []);
         setCozyCafe(cozyCafe);
         setGoodForTask(goodForTask);
       });
@@ -195,47 +205,47 @@ const CardWrapper = ({ state, cardList }) => {
       </CardWrapperStyle>
     </CardWrapperCover>
   ) : (
-      <CardWrapperCover>
-        <WrapperTitle>
-          <WrapperLineRight />
-          <span>검색 결과</span>
-          <WrapperLineLeft />
-        </WrapperTitle>
-        <CSSTransition
-          in={true}
-          timeout={300}
-          classNames="appearingCard"
-          mountOnEnter
-          unmountOnExit
-        >
-          <CardWrapperStyle>
-            <TransitionGroup component={null}>
-              {cards.map((card) => {
-                return (
-                  <CSSTransition
-                    timeout={300}
-                    in={true}
-                    key={card.id}
-                    classNames="fadeCard"
-                    mountOnEnter
-                    unmountOnExit
-                  >
-                    <Card
-                      cafeid={card.id}
-                      cafeName={card.cafeName}
-                      cafeTag={card.cafeTag}
-                      cafeAddress={card.cafeAddress}
-                      cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                      cafeStar={card.cafeStar}
-                    />
-                  </CSSTransition>
-                );
-              })}
-            </TransitionGroup>
-          </CardWrapperStyle>
-        </CSSTransition>
-      </CardWrapperCover>
-    );
+    <CardWrapperCover>
+      <WrapperTitle>
+        <WrapperLineRight />
+        <span>검색 결과</span>
+        <WrapperLineLeft />
+      </WrapperTitle>
+      <CSSTransition
+        in={true}
+        timeout={300}
+        classNames="appearingCard"
+        mountOnEnter
+        unmountOnExit
+      >
+        <CardWrapperStyle>
+          <TransitionGroup component={null}>
+            {cards.map((card) => {
+              return (
+                <CSSTransition
+                  timeout={300}
+                  in={true}
+                  key={card.id}
+                  classNames="fadeCard"
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <Card
+                    cafeid={card.id}
+                    cafeName={card.cafeName}
+                    cafeTag={card.cafeTag}
+                    cafeAddress={card.cafeAddress}
+                    cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                    cafeStar={card.cafeStar}
+                  />
+                </CSSTransition>
+              );
+            })}
+          </TransitionGroup>
+        </CardWrapperStyle>
+      </CSSTransition>
+    </CardWrapperCover>
+  );
 };
 function mapStateToProps(state, ownProps) {
   return { state };

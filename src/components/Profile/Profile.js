@@ -28,7 +28,6 @@ const Profile = () => {
   };
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
-      console.log(user);
       if (user) {
         setUserInfo(user);
         if (user.displayName) {
