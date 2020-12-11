@@ -633,7 +633,7 @@ export const cafeComment = [
     userComment: '좋아요 너무',
     userTag: ['커피가 맛있는', '디저트가 맛있는'],
     userImg: [
-      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/commentImage%2Fpatrick-tomasso-GXXYkSwndP4-unsplash.jpg?alt=media&token=97652da3-573f-4a15-8e4c-bc0aa1329429',
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
     ],

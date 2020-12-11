@@ -16,14 +16,6 @@ import styled from 'styled-components';
 import { cafeComment } from './cafeInfos';
 
 const App = () => {
-  useEffect(() => {
-    for (let i = 0; i < cafeComment.length; i++) {
-      dbService
-        .collection('CafeComment')
-        .doc(cafeComment[i].cafeId + '&' + cafeComment[i].commentId)
-        .set(cafeComment[i]);
-    }
-  }, []);
   return (
     <BrowserRouter>
       <Nav></Nav>
