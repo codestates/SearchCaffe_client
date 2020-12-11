@@ -1,5 +1,9 @@
 import React from 'react';
-import { authService, firebaseInstance } from '../../firebase/mainbase';
+import {
+  authService,
+  dbService,
+  firebaseInstance,
+} from '../../firebase/mainbase';
 import '../../styles/oauth.css';
 
 const Auth = ({ handleClose }) => {
@@ -16,8 +20,24 @@ const Auth = ({ handleClose }) => {
       provider = new firebaseInstance.auth.FacebookAuthProvider();
     }
     const data = await authService.signInWithPopup(provider);
+    const user = data.user;
+    const checkDB = await dbService.collection('users').doc(user.uid).get();
+    console.log(checkDB.exists);
+    console.log(user.providerData[0]);
+    if (!checkDB.exists) {
+      await dbService
+        .collection('users')
+        .doc(user.uid)
+        .set({ ...user.providerData[0], uid: user.uid });
+    }
+    // {
+    //   uid: user.uid,
+    //   email: user.email,
+    //   displayName: user.displayName,
+    //   photoURL: user.photoURL,
+    //   providerId: user.providerId,
+    // }
     handleClose();
-    console.log(data);
   };
   return (
     <div className="account-login">
