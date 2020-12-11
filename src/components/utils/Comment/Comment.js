@@ -172,5 +172,11 @@ const Comment = (props) => {
     </CommentStyle>
   );
 };
+// function mapStateToProps(state, ownProps) {
+
+//   return { state };
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Content);
 
 export default Comment;

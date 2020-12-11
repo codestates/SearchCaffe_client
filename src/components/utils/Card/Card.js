@@ -131,7 +131,7 @@ const Card = (props) => {
     });
     props.currentCafeComment(cafeCommentArr);
   };
-  if (!props.cafeid) {
+  if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
   }
   return (
@@ -166,7 +166,6 @@ const Card = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { state };
 }
 
