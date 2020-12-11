@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
-import { authService } from '../../firebase/mainbase';
+import {
+  dbService,
+  authService,
+  storageService,
+} from '../../firebase/mainbase';
 import Auth from './auth';
+import { actionCreators } from '../../reducer/store';
+import { connect } from 'react-redux';
 import './SignIn.css';
 
-const SignIn = ({ handleClose, handleOpen, show }) => {
-  const showHideClassName = show ? 'modal-signin display-block' : 'modal-signin display-none';
+const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
+  const showHideClassName = show
+    ? 'modal-signin display-block'
+    : 'modal-signin display-none';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,12 +26,29 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await authService.signInWithEmailAndPassword(email, password);
-
-      setEmail('');
-      setError('');
-      setPassword('');
-      handleClose();
+      let check = await authService
+        .signInWithEmailAndPassword(email, password)
+        .then((user) => {
+          let currentUserData;
+          dbService
+            .collection('users')
+            .get()
+            .then((userData) => {
+              userData.forEach((doc) => {
+                if (doc.data().email === email) {
+                  currentUserData = doc.data();
+                  console.log(currentUserData);
+                  userHandler(currentUserData);
+                }
+              });
+              setEmail('');
+              setError('');
+              setPassword('');
+            })
+            .then((res) => {
+              handleClose();
+            });
+        });
     } catch (error) {
       let code = error.code;
       console.log(code);
@@ -37,11 +62,11 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
     }
   };
   const onClick = () => {
-    handleClose();
-    handleOpen();
     setEmail('');
     setError('');
     setPassword('');
+    handleClose();
+    handleOpen();
   };
   return (
     <div className={showHideClassName}>
@@ -72,7 +97,7 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
             />
             <div className="wrap-checkbox">
               <input type="checkbox" id="chk" />
-              <label for="chk">이메일 기억하기</label>
+              <label htmlFor="chk">이메일 기억하기</label>
             </div>
             <button className="signin-btn" type="submit">
               이메일 로그인
@@ -80,7 +105,7 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
           </form>
           <div className="errorMsg">{error}</div>
         </div>
-        <Auth />
+        <Auth handleClose={handleClose} />
         <span className="link-signup" onClick={onClick}>
           이메일로 회원가입
         </span>
@@ -89,4 +114,14 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
   );
 };
 
-export default SignIn;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

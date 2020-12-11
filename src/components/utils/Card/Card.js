@@ -3,6 +3,11 @@ import defaultImg from './dummyImg/defaultCafe.jpeg';
 import Tag from '../Tag/Tag';
 import styled from 'styled-components';
 import Scope from '../Scope/index';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../../reducer/store';
+import { dbService } from '../../../firebase/mainbase';
+import { Link } from 'react-router-dom';
+import CardSkeleton from '../Card/CardSkeleton';
 // props
 // cafeImage:? 카페 대표 이미지
 // cafeName:string - 카페 이름
@@ -12,14 +17,15 @@ import Scope from '../Scope/index';
 const CardStyle = styled.span`
   width: 345px;
   display: block; // inline-block => block으로 바꿨더니 해결
+  break-inside: avoid-column;
   box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
   margin: 13px 20px 10px 10px;
   padding: 8px;
   padding-bottom: 10px;
   font-size: 1rem;
-  page-break-inside: avoid;
+
   background-color: #ffffff;
-  break-inside: avoid;
+
   transition: opacity 0.4s ease-in-out;
   transition: 0.3s;
   :hover {
@@ -56,6 +62,7 @@ const CardImg = styled.img`
   width: 345px;
   max-height: 400px;
   height: auto;
+  min-height: 250px;
 
   border-bottom: 1px solid #dfdfdf;
   padding-bottom: 13px;
@@ -95,28 +102,80 @@ const ScopeContain = styled.div`
   padding-left: 15px;
 `;
 
-const Card = (props) => {
-  return (
-    <CardStyle cafeid={props.cafeid} tag={props.cafeTag}>
-      <CardImg src={props.cafeImage || defaultImg} />
-      <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
-      <CardAddress>
-        <CardLocationImg src={LocationImg}></CardLocationImg>
-        <CardAddressDetail>
-          {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
-        </CardAddressDetail>
-      </CardAddress>
-      <ScopeContain>
-        <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
-      </ScopeContain>
+const LinkContent = styled(Link)`
+  a {
+    text-decoration: none;
+    &:before {
+      color: #24292e;
+      cursor: default !important;
+    }
+  }
+`;
 
-      <CardTags>
-        {props.cafeTag
-          ? props.cafeTag.map((tag) => <Tag isSmall={true} tagName={tag}></Tag>)
-          : '관련 태그가 없습니다'}
-      </CardTags>
-    </CardStyle>
+const Card = (props) => {
+  const addCurrentCafe = async () => {
+    let currnetCafeObj = {};
+    let cafeCommentArr = [];
+    currnetCafeObj['cafeid'] = props.cafeid;
+    currnetCafeObj['cafeTag'] = props.cafeTag;
+    currnetCafeObj['cafeName'] = props.cafeName;
+    currnetCafeObj['cafeAddress'] = props.cafeAddress;
+    currnetCafeObj['cafeImage'] = props.cafeImage;
+    currnetCafeObj['cafeStar'] = props.cafeStar;
+    props.currentCafe(currnetCafeObj);
+    const data = await dbService.collection('CafeComment').get();
+    data.forEach((doc) => {
+      if (props.cafeid === doc.data().cafeId) {
+        cafeCommentArr.push(doc.data());
+      }
+    });
+    props.currentCafeComment(cafeCommentArr);
+  };
+  if (!props.cafeid & (props.cafeid !== 0)) {
+    return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
+  }
+  return (
+    <LinkContent to={`/content/${props.cafeid}`}>
+      <CardStyle
+        cafeid={props.cafeid}
+        tag={props.cafeTag}
+        onClick={addCurrentCafe}
+      >
+        <CardImg src={props.cafeImage || defaultImg} />
+        <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
+        <CardAddress>
+          <CardLocationImg src={LocationImg}></CardLocationImg>
+          <CardAddressDetail>
+            {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
+          </CardAddressDetail>
+        </CardAddress>
+        <ScopeContain>
+          <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
+        </ScopeContain>
+
+        <CardTags>
+          {props.cafeTag
+            ? props.cafeTag.map((tag) => (
+                <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+              ))
+            : '관련 태그가 없습니다'}
+        </CardTags>
+      </CardStyle>
+    </LinkContent>
   );
 };
 
-export default Card;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    currentCafe: (currentCafe) =>
+      dispatch(actionCreators.currentCafeClick(currentCafe)),
+    currentCafeComment: (cafeComment) =>
+      dispatch(actionCreators.currentCafeComment(cafeComment)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

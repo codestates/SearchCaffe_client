@@ -158,4 +158,4 @@ function mapDispatchToProps(dispatch) {
       dispatch(actionCreators.togleTagName(tagName, isTrue)),
   };
 }
-export default connect(mapStateToProps)(Tag);
+export default connect(mapStateToProps, mapDispatchToProps)(Tag);

@@ -1,0 +1,25 @@
+.tabs-contents {
+  font-family: 'Nanum Pen Script', cursive;
+  margin-left: 60px;
+  color: #727272;
+  font-size: 20px;
+  cursor: pointer;
+  display: inline;
+}
+.tabs-contents:hover {
+  color: black;
+}
+
+.tabs {
+  height: 200px;
+  width: 100%;
+  vertical-align: middle;
+  color: black;
+  line-height: 200px;
+}
+
+.content-profile {
+  margin: auto;
+  /* text-align: center; */
+  width: 80%;
+}

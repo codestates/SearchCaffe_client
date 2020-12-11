@@ -5,7 +5,7 @@ import Content from './pages/Content';
 import Mypage from './pages/Mypage';
 import Nav from './components/Nav/index';
 import Footer from './components/Footer/index';
-import CommentWrite from './components/CommentWrite/index';
+
 import { actionCreators } from './reducer/store';
 import { connect } from 'react-redux';
 import { dbService } from './firebase/mainbase';
@@ -13,7 +13,7 @@ import { dbService } from './firebase/mainbase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
-import cafes from './cafeInfos';
+import { cafeComment } from './cafeInfos';
 
 const App = () => {
   return (
@@ -32,7 +32,6 @@ const App = () => {
         </Route>
       </Switch>
       <Footer></Footer>
-      <Content cafe={cafes[0]}></Content>
     </BrowserRouter>
   );
 };

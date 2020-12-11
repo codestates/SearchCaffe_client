@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { authService } from '../../firebase/mainbase';
+import {
+  authService,
+  dbService,
+  storageService,
+} from '../../firebase/mainbase';
+import { actionCreators } from '../../reducer/store';
+import { connect } from 'react-redux';
 import './SignUp.css';
 
-const SignUp = ({ handleClose, handleOpen, show }) => {
-  const showHideClassName = show ? 'modal-signup display-block' : 'modal-signup display-none';
+const SignUp = ({ handleClose, handleOpen, show, userHandler }) => {
+  const showHideClassName = show
+    ? 'modal-signup display-block'
+    : 'modal-signup display-none';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [userInfo, setUserInfo] = useState('');
 
   const handleChange = (e) => {
     if (e.target.name === 'email') {
@@ -17,8 +26,50 @@ const SignUp = ({ handleClose, handleOpen, show }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let currentUserData;
     try {
       await authService.createUserWithEmailAndPassword(email, password);
+      await authService.onAuthStateChanged(async (user) => {
+        if (user) {
+          const image = await storageService
+            .ref()
+            .child('images/defaultImage.svg')
+            .getDownloadURL();
+          await user.updateProfile({
+            displayName: user.email,
+            photoURL: image,
+          });
+          await dbService.collection('users').doc(user.uid).set({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            providerId: user.providerId,
+          });
+          await dbService
+            .collection('users')
+            .get()
+            .then((userdatas) => {
+              userdatas.forEach((doc) => {
+                if (doc.data().uid === user.uid) {
+                  currentUserData = doc.data();
+                  userHandler(currentUserData);
+                }
+              });
+            });
+          // userHandler({
+          //   uid: user.uid,
+          //   email: user.email,
+          //   displayName: user.displayName,
+          //   photoURL: user.photoURL,
+          //   providerId: user.providerId,
+          // })
+        }
+      });
+      handleClose();
+      setEmail('');
+      setPassword('');
+      setError('');
     } catch (error) {
       let code = error.code;
       if (code === 'auth/email-already-in-use') {
@@ -30,6 +81,7 @@ const SignUp = ({ handleClose, handleOpen, show }) => {
       }
     }
   };
+
   const onClick = () => {
     handleClose();
     handleOpen();
@@ -76,4 +128,14 @@ const SignUp = ({ handleClose, handleOpen, show }) => {
   );
 };
 
-export default SignUp;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

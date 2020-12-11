@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import Card from '../utils/Card/index';
+import CardSkeleton from '../utils/Card/CardSkeleton';
+import noResultImg from './noResult.png';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import { dbService, storageService } from '../../firebase/mainbase';
 import { useEffect, useState, useMemo, Fragment } from 'react';
-
+import { cafes } from '../../cafeInfos';
 import {
   CSSTransition,
   TransitionGroup,
@@ -41,15 +43,14 @@ const WrapperTitle = styled.div`
 `;
 const CardWrapperStyle = styled.div`
   column-width: 340px;
+  columns: 3;
 
   column-gap: 20px;
-  column-count: 3;
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
-  break-inside: avoid;
-  page-break-inside: avoid;
   background-color: #ebebeb;
+
   display: block;
   &.appearingCard-enter {
     opacity: 0;
@@ -71,16 +72,51 @@ const CardWrapperStyle = styled.div`
   }
 `;
 
+const NoSearchResultContainer = styled.div`
+  margin: auto;
+  width: 60%;
+  height: auto;
+  position: relative;
+  top: 50px;
+`;
+const NoSearchResultTitle = styled.div`
+  font-size: 2rem;
+  width: 90%;
+  height: 50px;
+  text-align: center;
+  margin: auto;
+  display: block;
+  font-weight: bold;
+`;
+const NoSearchResultImg = styled.img`
+  width: 30px;
+  display: inline;
+  position: relative;
+  top: 6px;
+  margin: 3px 10px 0 4px;
+`;
+
 const CardWrapper = ({ state, cardList }) => {
+  // NOTE 화면 진입시 보여줄 스켈레톤 카드
+  let Skeleton = [
+    <Card key={1} skeletonSize="445px"></Card>,
+    <Card key={2} skeletonSize="460px"></Card>,
+    <Card key={3} skeletonSize="430px"></Card>,
+    <Card key={4} skeletonSize="470px"></Card>,
+    <Card key={5} skeletonSize="420px"></Card>,
+    <Card key={6} skeletonSize="445px"></Card>,
+  ];
   const [isTag, setIsTag] = useState(false);
   const [cards, setCards] = useState([]);
-  const [isCozyCafe, setCozyCafe] = useState([]);
-  const [isGoodForTask, setGoodForTask] = useState([]);
+  const [isCozyCafe, setCozyCafe] = useState(Skeleton);
+  const [isGoodForTask, setGoodForTask] = useState(Skeleton);
   const [currentKeyword, setCurrentKeyword] = useState('');
 
   let cardListArr = [];
   let cozyCafe = [];
   let goodForTask = [];
+
+  // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
     dbService
       .collection('CafeInformation')
@@ -92,10 +128,12 @@ const CardWrapper = ({ state, cardList }) => {
       })
       .catch(function (error) {
         console.log('Error getting documents: ', error);
+        cardList = cafes;
       })
       .finally(function () {
-        cardList(cardListArr);
+        cardListArr && cardList(cardListArr);
         setCards(cardListArr);
+
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
@@ -109,18 +147,19 @@ const CardWrapper = ({ state, cardList }) => {
         cozyCafe.length > 6
           ? (cozyCafe = cozyCafe.slice(0, 6))
           : cozyCafe.length > 3
-            ? cozyCafe.slice(0, 3)
-            : (cozyCafe = []);
+          ? cozyCafe.slice(0, 3)
+          : (cozyCafe = []);
         goodForTask.length > 6
           ? (goodForTask = goodForTask.slice(0, 6))
           : goodForTask.length > 3
-            ? goodForTask.slice(0, 3)
-            : (goodForTask = []);
+          ? goodForTask.slice(0, 3)
+          : (goodForTask = []);
         setCozyCafe(cozyCafe);
         setGoodForTask(goodForTask);
       });
   }, []);
 
+  // NOTE 태그 변화시 cards 변경
   let tags = state.tagArr ? state.tagArr.join() : '';
   useEffect(() => {
     if (tags !== '') {
@@ -134,13 +173,16 @@ const CardWrapper = ({ state, cardList }) => {
           return card.cafeTag.indexOf(tag) !== -1;
         });
       }
+
       setCards(results);
     }
 
     if (tags === '') {
+      setCards(state.cardArr);
     }
   }, [tags]);
 
+  // NOTE 키워드 변화시 cards 변경
   useEffect(() => {
     let keyword = state.keyword || '';
     let returnArr = [];
@@ -153,20 +195,55 @@ const CardWrapper = ({ state, cardList }) => {
       }
     });
     if (returnArr.length > 0) {
+      console.log(returnArr);
       setCards(returnArr);
     }
   }, [state.keyword]);
 
-  return tags === '' ? (
+  // NOTE 검색 결과 없음'
+  if (cards) {
+    if (
+      (!tags | (tags !== '')) &
+      (!state.keyword | (state.keyword !== '')) &
+      (!cards | (cards.length === 0))
+    ) {
+      return (
+        <NoSearchResultContainer>
+          <NoSearchResultTitle>
+            검색 결과가 없어요.
+            <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런 카페는
+            어떠신가요?
+          </NoSearchResultTitle>
+          <CardWrapperStyle>
+            {isGoodForTask.map((card, index) => (
+              <Card
+                key={index}
+                cafeid={card.id}
+                cafeName={card.cafeName}
+                cafeTag={card.cafeTag}
+                cafeAddress={card.cafeAddress}
+                cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                cafeStar={card.cafeStar}
+              ></Card>
+            ))}
+          </CardWrapperStyle>
+        </NoSearchResultContainer>
+      );
+    }
+  }
+  console.log(tags, state.keyword);
+  // NOTE 메인화면
+  return (!tags | (tags === '')) & (!state.keyword | (state.keyword === '')) ? (
     <CardWrapperCover>
       <WrapperTitle>
         <WrapperLineRight />
         <span>분위기 좋은 카페</span>
         <WrapperLineLeft />
       </WrapperTitle>
-      <CardWrapperStyle key={1}>
-        {isCozyCafe.map((card) => (
+      <CardWrapperStyle>
+        {isCozyCafe.map((card, index) => (
           <Card
+            key={index}
             cafeid={card.id}
             cafeName={card.cafeName}
             cafeTag={card.cafeTag}
@@ -181,9 +258,10 @@ const CardWrapper = ({ state, cardList }) => {
         <span>작업하기 좋은 카페</span>
         <WrapperLineLeft />
       </WrapperTitle>
-      <CardWrapperStyle key={2}>
-        {isGoodForTask.map((card) => (
+      <CardWrapperStyle>
+        {isGoodForTask.map((card, index) => (
           <Card
+            key={index}
             cafeid={card.id}
             cafeName={card.cafeName}
             cafeTag={card.cafeTag}
@@ -195,32 +273,34 @@ const CardWrapper = ({ state, cardList }) => {
       </CardWrapperStyle>
     </CardWrapperCover>
   ) : (
-      <CardWrapperCover>
-        <WrapperTitle>
-          <WrapperLineRight />
-          <span>검색 결과</span>
-          <WrapperLineLeft />
-        </WrapperTitle>
-        <CSSTransition
-          in={true}
-          timeout={300}
-          classNames="appearingCard"
-          mountOnEnter
-          unmountOnExit
-        >
-          <CardWrapperStyle>
-            <TransitionGroup component={null}>
-              {cards.map((card) => {
+    // NOTE 검색결과(키워드 또는 태그 => 아직은 둘 중 하나만 가능)
+    <CardWrapperCover>
+      <WrapperTitle>
+        <WrapperLineRight />
+        <span>검색 결과</span>
+        <WrapperLineLeft />
+      </WrapperTitle>
+      <CSSTransition
+        in={true}
+        timeout={300}
+        classNames="appearingCard"
+        mountOnEnter
+        unmountOnExit
+      >
+        <CardWrapperStyle>
+          <TransitionGroup component={null}>
+            {cards &&
+              cards.map((card, index) => {
                 return (
                   <CSSTransition
                     timeout={300}
                     in={true}
-                    key={card.id}
                     classNames="fadeCard"
                     mountOnEnter
                     unmountOnExit
                   >
                     <Card
+                      key={index}
                       cafeid={card.id}
                       cafeName={card.cafeName}
                       cafeTag={card.cafeTag}
@@ -231,13 +311,14 @@ const CardWrapper = ({ state, cardList }) => {
                   </CSSTransition>
                 );
               })}
-            </TransitionGroup>
-          </CardWrapperStyle>
-        </CSSTransition>
-      </CardWrapperCover>
-    );
+          </TransitionGroup>
+        </CardWrapperStyle>
+      </CSSTransition>
+    </CardWrapperCover>
+  );
 };
 function mapStateToProps(state, ownProps) {
+  console.log(state);
   return { state };
 }
 

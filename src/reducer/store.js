@@ -4,7 +4,9 @@ import { createStore } from 'redux';
 const TAGARRAY = 'TAGARRAY';
 const CARDARRAY = 'CARDARRAY';
 const KEYWORD = 'KEYWORD';
-
+const CURRENTCAFE = 'CURRENTCAFE';
+const CURRENTCAFECOMMENT = 'CURRENTCAFECOMMENT';
+const CURRENTUSER = 'CURRENTUSER';
 const tagNameArray = (tagName) => {
   return {
     type: TAGARRAY,
@@ -26,6 +28,27 @@ const searchKeyword = (keyword) => {
   };
 };
 
+const currentCafeClick = (currentCafe) => {
+  return {
+    type: CURRENTCAFE,
+    currentCafe,
+  };
+};
+
+const currentCafeComment = (currentCafeComment) => {
+  return {
+    type: CURRENTCAFECOMMENT,
+    currentCafeComment,
+  };
+};
+
+const currentUser = (user) => {
+  return {
+    type: CURRENTUSER,
+    user,
+  };
+};
+
 const reducer = (state = [], action) => {
   switch (action.type) {
     case TAGARRAY:
@@ -37,18 +60,52 @@ const reducer = (state = [], action) => {
     case CARDARRAY:
       let cardArr = action.card.slice();
       return {
+        ...state,
         cardArr,
       };
     case KEYWORD:
       let keyword = action.keyword;
-      for(let i in state) {
-        if(i === 'keyword') {
+      for (let i in state) {
+        if (i === 'keyword') {
           state[i] = keyword;
         }
       }
       return Object.assign({}, state, {
-        keyword,
         ...state,
+        keyword,
+      });
+    case CURRENTCAFECOMMENT:
+      let currentCafeComment = action.currentCafeComment;
+      for (let i in state) {
+        if (i === 'currentCafeComment') {
+          state[i] = currentCafeComment;
+        }
+      }
+      return Object.assign({}, state, {
+        ...state,
+        currentCafeComment,
+      });
+    case CURRENTCAFE:
+      let currentCafe = action.currentCafe;
+      for (let i in state) {
+        if (i === 'currentCafe') {
+          state[i] = currentCafe;
+        }
+      }
+      return Object.assign({}, state, {
+        ...state,
+        currentCafe,
+      });
+    case CURRENTUSER:
+      let user = action.user;
+      for (let i in state) {
+        if (i === 'user') {
+          state[i] = user;
+        }
+      }
+      return Object.assign({}, state, {
+        ...state,
+        user,
       });
     default:
       return state;
@@ -61,6 +118,9 @@ export const actionCreators = {
   tagNameArray,
   addCardList,
   searchKeyword,
+  currentCafeClick,
+  currentCafeComment,
+  currentUser,
 };
 
 export default store;
