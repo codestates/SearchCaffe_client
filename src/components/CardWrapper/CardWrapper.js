@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Card from '../utils/Card/index';
 import CardSkeleton from '../utils/Card/CardSkeleton';
+import noResultImg from './noResult.png';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import { dbService, storageService } from '../../firebase/mainbase';
@@ -71,7 +72,32 @@ const CardWrapperStyle = styled.div`
   }
 `;
 
+const NoSearchResultContainer = styled.div`
+  margin: auto;
+  width: 60%;
+  height: auto;
+  position: relative;
+  top: 50px;
+`;
+const NoSearchResultTitle = styled.div`
+  font-size: 2rem;
+  width: 90%;
+  height: 50px;
+  text-align: center;
+  margin: auto;
+  display: block;
+  font-weight: bold;
+`;
+const NoSearchResultImg = styled.img`
+  width: 40px;
+  display: inline;
+  position: relative;
+  top: 6px;
+  margin: 3px 10px 0 4px;
+`;
+
 const CardWrapper = ({ state, cardList }) => {
+  // NOTE 화면 진입시 보여줄 스켈레톤 카드
   let Skeleton = [
     <Card key={1} skeletonSize="445px"></Card>,
     <Card key={2} skeletonSize="460px"></Card>,
@@ -89,6 +115,8 @@ const CardWrapper = ({ state, cardList }) => {
   let cardListArr = [];
   let cozyCafe = [];
   let goodForTask = [];
+
+  // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
     dbService
       .collection('CafeInformation')
@@ -131,6 +159,7 @@ const CardWrapper = ({ state, cardList }) => {
       });
   }, []);
 
+  // NOTE 태그 변화시 cards 변경
   let tags = state.tagArr ? state.tagArr.join() : '';
   useEffect(() => {
     if (tags !== '') {
@@ -144,13 +173,16 @@ const CardWrapper = ({ state, cardList }) => {
           return card.cafeTag.indexOf(tag) !== -1;
         });
       }
+
       setCards(results);
     }
 
     if (tags === '') {
+      setCards(state.cardArr);
     }
   }, [tags]);
 
+  // NOTE 키워드 변화시 cards 변경
   useEffect(() => {
     let keyword = state.keyword || '';
     let returnArr = [];
@@ -163,11 +195,43 @@ const CardWrapper = ({ state, cardList }) => {
       }
     });
     if (returnArr.length > 0) {
+      console.log(returnArr);
       setCards(returnArr);
     }
   }, [state.keyword]);
 
-  return tags === '' ? (
+  // NOTE 검색 결과 없음
+  if (
+    (!tags | (tags !== '')) &
+    (!state.keyword | (state.keyword !== '')) &
+    (!cards | (cards.length === 0))
+  ) {
+    return (
+      <NoSearchResultContainer>
+        <NoSearchResultTitle>
+          검색 결과가 없어요.
+          <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런 카페는
+          어떠신가요?
+        </NoSearchResultTitle>
+        <CardWrapperStyle>
+          {isGoodForTask.map((card, index) => (
+            <Card
+              key={index}
+              cafeid={card.id}
+              cafeName={card.cafeName}
+              cafeTag={card.cafeTag}
+              cafeAddress={card.cafeAddress}
+              cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+              cafeStar={card.cafeStar}
+            ></Card>
+          ))}
+        </CardWrapperStyle>
+      </NoSearchResultContainer>
+    );
+  }
+
+  // NOTE 메인화면
+  return (tags === '') & (state.keyword === '') ? (
     <CardWrapperCover>
       <WrapperTitle>
         <WrapperLineRight />
@@ -207,6 +271,7 @@ const CardWrapper = ({ state, cardList }) => {
       </CardWrapperStyle>
     </CardWrapperCover>
   ) : (
+    // NOTE 검색결과(키워드 또는 태그 => 아직은 둘 중 하나만 가능)
     <CardWrapperCover>
       <WrapperTitle>
         <WrapperLineRight />
