@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../reducer/store';
 import {
   authService,
   dbService,
@@ -6,7 +8,7 @@ import {
 } from '../../firebase/mainbase';
 import '../../styles/oauth.css';
 
-const Auth = ({ handleClose }) => {
+const Auth = ({ handleClose, userHandler }) => {
   const onSocialClick = async (event) => {
     const {
       target: { name },
@@ -21,9 +23,8 @@ const Auth = ({ handleClose }) => {
     }
     const data = await authService.signInWithPopup(provider);
     const user = data.user;
+    userHandler({ ...user.providerData[0], uid: user.uid });
     const checkDB = await dbService.collection('users').doc(user.uid).get();
-    console.log(checkDB.exists);
-    console.log(user.providerData[0]);
     if (!checkDB.exists) {
       await dbService
         .collection('users')
@@ -74,4 +75,15 @@ const Auth = ({ handleClose }) => {
     </div>
   );
 };
-export default Auth;
+
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
