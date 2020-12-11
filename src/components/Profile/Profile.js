@@ -73,7 +73,7 @@ const Profile = () => {
                 src={attachment ? attachment : userInfo.photoURL}
               />
             </div>
-            <label for="input-file" className="upload-btn">
+            <label htmlFor="input-file" className="upload-btn">
               이미지 선택
             </label>
             <button

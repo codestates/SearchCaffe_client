@@ -139,9 +139,9 @@ const Card = (props) => {
     }
     props.currentCafeComment(cafeCommentArr);
   };
-  // if (!props.cafeid) {
-  //   return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
-  // }
+  if (!props.cafeid & (props.cafeid !== 0)) {
+    return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
+  }
   return (
     <LinkContent to={`/content/${props.cafeid}`}>
       <CardStyle
@@ -174,7 +174,6 @@ const Card = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { state };
 }
 
