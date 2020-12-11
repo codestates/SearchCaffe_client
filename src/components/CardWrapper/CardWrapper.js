@@ -73,12 +73,12 @@ const CardWrapperStyle = styled.div`
 
 const CardWrapper = ({ state, cardList }) => {
   let Skeleton = [
-    <Card skeletonSize="445px"></Card>,
-    <Card skeletonSize="460px"></Card>,
-    <Card skeletonSize="430px"></Card>,
-    <Card skeletonSize="470px"></Card>,
-    <Card skeletonSize="420px"></Card>,
-    <Card skeletonSize="445px"></Card>,
+    <Card key={1} skeletonSize="445px"></Card>,
+    <Card key={2} skeletonSize="460px"></Card>,
+    <Card key={3} skeletonSize="430px"></Card>,
+    <Card key={4} skeletonSize="470px"></Card>,
+    <Card key={5} skeletonSize="420px"></Card>,
+    <Card key={6} skeletonSize="445px"></Card>,
   ];
   const [isTag, setIsTag] = useState(false);
   const [cards, setCards] = useState([]);
@@ -169,14 +169,15 @@ const CardWrapper = ({ state, cardList }) => {
 
   return tags === '' ? (
     <CardWrapperCover>
-      <WrapperTitle>
+      <WrapperTitle key={1}>
         <WrapperLineRight />
         <span>분위기 좋은 카페</span>
         <WrapperLineLeft />
       </WrapperTitle>
-      <CardWrapperStyle key={1}>
-        {isCozyCafe.map((card) => (
+      <CardWrapperStyle key={2}>
+        {isCozyCafe.map((card, index) => (
           <Card
+            key={index}
             cafeid={card.id}
             cafeName={card.cafeName}
             cafeTag={card.cafeTag}
@@ -186,14 +187,15 @@ const CardWrapper = ({ state, cardList }) => {
           ></Card>
         ))}
       </CardWrapperStyle>
-      <WrapperTitle>
+      <WrapperTitle key={3}>
         <WrapperLineRight />
         <span>작업하기 좋은 카페</span>
         <WrapperLineLeft />
       </WrapperTitle>
-      <CardWrapperStyle key={2}>
-        {isGoodForTask.map((card) => (
+      <CardWrapperStyle key={4}>
+        {isGoodForTask.map((card, index) => (
           <Card
+            key={index}
             cafeid={card.id}
             cafeName={card.cafeName}
             cafeTag={card.cafeTag}
@@ -220,17 +222,17 @@ const CardWrapper = ({ state, cardList }) => {
       >
         <CardWrapperStyle>
           <TransitionGroup component={null}>
-            {cards.map((card) => {
+            {cards.map((card, index) => {
               return (
                 <CSSTransition
                   timeout={300}
                   in={true}
-                  key={card.id}
                   classNames="fadeCard"
                   mountOnEnter
                   unmountOnExit
                 >
                   <Card
+                    key={index}
                     cafeid={card.id}
                     cafeName={card.cafeName}
                     cafeTag={card.cafeTag}
