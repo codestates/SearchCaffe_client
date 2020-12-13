@@ -10,10 +10,19 @@
   color: black;
 }
 
+.tabs-wrapper {
+  width: 80%;
+  height: 140px;
+  margin: auto;
+}
+
 .tabs {
+  margin: auto;
+  display: block;
   height: 200px;
-  width: 100%;
-  vertical-align: middle;
+  width: 70%;
+  max-width: 1500px;
+
   color: black;
   line-height: 200px;
 }

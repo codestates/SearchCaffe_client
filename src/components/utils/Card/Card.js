@@ -16,7 +16,7 @@ import CardSkeleton from '../Card/CardSkeleton';
 
 const CardStyle = styled.span`
   width: 345px;
-  display: block; // inline-block => block으로 바꿨더니 해결
+  display: inline-block; // inline-block => block으로 바꿨더니 해결
   break-inside: avoid-column;
   box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
   margin: 13px 20px 10px 10px;
@@ -61,7 +61,7 @@ const CardStyle = styled.span`
 const CardImg = styled.img`
   width: 345px;
   max-height: 400px;
-  height: auto;
+  height: ${(props) => (!props.inMypage ? 'auto' : '330px')};
   min-height: 250px;
 
   border-bottom: 1px solid #dfdfdf;
@@ -134,14 +134,19 @@ const Card = (props) => {
   if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
   }
+  console.log(props);
   return (
     <LinkContent to={`/content/${props.cafeid}`}>
       <CardStyle
+        inMypage={props.inMypage}
         cafeid={props.cafeid}
         tag={props.cafeTag}
         onClick={addCurrentCafe}
       >
-        <CardImg src={props.cafeImage || defaultImg} />
+        <CardImg
+          inMypage={props.inMypage}
+          src={props.cafeImage || defaultImg}
+        />
         <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
         <CardAddress>
           <CardLocationImg src={LocationImg}></CardLocationImg>
@@ -158,7 +163,7 @@ const Card = (props) => {
             ? props.cafeTag.map((tag) => (
                 <Tag key={tag} isSmall={true} tagName={tag}></Tag>
               ))
-            : '관련 태그가 없습니다'}
+            : ''}
         </CardTags>
       </CardStyle>
     </LinkContent>
@@ -166,7 +171,7 @@ const Card = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  return { state };
+  return { state, ownProps };
 }
 
 function mapDispatchToProps(dispatch) {

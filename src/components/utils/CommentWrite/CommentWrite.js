@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
+import { actionCreators } from '../../../reducer/store';
 import { ImageModal } from '../ImageModal/ImageModal';
 import Scope from '../Scope/index';
 import Tag from '../Tag/index';
@@ -181,7 +181,7 @@ const CommentWrite = (props) => {
   const [images, setImages] = useState([]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-
+  console.log(images);
   const upLoadTaskHandler = (inputImage) => {
     if (images.length > 2) {
       return;
@@ -322,7 +322,21 @@ const CommentWrite = (props) => {
   );
 };
 
-export default CommentWrite;
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+    userProfileHandler: (profile) =>
+      dispatch(actionCreators.changeUserProfile(profile)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentWrite);
+
 // useEffect(() => {
 //   getData();
 // }, []);

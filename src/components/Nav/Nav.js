@@ -1,11 +1,13 @@
 import './Nav.css';
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import SignIn from '../Signin/SignIn';
-import { authService } from '../../firebase/mainbase';
+import { actionCreators } from '../../reducer/store';
+import { authService, dbService } from '../../firebase/mainbase';
 import { Link } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
 
-const Nav = () => {
+const Nav = ({ state, userHandler }) => {
   // const [Login, setLogin] = useState(false);
   const [showSignin, setShowSignin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -14,6 +16,13 @@ const Nav = () => {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLogin(true);
+        dbService
+          .collection('users')
+          .doc(user.uid)
+          .get()
+          .then((user) => {
+            userHandler(user.data());
+          });
       } else {
         setIsLogin(false);
       }
@@ -65,4 +74,14 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);
