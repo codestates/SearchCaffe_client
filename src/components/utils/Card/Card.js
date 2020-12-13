@@ -122,7 +122,7 @@ const Card = (props) => {
     currnetCafeObj['cafeAddress'] = props.cafeAddress;
     currnetCafeObj['cafeImage'] = props.cafeImage;
     currnetCafeObj['cafeStar'] = props.cafeStar;
-    props.currentCafe(currnetCafeObj);
+    await props.currentCafe(currnetCafeObj);
     try {
       const data = await dbService.collection('CafeComment').get();      
       data.forEach((doc) => {
@@ -133,7 +133,7 @@ const Card = (props) => {
     } catch (error) {
       console.log("error" + error)
     }
-    props.currentCafeComment(cafeCommentArr);
+    await props.currentCafeComment(cafeCommentArr);
   };
   if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;

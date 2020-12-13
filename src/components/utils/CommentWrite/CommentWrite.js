@@ -9,7 +9,8 @@ import Blank from './images/BlankImg.png';
 import enlargeImg from './images/enlarge.png';
 import removeImg from './images/remove.png';
 import loading from './images/loading.svg';
-import { storageService } from '../../../firebase/mainbase';
+import { storageService, dbService } from '../../../firebase/mainbase';
+import { actionCreators } from '../../../reducer/store';
 
 const CommentWriteStyle = styled.div`
   display: block;
@@ -173,155 +174,189 @@ const commentTags = [
   '바다가 보이는',
 ];
 
-const CommentWrite = (props) => {
+const CommentWrite = ({currentCafe, comment, user, handleModal}) => {
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
-  const [comment, setComment] = useState('');
+  const [submitComment, setSubmitComment] = useState('');
   const [images, setImages] = useState([]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
+  
+  const submitCommentWrite = async() => {
+    await dbService.collection('CafeComment').doc(`${currentCafe.cafeid}&${comment.length+1}`).set({
+      cafeId : currentCafe.cafeid,
+      commentId : comment.length+1,
+      userComment : submitComment,
+      userImg : images,
+      userStar : scope,
+      username : user.displayName
+    });
+    handleModal();
+  }
 
-  const upLoadTaskHandler = (inputImage) => {
-    if (images.length > 2) {
-      return;
-    }
-    setImages((preImages) => [...preImages, loading]);
-    const upLoadTask = storageService
-      .ref(`commentImage/${inputImage.name}`)
-      .put(inputImage);
-    upLoadTask.on(
-      'state_changed',
-      (snapshot) => {},
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        storageService
-          .ref('commentImage')
-          .child(inputImage.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImages((preImages) => {
-              preImages.splice(preImages.length - 1, 1, url);
-              return [...preImages];
-            });
-          });
+    const upLoadTaskHandler = (inputImage) => {
+      if (images.length > 2) {
+        return;
       }
+      setImages((preImages) => [...preImages, loading]);
+      // const reader = new FileReader();
+      // reader.onloadend = (finishedEvent) => {
+      //   const {
+      //     currentTarget: { result },
+      //   } = finishedEvent;
+      //   setImages([...result,loading]);
+      //   console.log("result :" + result);
+      // }
+      // reader.readAsDataURL(inputImage);
+      const upLoadTask = storageService
+        .ref(`commentImage/${inputImage.name}`)
+        .put(inputImage);
+      upLoadTask.on(
+        'state_changed',
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          storageService
+            .ref('commentImage')
+            .child(inputImage.name)
+            .getDownloadURL()
+            .then((url) => {
+              setImages((preImages) => {
+                preImages.splice(preImages.length - 1, 1, url);
+                return [...preImages];
+              });
+            });
+        }
+      );
+    };
+
+    const handleTags = (tag) => {
+      if (selectedTags.indexOf(tag) === -1) {
+        setTags((pres) => {
+          let tempTags = pres;
+          tempTags.push(tag);
+          setTags(tempTags);
+        });
+      } else {
+        setTags((pres) => {
+          let tempTags = pres;
+          tempTags.splice(pres.indexOf(tag), 1);
+          setTags(tempTags);
+        });
+      }
+    };
+    const handleImageRemove = (index) => {
+      setImages((pres) => {
+        pres.splice(index, 1);
+        return [...pres];
+      });
+    };
+    const handleImageEnlarge = (index) => {
+      setCurrentImg(images[index]);
+      setModal((pres) => !pres);
+    };
+    const handleUnEnlarge = () => {
+      setModal((pres) => !pres);
+    };
+
+    return (
+      <CommentWriteStyle>
+        <UserAndScope>
+          <CommentTitle>카페에 대한 리뷰를 작성해주세요</CommentTitle>
+          <ScopeContainer>
+            <Scope setScope={setScope}></Scope>
+          </ScopeContainer>
+        </UserAndScope>
+
+        <TagWrapper>
+          {commentTags.map((tag) => (
+            <span
+              key={tag}
+              onClick={() => {
+                handleTags(tag);
+              }}
+            >
+              <Tag
+                tagName={tag}
+                isSmall={true}
+                color="white"
+                isButton={true}
+              ></Tag>
+            </span>
+          ))}
+        </TagWrapper>
+        <CommentInput
+          onChange={(e) => {
+            setSubmitComment(e.target.value);
+          }}
+        ></CommentInput>
+        <CommentImgWrapper>
+          <UploadImg>
+            <UploadImgInput
+              type="file"
+              onChange={(e) => {
+                if (e.target.files[0]) {
+                  upLoadTaskHandler(e.target.files[0]);
+                }
+              }}
+            ></UploadImgInput>
+          </UploadImg>
+
+          {images.map((image, index) => {
+            return (
+              <Uploaded key={index}>
+                <UploadedImgCover key={index}>
+                  <RemoveImg
+                    data-index={index}
+                    onClick={(e) => {
+                      handleImageRemove(e.target.dataset.index);
+                    }}
+                    src={removeImg}
+                  ></RemoveImg>
+                  <EnlargeImg
+                    data-index={index}
+                    onClick={(e) => {
+                      handleImageEnlarge(e.target.dataset.index);
+                    }}
+                    src={enlargeImg}
+                  ></EnlargeImg>
+                </UploadedImgCover>
+                <UploadedImg src={image} key={image.name}></UploadedImg>
+              </Uploaded>
+            );
+          })}
+          <ButtonWrapper>
+            <CommentSubmitButton onClick={submitCommentWrite}>
+              제출
+            </CommentSubmitButton>
+            <CommentOutButton onClick={handleModal}>나가기 </CommentOutButton>
+          </ButtonWrapper>
+        </CommentImgWrapper>
+        {imageModal ? (
+          <ImageModal
+            image={currentImg}
+            unEnlarge={handleUnEnlarge}
+          ></ImageModal>
+        ) : (
+          ''
+        )}
+      </CommentWriteStyle>
     );
   };
 
-  const handleTags = (tag) => {
-    if (selectedTags.indexOf(tag) === -1) {
-      setTags((pres) => {
-        let tempTags = pres;
-        tempTags.push(tag);
-        setTags(tempTags);
-      });
-    } else {
-      setTags((pres) => {
-        let tempTags = pres;
-        tempTags.splice(pres.indexOf(tag), 1);
-        setTags(tempTags);
-      });
-    }
-  };
-  const handleImageRemove = (index) => {
-    setImages((pres) => {
-      pres.splice(index, 1);
-      return [...pres];
-    });
-  };
-  const handleImageEnlarge = (index) => {
-    setCurrentImg(images[index]);
-    setModal((pres) => !pres);
-  };
-  const handleUnEnlarge = () => {
-    setModal((pres) => !pres);
-  };
+function mapStateToProps(state, ownProps) {
+  return { ...state };
+}
 
-  return (
-    <CommentWriteStyle>
-      <UserAndScope>
-        <CommentTitle>카페에 대한 리뷰를 작성해주세요</CommentTitle>
-        <ScopeContainer>
-          <Scope setScope={setScope}></Scope>
-        </ScopeContainer>
-      </UserAndScope>
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
 
-      <TagWrapper>
-        {commentTags.map((tag) => (
-          <span
-            key={tag}
-            onClick={() => {
-              handleTags(tag);
-            }}
-          >
-            <Tag
-              tagName={tag}
-              isSmall={true}
-              color="white"
-              isButton={true}
-            ></Tag>
-          </span>
-        ))}
-      </TagWrapper>
-      <CommentInput
-        onChange={(e) => {
-          setComment(e.target.value);
-        }}
-      ></CommentInput>
-      <CommentImgWrapper>
-        <UploadImg>
-          <UploadImgInput
-            type="file"
-            onChange={(e) => {
-              if (e.target.files[0]) {
-                upLoadTaskHandler(e.target.files[0]);
-              }
-            }}
-          ></UploadImgInput>
-        </UploadImg>
-
-        {images.map((image, index) => {
-          return (
-            <Uploaded>
-              <UploadedImgCover>
-                <RemoveImg
-                  data-index={index}
-                  onClick={(e) => {
-                    handleImageRemove(e.target.dataset.index);
-                  }}
-                  src={removeImg}
-                ></RemoveImg>
-                <EnlargeImg
-                  data-index={index}
-                  onClick={(e) => {
-                    handleImageEnlarge(e.target.dataset.index);
-                  }}
-                  src={enlargeImg}
-                ></EnlargeImg>
-              </UploadedImgCover>
-              <UploadedImg src={image} key={image.name}></UploadedImg>
-            </Uploaded>
-          );
-        })}
-        <ButtonWrapper>
-          <CommentSubmitButton>제출</CommentSubmitButton>
-          <CommentOutButton onClick={props.handleModal}>
-            나가기{' '}
-          </CommentOutButton>
-        </ButtonWrapper>
-      </CommentImgWrapper>
-      {imageModal ? (
-        <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
-      ) : (
-        ''
-      )}
-    </CommentWriteStyle>
-  );
-};
-
-export default CommentWrite;
+export default connect(mapStateToProps, mapDispatchToProps)(CommentWrite);
 // useEffect(() => {
 //   getData();
 // }, []);

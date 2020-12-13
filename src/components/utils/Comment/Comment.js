@@ -99,6 +99,7 @@ const Comment = (props) => {
   const [currentImg, setCurrentImg] = useState('');
 
   useEffect(() => {
+    console.log("props :" + props);
     setImages(props.userComment.userImg);
   }, []);
 
@@ -183,7 +184,7 @@ const Comment = (props) => {
 
 function mapStateToProps(state, ownProps) {
   console.log(state);
-  return { state };
+  return { ...state };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -195,5 +196,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default Comment;
 
