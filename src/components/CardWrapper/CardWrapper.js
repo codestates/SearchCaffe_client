@@ -131,7 +131,7 @@ const CardWrapper = ({ state, cardList }) => {
         cardList = cafes;
       })
       .finally(function () {
-        cardListArr && cardList(cardListArr);
+        cardList(cardListArr);
         setCards(cardListArr);
 
         cozyCafe = cardListArr.filter((card) =>
@@ -194,10 +194,13 @@ const CardWrapper = ({ state, cardList }) => {
         returnArr.push(card);
       }
     });
-    if (returnArr.length > 0) {
-      console.log(returnArr);
-      setCards(returnArr);
-    }
+    setCards(returnArr);
+    // if (returnArr.length > 0) {
+    //   console.log(returnArr);
+    //   setCards(returnArr);
+    // } else {
+    //   returnArr
+    // }
   }, [state.keyword]);
 
   // NOTE 검색 결과 없음'
@@ -231,7 +234,6 @@ const CardWrapper = ({ state, cardList }) => {
       );
     }
   }
-  console.log(tags, state.keyword);
   // NOTE 메인화면
   return (!tags | (tags === '')) & (!state.keyword | (state.keyword === '')) ? (
     <CardWrapperCover>
