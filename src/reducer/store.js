@@ -6,7 +6,7 @@ const CARDARRAY = 'CARDARRAY';
 const KEYWORD = 'KEYWORD';
 const CURRENTCAFE = 'CURRENTCAFE';
 const CURRENTCAFECOMMENT = 'CURRENTCAFECOMMENT';
-
+const CURRENTUSER = 'CURRENTUSER';
 const tagNameArray = (tagName) => {
   return {
     type: TAGARRAY,
@@ -42,6 +42,13 @@ const currentCafeComment = (comment) => {
   };
 };
 
+const currentUser = (user) => {
+  return {
+    type: CURRENTUSER,
+    user,
+  };
+};
+
 const reducer = (state = [], action) => {
   switch (action.type) {
     case TAGARRAY:
@@ -53,6 +60,7 @@ const reducer = (state = [], action) => {
     case CARDARRAY:
       let cardArr = action.card.slice();
       return {
+        ...state,
         cardArr,
       };
     case KEYWORD:
@@ -63,8 +71,8 @@ const reducer = (state = [], action) => {
         }
       }
       return Object.assign({}, state, {
-        keyword,
         ...state,
+        keyword,
       });
     case CURRENTCAFECOMMENT:
       let comment = action.comment;
@@ -74,8 +82,8 @@ const reducer = (state = [], action) => {
         }
       }
       return Object.assign({}, state, {
-        comment,
         ...state,
+        currentCafeComment,
       });
     case CURRENTCAFE:
       let currentCafe = action.currentCafe;
@@ -85,8 +93,19 @@ const reducer = (state = [], action) => {
         }
       }
       return Object.assign({}, state, {
-        currentCafe,
         ...state,
+        currentCafe,
+      });
+    case CURRENTUSER:
+      let user = action.user;
+      for (let i in state) {
+        if (i === 'user') {
+          state[i] = user;
+        }
+      }
+      return Object.assign({}, state, {
+        ...state,
+        user,
       });
     default:
       return state;
@@ -101,6 +120,7 @@ export const actionCreators = {
   searchKeyword,
   currentCafeClick,
   currentCafeComment,
+  currentUser,
 };
 
 export default store;
