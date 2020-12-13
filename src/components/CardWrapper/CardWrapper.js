@@ -194,17 +194,20 @@ const CardWrapper = ({ state, cardList }) => {
         returnArr.push(card);
       }
     });
-    if (returnArr.length > 0) {
-      console.log(returnArr);
-      setCards(returnArr);
-    }
+    setCards(returnArr);
+    // if (returnArr.length > 0) {
+    //   console.log(returnArr);
+    //   setCards(returnArr);
+    // } else {
+    //   returnArr
+    // }
   }, [state.keyword]);
 
   // NOTE 검색 결과 없음
   if (
     (!tags | (tags !== '')) &
     (!state.keyword | (state.keyword !== '')) &
-    (!cards | (cards.length === 0))
+    (!cards | !cards ? '' : cards.length === 0)
   ) {
     return (
       <NoSearchResultContainer>
@@ -231,7 +234,7 @@ const CardWrapper = ({ state, cardList }) => {
   }
 
   // NOTE 메인화면
-  return (tags === '') & (state.keyword === '') ? (
+  return tags === '' && state.keyword === '' ? (
     <CardWrapperCover>
       <WrapperTitle>
         <WrapperLineRight />
@@ -287,27 +290,30 @@ const CardWrapper = ({ state, cardList }) => {
       >
         <CardWrapperStyle>
           <TransitionGroup component={null}>
-            {cards.map((card, index) => {
-              return (
-                <CSSTransition
-                  timeout={300}
-                  in={true}
-                  classNames="fadeCard"
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <Card
-                    key={index}
-                    cafeid={card.id}
-                    cafeName={card.cafeName}
-                    cafeTag={card.cafeTag}
-                    cafeAddress={card.cafeAddress}
-                    cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                    cafeStar={card.cafeStar}
-                  />
-                </CSSTransition>
-              );
-            })}
+            {!cards
+              ? ''
+              : cards.map((card, index) => {
+                  return (
+                    <CSSTransition
+                      key={index}
+                      timeout={300}
+                      in={true}
+                      classNames="fadeCard"
+                      mountOnEnter
+                      unmountOnExit
+                    >
+                      <Card
+                        key={index}
+                        cafeid={card.id}
+                        cafeName={card.cafeName}
+                        cafeTag={card.cafeTag}
+                        cafeAddress={card.cafeAddress}
+                        cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                        cafeStar={card.cafeStar}
+                      />
+                    </CSSTransition>
+                  );
+                })}
           </TransitionGroup>
         </CardWrapperStyle>
       </CSSTransition>
@@ -315,6 +321,7 @@ const CardWrapper = ({ state, cardList }) => {
   );
 };
 function mapStateToProps(state, ownProps) {
+  console.log(state);
   return { state };
 }
 

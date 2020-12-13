@@ -126,16 +126,12 @@ const Card = (props) => {
     try {
       const data = await dbService.collection('CafeComment').get();      
       data.forEach((doc) => {
-        console.log("data :" + doc.data().cafeId);
         if (props.cafeid === doc.data().cafeId) {
           cafeCommentArr.push(doc.data());
         }
       });
     } catch (error) {
       console.log("error" + error)
-    }
-    for(let i in cafeCommentArr[0]) {
-      console.log("cafeCommentArr :" + i);
     }
     props.currentCafeComment(cafeCommentArr);
   };
