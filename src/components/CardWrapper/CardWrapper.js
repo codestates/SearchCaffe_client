@@ -203,36 +203,6 @@ const CardWrapper = ({ state, cardList }) => {
     // }
   }, [state.keyword]);
 
-<<<<<<< HEAD
-  // NOTE 검색 결과 없음
-  if (
-    (!tags | (tags !== '')) &
-    (!state.keyword | (state.keyword !== '')) &
-    (!cards | !cards ? '' : cards.length === 0)
-  ) {
-    return (
-      <NoSearchResultContainer>
-        <NoSearchResultTitle>
-          검색 결과가 없어요.
-          <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런 카페는
-          어떠신가요?
-        </NoSearchResultTitle>
-        <CardWrapperStyle>
-          {isGoodForTask.map((card, index) => (
-            <Card
-              key={index}
-              cafeid={card.id}
-              cafeName={card.cafeName}
-              cafeTag={card.cafeTag}
-              cafeAddress={card.cafeAddress}
-              cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-              cafeStar={card.cafeStar}
-            ></Card>
-          ))}
-        </CardWrapperStyle>
-      </NoSearchResultContainer>
-    );
-=======
   // NOTE 검색 결과 없음'
   if (cards) {
     if (
@@ -263,15 +233,10 @@ const CardWrapper = ({ state, cardList }) => {
         </NoSearchResultContainer>
       );
     }
->>>>>>> 3829860303e18fa22c666f4272b344bc6b211406
   }
   console.log(tags, state.keyword);
   // NOTE 메인화면
-<<<<<<< HEAD
-  return tags === '' && state.keyword === '' ? (
-=======
   return (!tags | (tags === '')) & (!state.keyword | (state.keyword === '')) ? (
->>>>>>> 3829860303e18fa22c666f4272b344bc6b211406
     <CardWrapperCover>
       <WrapperTitle>
         <WrapperLineRight />
@@ -327,32 +292,6 @@ const CardWrapper = ({ state, cardList }) => {
       >
         <CardWrapperStyle>
           <TransitionGroup component={null}>
-<<<<<<< HEAD
-            {!cards
-              ? ''
-              : cards.map((card, index) => {
-                  return (
-                    <CSSTransition
-                      key={index}
-                      timeout={300}
-                      in={true}
-                      classNames="fadeCard"
-                      mountOnEnter
-                      unmountOnExit
-                    >
-                      <Card
-                        key={index}
-                        cafeid={card.id}
-                        cafeName={card.cafeName}
-                        cafeTag={card.cafeTag}
-                        cafeAddress={card.cafeAddress}
-                        cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                        cafeStar={card.cafeStar}
-                      />
-                    </CSSTransition>
-                  );
-                })}
-=======
             {cards &&
               cards.map((card, index) => {
                 return (
@@ -375,7 +314,6 @@ const CardWrapper = ({ state, cardList }) => {
                   </CSSTransition>
                 );
               })}
->>>>>>> 3829860303e18fa22c666f4272b344bc6b211406
           </TransitionGroup>
         </CardWrapperStyle>
       </CSSTransition>
