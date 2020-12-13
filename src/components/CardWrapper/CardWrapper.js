@@ -320,7 +320,6 @@ const CardWrapper = ({ state, cardList }) => {
   );
 };
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { state };
 }
 

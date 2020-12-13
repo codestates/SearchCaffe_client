@@ -42,7 +42,6 @@ const Content = ({ state }) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { state };
 }
 

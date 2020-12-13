@@ -83,7 +83,7 @@ const reducer = (state = [], action) => {
       }
       return Object.assign({}, state, {
         ...state,
-        currentCafeComment,
+        comment,
       });
     case CURRENTCAFE:
       let currentCafe = action.currentCafe;
