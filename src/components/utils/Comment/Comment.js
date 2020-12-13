@@ -24,6 +24,23 @@ const UserAndScope = styled.h3`
 
   display: relative;
 `;
+
+const DeleteButton = styled.button`
+  display: inline;
+  text-align: center;
+  text-decoration: none;
+  display: relative;
+`;
+
+const ModifyButton = styled.button`
+  display: inline;
+  margin-left: 50%;
+  margin-right: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: relative;
+`;
+
 const UserName = styled.span``;
 const ScopeContainer = styled.span`
   margin-left: 30px;
@@ -99,7 +116,6 @@ const Comment = (props) => {
   const [currentImg, setCurrentImg] = useState('');
 
   useEffect(() => {
-    console.log("props :" + props);
     setImages(props.userComment.userImg);
   }, []);
 
@@ -110,6 +126,10 @@ const Comment = (props) => {
   const handleUnEnlarge = () => {
     setModal((pres) => !pres);
   };
+
+  const deleteComment = () => {
+
+  }
 
   return (
     <CommentStyle>
@@ -125,7 +145,8 @@ const Comment = (props) => {
           ></Scope>
         </ScopeContainer>
       </UserAndScope>
-
+      <ModifyButton>수정</ModifyButton>
+      <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
       <TagWrapper>
         {props.userComment.userTag
           ? props.userComment.userTag.map((tag) => {
@@ -197,4 +218,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default Comment;
-

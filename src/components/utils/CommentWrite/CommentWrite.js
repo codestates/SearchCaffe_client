@@ -191,6 +191,7 @@ const CommentWrite = ({currentCafe, comment, user, handleModal}) => {
       userStar : scope,
       username : user.displayName
     });
+    console.log("images :" + images);
     handleModal();
   }
 
