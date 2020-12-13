@@ -234,7 +234,6 @@ const CardWrapper = ({ state, cardList }) => {
       );
     }
   }
-  console.log(tags, state.keyword);
   // NOTE 메인화면
   return (!tags | (tags === '')) & (!state.keyword | (state.keyword === '')) ? (
     <CardWrapperCover>
