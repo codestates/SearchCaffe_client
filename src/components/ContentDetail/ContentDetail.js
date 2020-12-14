@@ -59,7 +59,6 @@ const Ul = styled.ul`
     display:table;
     width:100%;
     }
-  }
 `;
 
 const DetailBoxWrapper = styled.div`

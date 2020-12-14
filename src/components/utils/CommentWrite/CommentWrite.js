@@ -192,7 +192,7 @@ const CommentWrite = (props) => {
       .put(inputImage);
     upLoadTask.on(
       'state_changed',
-      (snapshot) => {},
+      (snapshot) => { },
       (error) => {
         console.log(error);
       },
@@ -316,8 +316,8 @@ const CommentWrite = (props) => {
       {imageModal ? (
         <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
       ) : (
-        ''
-      )}
+          ''
+        )}
     </CommentWriteStyle>
   );
 };

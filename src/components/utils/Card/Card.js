@@ -156,8 +156,8 @@ const Card = (props) => {
         <CardTags>
           {props.cafeTag
             ? props.cafeTag.map((tag) => (
-                <Tag key={tag} isSmall={true} tagName={tag}></Tag>
-              ))
+              <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+            ))
             : '관련 태그가 없습니다'}
         </CardTags>
       </CardStyle>
