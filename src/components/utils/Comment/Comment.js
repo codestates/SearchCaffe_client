@@ -109,17 +109,47 @@ const Divide = styled.div`
   width: 93%;
 `;
 
-const Comment = (props) => {
-  console.log(props);
-  // const upLoadTask = storageService.ref('images');
+const BackGroundCover = styled.div`
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(220, 220, 220, 0.94);
+  z-index: 1;
+`;
+
+const Detail3 = styled.div`
+  width: 90%;
+  height: 100%;
+  margin: auto;
+  max-width: 1500px;
+  position: relative;
+  background: #fafafa;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+
+  margin-top: 5rem;
+  padding-top: 48px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e9ecef;
+`;
+
+const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
+  const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-  console.log(images);
+  const [beforeModify, setBeforeModify] = useState();
   useEffect(() => {
-    console.log('props :' + props);
-    setImages(props.userComment.userImg);
+    setImages(userComment.userImg);
   }, []);
+
+  const handleModal = () => {
+    setCommentModal((pres) => !pres);
+  };
 
   const handleImageEnlarge = (index) => {
     setCurrentImg(images[index]);
@@ -144,9 +174,8 @@ const Comment = (props) => {
       let cafeCommentArr = [];
       const data = await dbService.collection('CafeComment').get();
       data.forEach((commentData) => {
-        console.log("currentCafe :" + currentCafe.cafeid);
+        console.log('currentCafe :' + currentCafe.cafeid);
         if (currentCafe.cafeid === commentData.data().cafeId) {
-          console.log("commentData :" + commentData.data());
           cafeCommentArr.push(commentData.data());
         }
       });
@@ -154,8 +183,22 @@ const Comment = (props) => {
     } catch (error) {
       console.error('CafeComment get Error :' + error);
     }
+    setCommentModal(false);
   };
-  const modifyComment = () => {};
+  const modifyComment = async () => {
+    try {
+      const data = await dbService
+        .collection('CafeComment')
+        .doc(`${userComment.cafeId}&${userComment.commentId}`)
+        .get()
+      
+      const tempObj = await data.data();
+      setBeforeModify(tempObj);
+      setCommentModal((pres) => !pres);
+    } catch (error) {
+      console.error(`can't find ModifyComment:` + error);
+    } 
+  };
 
   return (
     <CommentStyle>
@@ -163,6 +206,17 @@ const Comment = (props) => {
         <UserName>
           {userComment.username ? userComment.username : '게스트'}
         </UserName>
+        {commentModal ? (
+          <>
+            <Detail3>
+              <BackGroundCover>
+                <CommentWrite onChange={commentModal} beforeModify={beforeModify} handleModal={handleModal}></CommentWrite>
+              </BackGroundCover>
+            </Detail3>
+          </>
+        ) : (
+          ''
+        )}
         <ScopeContainer>
           <Scope
             isScope={true}
@@ -172,7 +226,7 @@ const Comment = (props) => {
         </ScopeContainer>
       </UserAndScope>
       {userComment.username === user.displayName ? (
-        <ModifyButton>수정</ModifyButton>
+        <ModifyButton onClick={modifyComment}>수정</ModifyButton>
       ) : (
         ''
       )}
@@ -230,15 +284,8 @@ const Comment = (props) => {
     </CommentStyle>
   );
 };
-// function mapStateToProps(state, ownProps) {
-
-//   return { state };
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Content);
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { ...state, ownProps };
 }
 
@@ -248,5 +295,4 @@ function mapDispatchToProps(dispatch) {
       dispatch(actionCreators.currentCafeComment(comment)),
   };
 }
-
-export default Comment;
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

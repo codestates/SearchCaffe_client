@@ -34,10 +34,6 @@ const BackGroundCover = styled.div`
 `;
 
 const ContentComment = ({ comment }) => {
-<<<<<<< HEAD
-=======
-  console.log(comment);
->>>>>>> 1f899da1fb01df2d349f90afe5542d81ed4e296d
   const [commentModal, setModal] = useState(false);
   const handleModal = () => {
     setModal((pres) => !pres);
@@ -56,39 +52,19 @@ const ContentComment = ({ comment }) => {
       ) : (
         ''
       )}
-<<<<<<< HEAD
-      {!comment
-        ? ''
-        : comment.map((userComment, index) => {
-            return <Comment key={index} userComment={userComment}></Comment>;
-          })}
-=======
       {!comment ? (
-        <h1>없다</h1>
+        ''
       ) : (
         comment.map((userComment, index) => {
-          console.log('userComment :' + userComment['cafeId']);
           return <Comment key={index} userComment={userComment}></Comment>;
         })
       )}
-      {/* {cafeComment.filter((comment) => comment.cafeId === 0).length !== 0
-        ? cafeComment
-            .filter((comment) => comment.cafeId === 0)
-            .map((userComment, index) => (
-              <Comment key={index} userComment={userComment}></Comment>
-            ))
-        : ''} */}
->>>>>>> 1f899da1fb01df2d349f90afe5542d81ed4e296d
     </Detail3>
   );
 };
 function mapStateToProps(state, ownProps) {
   console.log(state);
-<<<<<<< HEAD
-  return { ...state };
-=======
   return { ...state, ownProps };
->>>>>>> 1f899da1fb01df2d349f90afe5542d81ed4e296d
 }
 
 function mapDispatchToProps(dispatch) {

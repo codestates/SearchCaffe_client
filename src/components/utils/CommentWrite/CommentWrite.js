@@ -173,7 +173,14 @@ const commentTags = [
   '바다가 보이는',
 ];
 
-const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
+const CommentWrite = ({
+  currentCafe,
+  comment,
+  user,
+  handleModal,
+  currentCafeComment,
+  beforeModify
+}) => {
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [submitComment, setSubmitComment] = useState('');
@@ -181,8 +188,20 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
   const [imagesRowData, setImagesRowData] = useState([]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
+  const [modifyObj, setModifyObj] = useState({});
+
+  useEffect(() => {
+    if(beforeModify) {
+      setModifyObj(beforeModify);
+      // setTags(beforeModify.userTag);
+      // setSubmitComment(modifyObj.userComment);
+      setImages(beforeModify.userImg);
+      // setScope(beforeModify.userStar);
+    }
+  },[])
 
   const submitCommentWrite = async () => {
+    console.log("Setting Work!");
     async function upLoadTaskPromise(image) {
       const upLoadTask = storageService
         .ref(`commentImage/${image.name}`)
@@ -205,33 +224,96 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
         );
       });
     }
-    console.log('before', images);
     for (let i = 0; i < imagesRowData.length; i++) {
-      let name = `${user.email}'s ${
-        comment[comment.length - 1].commentId + 1
-      }nth comment's ${i}nth image`;
       let url = await upLoadTaskPromise(imagesRowData[i]);
       setImages((pres) => {
         pres[i] = url;
         return pres;
       });
     }
-
-    console.log('after', images);
-    await dbService
-      .collection('CafeComment')
-      .doc(`${currentCafe.cafeid}&${comment.length + 1}`)
-      .set({
-        cafeId: currentCafe.cafeid,
-        commentId: comment.length + 1,
-        userComment: submitComment,
-        userImg: images,
-        userStar: scope,
-        username: user.displayName,
-      });
+    settingCommentData();
     handleModal();
+    refreshCommentData();
   };
 
+  const submitModifyCommentWrite = async () => {
+    console.log("Modify Work!");
+    async function upLoadTaskPromise(image) {
+      const upLoadTask = storageService
+        .ref(`commentImage/${image.name}`)
+        .put(image);
+      return new Promise((res, rej) => {
+        upLoadTask.on(
+          'state_changed',
+          (snapshot) => {},
+          (error) => {
+            console.log(error);
+            rej();
+          },
+          async () => {
+            let url = await storageService
+              .ref('commentImage')
+              .child(image.name)
+              .getDownloadURL();
+            res(url);
+          }
+        );
+      });
+    }
+    for (let i = 0; i < imagesRowData.length; i++) {
+      let url = await upLoadTaskPromise(imagesRowData[i]);
+      setImages((pres) => {
+        pres[i] = url;
+        return pres;
+      });
+    }
+    updateCommentData();
+    handleModal();
+    refreshCommentData();
+  }
+
+  const refreshCommentData = async() => {
+    try {
+      let cafeCommentArr = [];
+      const data = await dbService.collection('CafeComment').get();
+      data.forEach((commentData) => {
+        if (currentCafe.cafeid === commentData.data().cafeId) {
+          cafeCommentArr.push(commentData.data());
+        }
+      });
+      currentCafeComment(cafeCommentArr);
+    } catch (error) {
+      console.error('CafeComment get Error :' + error);
+    }
+  }
+
+  const settingCommentData = async() => {
+    console.log("commentId :" + (comment.length + 1));
+    await dbService
+        .collection('CafeComment')
+        .doc(`${currentCafe.cafeid}&${(comment.length + 1)}`)
+        .set({
+          cafeId: currentCafe.cafeid,
+          commentId: comment.length + 1,
+          userComment: submitComment,
+          userImg: images,
+          userStar: scope,
+          username: user.displayName,
+          userTag : selectedTags
+        });
+  }
+
+  const updateCommentData = async() => {
+    await dbService
+    .collection('CafeComment')
+    .doc(`${beforeModify.cafeId}&${beforeModify.commentId}`)
+    .update({
+      userComment: submitComment,
+      userImg: images,
+      userStar: scope,
+      userTag : selectedTags
+    });
+  }  
   const upLoadTaskHandler = (inputImage) => {
     if (images.length > 2) {
       return;
@@ -275,7 +357,6 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
       pres.splice(index, 1);
       return [...pres];
     });
-    console.log(images, imagesRowData);
   };
   const handleImageEnlarge = (index) => {
     setCurrentImg(images[index]);
@@ -290,7 +371,7 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
       <UserAndScope>
         <CommentTitle>카페에 대한 리뷰를 작성해주세요</CommentTitle>
         <ScopeContainer>
-          <Scope setScope={setScope}></Scope>
+          <Scope setScope={setScope} modifyScope={beforeModify ? beforeModify.userStar : ''}></Scope>
         </ScopeContainer>
       </UserAndScope>
 
@@ -307,6 +388,7 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
               isSmall={true}
               color="white"
               isButton={true}
+              modifyTag={beforeModify ? beforeModify.userTag : ''}
             ></Tag>
           </span>
         ))}
@@ -315,7 +397,7 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
         onChange={(e) => {
           setSubmitComment(e.target.value);
         }}
-      ></CommentInput>
+      >{beforeModify ? beforeModify.userComment : ''}</CommentInput>
       <CommentImgWrapper>
         <UploadImg>
           <UploadImgInput
@@ -352,10 +434,10 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
           );
         })}
         <ButtonWrapper>
-          <CommentSubmitButton onClick={submitCommentWrite}>
+          <CommentSubmitButton onClick={beforeModify ? submitModifyCommentWrite :submitCommentWrite}>
             제출
           </CommentSubmitButton>
-          <CommentOutButton onClick={handleModal}>나가기 </CommentOutButton>
+          <CommentOutButton onClick={handleModal}>나가기</CommentOutButton>
         </ButtonWrapper>
       </CommentImgWrapper>
       {imageModal ? (
@@ -377,44 +459,9 @@ function mapDispatchToProps(dispatch) {
     userHandler: (user) => dispatch(actionCreators.currentUser(user)),
     userProfileHandler: (profile) =>
       dispatch(actionCreators.changeUserProfile(profile)),
+    currentCafeComment: (comment) =>
+      dispatch(actionCreators.currentCafeComment(comment)),
   };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentWrite);
-
-// useEffect(() => {
-//   getData();
-// }, []);
-// const getData = async () => {
-//   const data = await storageService.ref().child('cafeImage');
-//   console.log(data);
-// };
-
-// const [isFile, setIsFile] = useState();
-// const onFileChange = (e) => {
-//   const {
-//     target: { files },
-//   } = e;
-//   const theFile = files[0];
-//   const reader = new FileReader();
-//   reader.onloadend = (e) => {
-//     const {
-//       currentTarget: { result },
-//     } = e;
-//     setIsFile(result);
-//   };
-//   reader.readAsDataURL(theFile);
-// };
-// const onSubmit = async (event) => {
-//   event.preventDefault();
-//   const fileRef = storageService.ref().child(`cafeImage/practice`);
-//   const response = await fileRef.putString(isFile, 'data_url');
-//   const publirUrl = await response.ref.getDownloadURL();
-//   console.log(publirUrl);
-// };
-
-// function mapStateToProps(state, ownProps) {
-//   return { state };
-// }
-
-// export default connect(mapStateToProps)(CommentWrite);
