@@ -109,14 +109,16 @@ const Divide = styled.div`
   width: 93%;
 `;
 
-const Comment = ({ userComment, user, currentCafe, currentCafeComment }) => {
+const Comment = (props) => {
+  console.log(props);
   // const upLoadTask = storageService.ref('images');
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-
+  console.log(images);
   useEffect(() => {
-    setImages(userComment.userImg);
+    console.log('props :' + props);
+    setImages(props.userComment.userImg);
   }, []);
 
   const handleImageEnlarge = (index) => {
@@ -237,7 +239,7 @@ const Comment = ({ userComment, user, currentCafe, currentCafeComment }) => {
 
 function mapStateToProps(state, ownProps) {
   console.log(state);
-  return { ...state };
+  return { ...state, ownProps };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -247,4 +249,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default Comment;

@@ -12,6 +12,7 @@ import {
   TransitionGroup,
   Transition,
 } from 'react-transition-group';
+import Recommendation from './Recommendation';
 
 const CardWrapperCover = styled.div``;
 
@@ -42,17 +43,14 @@ const WrapperTitle = styled.div`
   text-align: center;
 `;
 const CardWrapperStyle = styled.div`
-  column-width: 340px;
-  columns: 3;
-
-  column-gap: 20px;
+  display: flex;
+  flex-direction: row;
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
   background-color: #ebebeb;
 
-  display: block;
-  &.appearingCard-enter {
+  /* &.appearingCard-enter {
     opacity: 0;
   }
   &.appearingCard-enter-active {
@@ -69,7 +67,7 @@ const CardWrapperStyle = styled.div`
   }
   &.appearingCard-appear-active {
     opacity: 0;
-  }
+  } */
 `;
 
 const NoSearchResultContainer = styled.div`
@@ -206,9 +204,9 @@ const CardWrapper = ({ state, cardList }) => {
   // NOTE 검색 결과 없음'
   if (cards) {
     if (
-      (!tags | (tags !== '')) &
-      (!state.keyword | (state.keyword !== '')) &
-      (!cards | (cards.length === 0))
+      (tags && tags !== '') &
+      (state && state.keyword !== '') &
+      (cards && cards.length === 0)
     ) {
       return (
         <NoSearchResultContainer>
@@ -218,17 +216,7 @@ const CardWrapper = ({ state, cardList }) => {
             어떠신가요?
           </NoSearchResultTitle>
           <CardWrapperStyle>
-            {isGoodForTask.map((card, index) => (
-              <Card
-                key={index}
-                cafeid={card.id}
-                cafeName={card.cafeName}
-                cafeTag={card.cafeTag}
-                cafeAddress={card.cafeAddress}
-                cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                cafeStar={card.cafeStar}
-              ></Card>
-            ))}
+            <Recommendation recommendation={isGoodForTask}></Recommendation>
           </CardWrapperStyle>
         </NoSearchResultContainer>
       );
@@ -243,17 +231,7 @@ const CardWrapper = ({ state, cardList }) => {
         <WrapperLineLeft />
       </WrapperTitle>
       <CardWrapperStyle>
-        {isCozyCafe.map((card, index) => (
-          <Card
-            key={index}
-            cafeid={card.id}
-            cafeName={card.cafeName}
-            cafeTag={card.cafeTag}
-            cafeAddress={card.cafeAddress}
-            cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-            cafeStar={card.cafeStar}
-          ></Card>
-        ))}
+        <Recommendation recommendation={isCozyCafe}></Recommendation>
       </CardWrapperStyle>
       <WrapperTitle>
         <WrapperLineRight />
@@ -261,17 +239,7 @@ const CardWrapper = ({ state, cardList }) => {
         <WrapperLineLeft />
       </WrapperTitle>
       <CardWrapperStyle>
-        {isGoodForTask.map((card, index) => (
-          <Card
-            key={index}
-            cafeid={card.id}
-            cafeName={card.cafeName}
-            cafeTag={card.cafeTag}
-            cafeAddress={card.cafeAddress}
-            cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-            cafeStar={card.cafeStar}
-          ></Card>
-        ))}
+        <Recommendation recommendation={isGoodForTask}></Recommendation>
       </CardWrapperStyle>
     </CardWrapperCover>
   ) : (
@@ -291,28 +259,7 @@ const CardWrapper = ({ state, cardList }) => {
       >
         <CardWrapperStyle>
           <TransitionGroup component={null}>
-            {cards &&
-              cards.map((card, index) => {
-                return (
-                  <CSSTransition
-                    timeout={300}
-                    in={true}
-                    classNames="fadeCard"
-                    mountOnEnter
-                    unmountOnExit
-                  >
-                    <Card
-                      key={index}
-                      cafeid={card.id}
-                      cafeName={card.cafeName}
-                      cafeTag={card.cafeTag}
-                      cafeAddress={card.cafeAddress}
-                      cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                      cafeStar={card.cafeStar}
-                    />
-                  </CSSTransition>
-                );
-              })}
+            <Recommendation recommendation={cards}></Recommendation>
           </TransitionGroup>
         </CardWrapperStyle>
       </CSSTransition>
