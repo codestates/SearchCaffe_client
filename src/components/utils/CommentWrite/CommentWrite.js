@@ -179,6 +179,7 @@ const CommentWrite = ({currentCafe, comment, user, handleModal}) => {
   const [scope, setScope] = useState(-1);
   const [submitComment, setSubmitComment] = useState('');
   const [images, setImages] = useState([]);
+  const [imagesRowData, setImagesRowData] = useState([]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
   
@@ -191,7 +192,6 @@ const CommentWrite = ({currentCafe, comment, user, handleModal}) => {
       userStar : scope,
       username : user.displayName
     });
-    console.log("images :" + images);
     handleModal();
   }
 
@@ -200,15 +200,6 @@ const CommentWrite = ({currentCafe, comment, user, handleModal}) => {
         return;
       }
       setImages((preImages) => [...preImages, loading]);
-      // const reader = new FileReader();
-      // reader.onloadend = (finishedEvent) => {
-      //   const {
-      //     currentTarget: { result },
-      //   } = finishedEvent;
-      //   setImages([...result,loading]);
-      //   console.log("result :" + result);
-      // }
-      // reader.readAsDataURL(inputImage);
       const upLoadTask = storageService
         .ref(`commentImage/${inputImage.name}`)
         .put(inputImage);

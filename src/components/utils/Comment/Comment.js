@@ -8,7 +8,7 @@ import CommentWrite from '../CommentWrite/CommentWrite';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import { useEffect, useState } from 'react';
-import { storageService } from '../../../firebase/mainbase';
+import { dbService, storageService } from '../../../firebase/mainbase';
 const CommentStyle = styled.div`
   display: block;
   margin: auto;
@@ -34,7 +34,7 @@ const DeleteButton = styled.button`
 
 const ModifyButton = styled.button`
   display: inline;
-  margin-left: 50%;
+  margin-left: 40%;
   margin-right: 5px;
   text-align: center;
   text-decoration: none;
@@ -109,14 +109,14 @@ const Divide = styled.div`
   width: 93%;
 `;
 
-const Comment = (props) => {
+const Comment = ({ userComment, user, currentCafe, currentCafeComment }) => {
   // const upLoadTask = storageService.ref('images');
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
 
   useEffect(() => {
-    setImages(props.userComment.userImg);
+    setImages(userComment.userImg);
   }, []);
 
   const handleImageEnlarge = (index) => {
@@ -127,29 +127,61 @@ const Comment = (props) => {
     setModal((pres) => !pres);
   };
 
-  const deleteComment = () => {
+  const deleteComment = async () => {
+    try {
+      await dbService
+        .collection('CafeComment')
+        .doc(`${userComment.cafeId}&${userComment.commentId}`)
+        .delete();
+      console.log('Document successfully deleted!');
+    } catch (error) {
+      console.error('CafeComment Delete Fail :' + error);
+    }
 
-  }
+    try {
+      let cafeCommentArr = [];
+      const data = await dbService.collection('CafeComment').get();
+      data.forEach((commentData) => {
+        console.log("currentCafe :" + currentCafe.cafeid);
+        if (currentCafe.cafeid === commentData.data().cafeId) {
+          console.log("commentData :" + commentData.data());
+          cafeCommentArr.push(commentData.data());
+        }
+      });
+      currentCafeComment(cafeCommentArr);
+    } catch (error) {
+      console.error('CafeComment get Error :' + error);
+    }
+  };
+  const modifyComment = () => {};
 
   return (
     <CommentStyle>
       <UserAndScope>
         <UserName>
-          {props.userComment.username ? props.userComment.username : '게스트'}
+          {userComment.username ? userComment.username : '게스트'}
         </UserName>
         <ScopeContainer>
           <Scope
             isScope={true}
             size="20px"
-            scope={props.userComment.userStar ? props.userComment.userStar : -1}
+            scope={userComment.userStar ? userComment.userStar : -1}
           ></Scope>
         </ScopeContainer>
       </UserAndScope>
-      <ModifyButton>수정</ModifyButton>
-      <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+      {userComment.username === user.displayName ? (
+        <ModifyButton>수정</ModifyButton>
+      ) : (
+        ''
+      )}
+      {userComment.username === user.displayName ? (
+        <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+      ) : (
+        ''
+      )}
       <TagWrapper>
-        {props.userComment.userTag
-          ? props.userComment.userTag.map((tag) => {
+        {userComment.userTag
+          ? userComment.userTag.map((tag) => {
               return (
                 <Tag
                   key={tag}
@@ -161,8 +193,8 @@ const Comment = (props) => {
             })
           : ''}
       </TagWrapper>
-      {props.userComment.userComment ? (
-        <CommentInput>{props.userComment.userComment}</CommentInput>
+      {userComment.userComment ? (
+        <CommentInput>{userComment.userComment}</CommentInput>
       ) : (
         ''
       )}
@@ -210,11 +242,9 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    currentCafe: (currentCafe) =>
-      dispatch(actionCreators.currentCafeClick(currentCafe)),
     currentCafeComment: (comment) =>
       dispatch(actionCreators.currentCafeComment(comment)),
   };
 }
 
-export default Comment;
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
