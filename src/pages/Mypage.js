@@ -3,7 +3,10 @@ import { actionCreators } from '../reducer/store';
 import { connect } from 'react-redux';
 import './Mypage.css';
 import Profile from '../components/Profile/Profile';
+import MyCafe from '../components/MyCafe/MyCafe';
 import { authService } from '../firebase/mainbase';
+import styled from 'styled-components';
+
 function Mypage({ state, userHandler }) {
   const [activeTab, setActiveTab] = useState(0);
   const [userInfo, setUserInfo] = useState(authService.currentUser);
@@ -11,11 +14,10 @@ function Mypage({ state, userHandler }) {
     setActiveTab(id);
   };
   const content = {
-    0: <Profile userHandler={userHandler} userInfo={userInfo}></Profile>,
-    1: <h1>찜한카페</h1>,
-    2: <h1>리뷰관리</h1>,
+    0: <MyCafe>My Cafe</MyCafe>,
+    1: <Profile userHandler={userHandler} userInfo={userInfo}></Profile>,
   };
-  const tabName = ['정보수정', '찜한 카페', '리뷰관리'];
+  const tabName = ['My Cafe', '정보 수정'];
   return (
     <>
       <div className="tabs-wrapper">

@@ -93,13 +93,14 @@ const Divide = styled.div`
 `;
 
 const Comment = (props) => {
+  console.log(props);
   // const upLoadTask = storageService.ref('images');
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-
+  console.log(images);
   useEffect(() => {
-    console.log("props :" + props);
+    console.log('props :' + props);
     setImages(props.userComment.userImg);
   }, []);
 
@@ -184,7 +185,7 @@ const Comment = (props) => {
 
 function mapStateToProps(state, ownProps) {
   console.log(state);
-  return { ...state };
+  return { ...state, ownProps };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -197,4 +198,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default Comment;
-
