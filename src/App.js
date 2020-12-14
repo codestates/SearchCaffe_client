@@ -41,15 +41,11 @@ const App = () => {
   // getCurrentPosition();
   useEffect(() => {
     getData();
+    console.log(cafe);
   }, []);
   return (
     <BrowserRouter>
-      <div>
-        {cafe.map((cafe, i) => (
-          <div key={i}>{cafe.cafeName}</div>
-        ))}
-      </div>
-      {/* <Nav></Nav>
+      <Nav></Nav>
 
       <Switch>
         <Route exact path="/">
@@ -62,7 +58,7 @@ const App = () => {
           <Mypage></Mypage>
         </Route>
       </Switch>
-      <Footer></Footer> */}
+      <Footer></Footer>
     </BrowserRouter>
   );
 };
