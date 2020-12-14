@@ -1,13 +1,19 @@
+/*global kakao*/
 import './App.css';
 import Main from './pages/Main';
-import Auth from '../src/components/Signin/auth';
-import { dbService } from './firebase/mainbase';
-import SearchPlace from './SearchPlace';
-import Cafe from './Cafe';
 import getCurrentPosition from './getCurrentPosition';
-import Map from './Map';
-import { useEffect, useState } from 'react';
-function App() {
+import Content from './pages/Content';
+import Mypage from './pages/Mypage';
+import Nav from './components/Nav/index';
+import Footer from './components/Footer/index';
+import { actionCreators } from './reducer/store';
+import { connect } from 'react-redux';
+import { dbService } from './firebase/mainbase';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { useEffect, useMemo, useRef } from 'react';
+import styled from 'styled-components';
+import { cafeComment } from './cafeInfos';
+const App = () => {
   getCurrentPosition();
   // const cafes = fakeData.map((cafe, i) => <Cafe place={cafe.address} key={i} />);
   // const [cafes, setCafe] = useState([]);
@@ -28,19 +34,31 @@ function App() {
   //   });
   // }, []);
   // getCurrentPosition();
+
   return (
-    <div>
-      {
-        // <SearchPlace />
-        // <Map
-        //   cafeInfo={{
-        //     cafeName: '커피 베스코',
-        //     cafeAddress: '서울 노원구 상계로 55 2층 (우)01694',
-        //   }}
-        // />
-      }
-    </div>
+    <BrowserRouter>
+      <Nav></Nav>
+
+      <Switch>
+        <Route exact path="/">
+          <Main></Main>
+        </Route>
+        <Route path="/content">
+          <Content></Content>
+        </Route>
+        <Route path="/mypage">
+          <Mypage></Mypage>
+        </Route>
+      </Switch>
+      <Footer></Footer>
+    </BrowserRouter>
   );
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    cardList: (card) => dispatch(actionCreators.addCardList(card)),
+  };
 }
 
-export default App;
+export default connect(null, mapDispatchToProps)(App);

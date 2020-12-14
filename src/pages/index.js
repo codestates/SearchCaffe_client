@@ -1,1 +1,2 @@
-export { default as Test } from './Test.js'
+export { default as Main } from './Main'
+export { default as Content } from './Content'
