@@ -23,8 +23,8 @@ const CardStyle = styled.span`
   padding: 8px;
   padding-bottom: 10px;
   font-size: 1rem;
-
-  background-color: #ffffff;
+  border-radius: 10px;
+  background-color: ${(props) => (props.inMypage ? '#eaeaea' : '#ffffff')};
 
   transition: opacity 0.4s ease-in-out;
   transition: 0.3s;
@@ -103,12 +103,11 @@ const ScopeContain = styled.div`
 `;
 
 const LinkContent = styled(Link)`
-  a {
-    text-decoration: none;
-    &:before {
-      color: #24292e;
-      cursor: default !important;
-    }
+  color: black;
+  text-decoration: none;
+  &:before {
+    color: #24292e;
+    cursor: default !important;
   }
 `;
 
@@ -122,27 +121,31 @@ const Card = (props) => {
     currnetCafeObj['cafeAddress'] = props.cafeAddress;
     currnetCafeObj['cafeImage'] = props.cafeImage;
     currnetCafeObj['cafeStar'] = props.cafeStar;
-    props.currentCafe(currnetCafeObj);
-    const data = await dbService.collection('CafeComment').get();
-    data.forEach((doc) => {
-      if (props.cafeid === doc.data().cafeId) {
-        cafeCommentArr.push(doc.data());
-      }
-    });
-    props.currentCafeComment(cafeCommentArr);
+    await props.currentCafe(currnetCafeObj);
+    try {
+      const data = await dbService.collection('CafeComment').get();
+      data.forEach((doc) => {
+        if (props.cafeid === doc.data().cafeId) {
+          cafeCommentArr.push(doc.data());
+        }
+      });
+    } catch (error) {
+      console.log('error' + error);
+    }
+    await props.currentCafeComment(cafeCommentArr);
   };
   if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
   }
-  console.log(props);
+
   return (
-    <LinkContent to={`/content/${props.cafeid}`}>
-      <CardStyle
-        inMypage={props.inMypage}
-        cafeid={props.cafeid}
-        tag={props.cafeTag}
-        onClick={addCurrentCafe}
-      >
+    <CardStyle
+      inMypage={props.inMypage}
+      cafeid={props.cafeid}
+      tag={props.cafeTag}
+      onClick={addCurrentCafe}
+    >
+      <LinkContent to={`/content/${props.cafeid}`}>
         <CardImg
           inMypage={props.inMypage}
           src={props.cafeImage || defaultImg}
@@ -165,8 +168,8 @@ const Card = (props) => {
               ))
             : ''}
         </CardTags>
-      </CardStyle>
-    </LinkContent>
+      </LinkContent>
+    </CardStyle>
   );
 };
 
@@ -178,8 +181,8 @@ function mapDispatchToProps(dispatch) {
   return {
     currentCafe: (currentCafe) =>
       dispatch(actionCreators.currentCafeClick(currentCafe)),
-    currentCafeComment: (cafeComment) =>
-      dispatch(actionCreators.currentCafeComment(cafeComment)),
+    currentCafeComment: (comment) =>
+      dispatch(actionCreators.currentCafeComment(comment)),
   };
 }
 

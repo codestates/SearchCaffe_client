@@ -5,6 +5,8 @@ import { ImageModal } from '../ImageModal/ImageModal';
 import enlargeImg from '../CommentWrite/images/enlarge.png';
 import commentLoading from './commentLoading.svg';
 import CommentWrite from '../CommentWrite/CommentWrite';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../../reducer/store';
 import { useEffect, useState } from 'react';
 import { storageService } from '../../../firebase/mainbase';
 const CommentStyle = styled.div`
@@ -91,12 +93,14 @@ const Divide = styled.div`
 `;
 
 const Comment = (props) => {
+  console.log(props);
   // const upLoadTask = storageService.ref('images');
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-
+  console.log(images);
   useEffect(() => {
+    console.log('props :' + props);
     setImages(props.userComment.userImg);
   }, []);
 
@@ -178,5 +182,19 @@ const Comment = (props) => {
 // }
 
 // export default connect(mapStateToProps, mapDispatchToProps)(Content);
+
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return { ...state, ownProps };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    currentCafe: (currentCafe) =>
+      dispatch(actionCreators.currentCafeClick(currentCafe)),
+    currentCafeComment: (comment) =>
+      dispatch(actionCreators.currentCafeComment(comment)),
+  };
+}
 
 export default Comment;

@@ -13,16 +13,12 @@ const Nav = ({ state, userHandler }) => {
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
+    authService.onAuthStateChanged(async (user) => {
       if (user) {
         setIsLogin(true);
-        dbService
-          .collection('users')
-          .doc(user.uid)
-          .get()
-          .then((user) => {
-            userHandler(user.data());
-          });
+        const checkDB = await dbService.collection('users').doc(user.uid).get();
+        const data = checkDB.data();
+        userHandler({ ...data });
       } else {
         setIsLogin(false);
       }

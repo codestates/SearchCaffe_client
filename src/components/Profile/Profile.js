@@ -9,13 +9,20 @@ import { actionCreators } from '../../reducer/store';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './Profile.css';
+import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
 
-const Profile = ({ state, userHandler, userProfileHandler }) => {
+const Profile = ({
+  state,
+  userHandler,
+  userProfileHandler,
+  userDisplayNameHandler,
+}) => {
   const history = useHistory();
   const [userInfo, setUserInfo] = useState(state.user ? state.user : '');
   const [attachment, setAttachment] = useState(
     state.user ? state.user.photoURL : ''
   );
+  const [photoFile, setPhotoFile] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [prePassword, setPrePassword] = useState('');
@@ -23,7 +30,7 @@ const Profile = ({ state, userHandler, userProfileHandler }) => {
     state.user ? state.user.displayName : ''
   );
   const [errorMessage, setErrorMessage] = useState('');
-  console.log(attachment);
+
   useEffect(() => {
     if (!state.user) {
       history.push('/');
@@ -66,36 +73,15 @@ const Profile = ({ state, userHandler, userProfileHandler }) => {
       target: { files },
     } = event;
     const theFile = files[0];
-
-    const upLoadTask = storageService
-      .ref(`profileImage/${theFile.name}`)
-      .put(theFile);
-    upLoadTask.on(
-      'state_changed',
-      (snapshot) => {},
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        storageService
-          .ref('profileImage')
-          .child(theFile.name)
-          .getDownloadURL()
-          .then((url) => {
-            setAttachment(url);
-          });
-      }
-    );
-
-    // const reader = new FileReader();
-    // reader.onloadend = (finishedEvent) => {
-    //   const {
-    //     currentTarget: { result },
-    //   } = finishedEvent;
-    //   setAttachment(result);
-    // };
-    // let result = reader.readAsDataURL(theFile);
-    // console.log(result);
+    const reader = new FileReader();
+    reader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setAttachment(result);
+    };
+    setPhotoFile(theFile);
+    reader.readAsDataURL(theFile);
   };
 
   const handleChange = async (event) => {
@@ -103,19 +89,38 @@ const Profile = ({ state, userHandler, userProfileHandler }) => {
       target: { name },
     } = event;
     if (name === 'change-avatar') {
-      console.log('before', state.user);
-      dbService.collection('users').doc(state.user.uid).update({
-        photoURL: attachment,
-      });
-      // userInfo.updateProfile({ photoURL: attachment }).catch((err) => {
-      //   console.log(err);
-      // });
-      userProfileHandler(attachment);
-      console.log('after', state.user);
+      async function upLoadTaskPromise(image) {
+        const upLoadTask = storageService
+          .ref(`commentImage/${image.name}`)
+          .put(image);
+        return new Promise((res, rej) => {
+          upLoadTask.on(
+            'state_changed',
+            (snapshot) => {},
+            (error) => {
+              console.log(error);
+              rej();
+            },
+            async () => {
+              let url = await storageService
+                .ref('commentImage')
+                .child(image.name)
+                .getDownloadURL();
+              res(url);
+            }
+          );
+        });
+      }
+      let theFile = photoFile;
+      let url = await upLoadTaskPromise(theFile);
+      console.log(url);
+      userProfileHandler(url);
     } else if (name === 'change-username') {
-      // dbService.collection('users').doc(state.user.uid).update({
-      //   displayName: newDisplayName,
-      // });
+      dbService.collection('users').doc(state.user.uid).update({
+        displayName: newDisplayName,
+      });
+
+      userDisplayNameHandler(newDisplayName);
     }
   };
   const handlePasswordChange = async (event) => {
@@ -267,6 +272,9 @@ function mapDispatchToProps(dispatch) {
     userHandler: (user) => dispatch(actionCreators.currentUser(user)),
     userProfileHandler: (profile) =>
       dispatch(actionCreators.changeUserProfile(profile)),
+    userDisplayNameHandler: (display) => {
+      dispatch(actionCreators.changeUserDisplayName(display));
+    },
   };
 }
 

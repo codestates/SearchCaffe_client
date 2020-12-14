@@ -8,6 +8,7 @@ const CURRENTCAFE = 'CURRENTCAFE';
 const CURRENTCAFECOMMENT = 'CURRENTCAFECOMMENT';
 const CURRENTUSER = 'CURRENTUSER';
 const CHANGEUSERPROFILE = 'CHANGEUSERPROFILE';
+const CHANGEDISPLAYNAME = 'CHANGEDISPLAYNAME';
 const CHANGEUSERCOMMENT = 'CHANGEUSERCOMMENT';
 const CHANGEUSERHEART = 'CHANGEUSERCHEART';
 const tagNameArray = (tagName) => {
@@ -16,63 +17,60 @@ const tagNameArray = (tagName) => {
     tagName,
   };
 };
-
 const addCardList = (card) => {
   return {
     type: CARDARRAY,
     card,
   };
 };
-
 const searchKeyword = (keyword) => {
   return {
     type: KEYWORD,
     keyword,
   };
 };
-
 const currentCafeClick = (currentCafe) => {
   return {
     type: CURRENTCAFE,
     currentCafe,
   };
 };
-
-const currentCafeComment = (currentCafeComment) => {
+const currentCafeComment = (comment) => {
   return {
     type: CURRENTCAFECOMMENT,
-    currentCafeComment,
+    comment,
   };
 };
-
 const currentUser = (user) => {
   return {
     type: CURRENTUSER,
     user,
   };
 };
-
 const changeUserProfile = (profile) => {
   return {
     type: CHANGEUSERPROFILE,
     profile,
   };
 };
-
+const changeUserDisplayName = (display) => {
+  return {
+    type: CHANGEDISPLAYNAME,
+    display,
+  };
+};
 const changeUserComment = (comment) => {
   return {
     type: CHANGEUSERCOMMENT,
     comment,
   };
 };
-
 const changeUserHeart = (heart) => {
   return {
     type: CHANGEUSERHEART,
     heart,
   };
 };
-
 const reducer = (state = [], action) => {
   switch (action.type) {
     case TAGARRAY:
@@ -99,15 +97,15 @@ const reducer = (state = [], action) => {
         keyword,
       });
     case CURRENTCAFECOMMENT:
-      let currentCafeComment = action.currentCafeComment;
+      let comment = action.comment;
       for (let i in state) {
-        if (i === 'currentCafeComment') {
-          state[i] = currentCafeComment;
+        if (i === 'comment') {
+          state[i] = comment;
         }
       }
       return Object.assign({}, state, {
         ...state,
-        currentCafeComment,
+        comment,
       });
     case CURRENTCAFE:
       let currentCafe = action.currentCafe;
@@ -150,6 +148,14 @@ const reducer = (state = [], action) => {
           comment: [...state.user.comment, action.comment],
         },
       };
+    case CHANGEDISPLAYNAME:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          displayName: action.display,
+        },
+      };
     case CHANGEUSERHEART:
       if (!state.user.heart) {
         state.user.heart = [];
@@ -176,6 +182,7 @@ export const actionCreators = {
   currentCafeComment,
   currentUser,
   changeUserProfile,
+  changeUserDisplayName,
   changeUserComment,
   changeUserHeart,
 };

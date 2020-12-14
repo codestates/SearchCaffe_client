@@ -67,7 +67,11 @@ const TagStyle = styled.button`
   }
   :hover {
     background-color: ${(props) =>
-      props.isButton || props.isClicked ? '#5a403a' : props.color || '#EFEFEF'};
+      props.isClicked
+        ? '#5A403A'
+        : props.isButton
+        ? '#8A706A'
+        : props.color || '#EFEFEF'};
     color: ${(props) =>
       props.isButton || props.isClicked ? 'white' : 'black'};
     transition: 0.2s;

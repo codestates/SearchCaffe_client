@@ -122,20 +122,13 @@ const ContentHeader = (props) => {
           <Time />
         </SvgContainer>
         <div className="tagBox">
+          <Tag color="#ffffff" isSmall={true} tagName={tagName['가까운']}></Tag>
           <Tag
-            isButton={true}
-            color="#ffffff"
-            isSmall={true}
-            tagName={tagName['가까운']}
-          ></Tag>
-          <Tag
-            isButton={true}
             color="#ffffff"
             isSmall={true}
             tagName={tagName['주차 가능']}
           ></Tag>
           <Tag
-            isButton={true}
             color="#ffffff"
             isSmall={true}
             tagName={tagName['애완 동물 동반']}

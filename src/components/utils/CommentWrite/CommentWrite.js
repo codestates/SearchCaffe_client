@@ -9,7 +9,7 @@ import Blank from './images/BlankImg.png';
 import enlargeImg from './images/enlarge.png';
 import removeImg from './images/remove.png';
 import loading from './images/loading.svg';
-import { storageService } from '../../../firebase/mainbase';
+import { storageService, dbService } from '../../../firebase/mainbase';
 
 const CommentWriteStyle = styled.div`
   display: block;
@@ -173,42 +173,82 @@ const commentTags = [
   '바다가 보이는',
 ];
 
-const CommentWrite = (props) => {
-  console.log(props);
+const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
-  const [comment, setComment] = useState('');
+  const [submitComment, setSubmitComment] = useState('');
   const [images, setImages] = useState([]);
+  const [imagesRowData, setImagesRowData] = useState([]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-  console.log(images);
+
+  const submitCommentWrite = async () => {
+    async function upLoadTaskPromise(image) {
+      const upLoadTask = storageService
+        .ref(`commentImage/${image.name}`)
+        .put(image);
+      return new Promise((res, rej) => {
+        upLoadTask.on(
+          'state_changed',
+          (snapshot) => {},
+          (error) => {
+            console.log(error);
+            rej();
+          },
+          async () => {
+            let url = await storageService
+              .ref('commentImage')
+              .child(image.name)
+              .getDownloadURL();
+            res(url);
+          }
+        );
+      });
+    }
+    console.log('before', images);
+    for (let i = 0; i < imagesRowData.length; i++) {
+      let name = `${user.email}'s ${
+        comment[comment.length - 1].commentId + 1
+      }nth comment's ${i}nth image`;
+      let url = await upLoadTaskPromise(imagesRowData[i]);
+      setImages((pres) => {
+        pres[i] = url;
+        return pres;
+      });
+    }
+
+    console.log('after', images);
+    await dbService
+      .collection('CafeComment')
+      .doc(`${currentCafe.cafeid}&${comment.length + 1}`)
+      .set({
+        cafeId: currentCafe.cafeid,
+        commentId: comment.length + 1,
+        userComment: submitComment,
+        userImg: images,
+        userStar: scope,
+        username: user.displayName,
+      });
+    handleModal();
+  };
+
   const upLoadTaskHandler = (inputImage) => {
     if (images.length > 2) {
       return;
     }
     setImages((preImages) => [...preImages, loading]);
-    const upLoadTask = storageService
-      .ref(`commentImage/${inputImage.name}`)
-      .put(inputImage);
-    upLoadTask.on(
-      'state_changed',
-      (snapshot) => {},
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        storageService
-          .ref('commentImage')
-          .child(inputImage.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImages((preImages) => {
-              preImages.splice(preImages.length - 1, 1, url);
-              return [...preImages];
-            });
-          });
-      }
-    );
+    const reader = new FileReader();
+    reader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setImages((preImages) => {
+        preImages.splice(preImages.length - 1, 1, result);
+        return [...preImages];
+      });
+      setImagesRowData((pres) => [...pres, inputImage]);
+    };
+    reader.readAsDataURL(inputImage);
   };
 
   const handleTags = (tag) => {
@@ -231,6 +271,11 @@ const CommentWrite = (props) => {
       pres.splice(index, 1);
       return [...pres];
     });
+    setImagesRowData((pres) => {
+      pres.splice(index, 1);
+      return [...pres];
+    });
+    console.log(images, imagesRowData);
   };
   const handleImageEnlarge = (index) => {
     setCurrentImg(images[index]);
@@ -268,7 +313,7 @@ const CommentWrite = (props) => {
       </TagWrapper>
       <CommentInput
         onChange={(e) => {
-          setComment(e.target.value);
+          setSubmitComment(e.target.value);
         }}
       ></CommentInput>
       <CommentImgWrapper>
@@ -285,8 +330,8 @@ const CommentWrite = (props) => {
 
         {images.map((image, index) => {
           return (
-            <Uploaded>
-              <UploadedImgCover>
+            <Uploaded key={index}>
+              <UploadedImgCover key={index}>
                 <RemoveImg
                   data-index={index}
                   onClick={(e) => {
@@ -307,10 +352,10 @@ const CommentWrite = (props) => {
           );
         })}
         <ButtonWrapper>
-          <CommentSubmitButton>제출</CommentSubmitButton>
-          <CommentOutButton onClick={props.handleModal}>
-            나가기{' '}
-          </CommentOutButton>
+          <CommentSubmitButton onClick={submitCommentWrite}>
+            제출
+          </CommentSubmitButton>
+          <CommentOutButton onClick={handleModal}>나가기 </CommentOutButton>
         </ButtonWrapper>
       </CommentImgWrapper>
       {imageModal ? (
@@ -324,7 +369,7 @@ const CommentWrite = (props) => {
 
 function mapStateToProps(state, ownProps) {
   console.log(state);
-  return { state };
+  return { ...state };
 }
 
 function mapDispatchToProps(dispatch) {
