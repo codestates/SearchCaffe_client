@@ -14,22 +14,51 @@ let testCollection = dbService.collection('test');
 // };
 // getCafeInfo();
 const getCurrentPosition = () => {
-  navigator.geolocation.getCurrentPosition((position) => {
-    coords = new kakao.maps.LatLng(
-      position.coords.latitude,
-      position.coords.longitude
-    );
+  return new Promise((resolve) => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      coords = new kakao.maps.LatLng(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      resolve(coords);
+    });
+  });
+};
 
-    // geocoder.coord2RegionCode(
-    //   coords.getLng(),
-    //   coords.getLat(),
-    //   (result, status) => {
-    //     if (status === kakao.maps.services.Status.OK) {
-    //       console.log(result);
-    //     }
-    //   }
-    // );
-    /*region_type	String	H(행정동) 또는 B(법정동)
+const getNearbyCafe = (position) => {
+  return new Promise((resolve) => {
+    geocoder.coord2Address(
+      position.getLng(),
+      position.getLat(),
+      async (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          let nearbyCafe;
+          address = result[0].address['address_name'];
+          console.log(address);
+          address = address.split(' ');
+          let cafe = await dbService
+            .collection('test')
+            .where('region_1depth', '==', address[0])
+            .where('region_2depth', '==', address[1])
+            .where('region_3depth', '==', address[2])
+            .get();
+          nearbyCafe = cafe.docs.map((doc) => doc.data());
+          resolve(nearbyCafe);
+        }
+      }
+    );
+  });
+};
+// geocoder.coord2RegionCode(
+//   coords.getLng(),
+//   coords.getLat(),
+//   (result, status) => {
+//     if (status === kakao.maps.services.Status.OK) {
+//       console.log(result);
+//     }
+//   }
+// );
+/*region_type	String	H(행정동) 또는 B(법정동)
 address_name	String	전체 지역 명칭
 region_1depth_name	String	지역 1Depth, 시도 단위(바다 영역은 존재하지 않음)
 region_2depth_name	String	지역 2Depth, 구 단위(바다 영역은 존재하지 않음)
@@ -38,7 +67,7 @@ region_4depth_name	String	지역 4Depth, region_type이 법정동이며, 리 영
 code	String	region 코드
 x	Double	X 좌표값 혹은 longitude
 y	Double	Y 좌표값 혹은 latitude */
-
+/*
     geocoder.coord2Address(
       coords.getLng(),
       coords.getLat(),
@@ -68,10 +97,9 @@ mountain_yn	String	산 여부, "Y" 또는 "N"
 main_address_no	String	지번 주 번지
 sub_address_no	String	지번 부 번지, 없을 경우 ""
 zip_code	String	Deprecated 우편번호(6자리) */
-  });
-  //   geocoder.coord2RegionCode(coord.getLng(), coord.getLat(), (result, status) => {
-  //     console.log(status);
-  //   });
-};
+//   geocoder.coord2RegionCode(coord.getLng(), coord.getLat(), (result, status) => {
+//     console.log(status);
+//   });
+
 export default getCurrentPosition;
 // 37.566781370938024, 126.97890128059893;

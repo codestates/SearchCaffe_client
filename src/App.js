@@ -10,11 +10,16 @@ import { actionCreators } from './reducer/store';
 import { connect } from 'react-redux';
 import { dbService } from './firebase/mainbase';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { cafeComment } from './cafeInfos';
+import getNearbyCafe from './getNearbyCafe';
 const App = () => {
-  getCurrentPosition();
+  const [cafe, setCafe] = useState([]);
+  const getData = async () => {
+    let cafe = await getNearbyCafe();
+    setCafe(cafe);
+  };
   // const cafes = fakeData.map((cafe, i) => <Cafe place={cafe.address} key={i} />);
   // const [cafes, setCafe] = useState([]);
   // const getCafeInfo = async () => {
@@ -34,10 +39,17 @@ const App = () => {
   //   });
   // }, []);
   // getCurrentPosition();
-
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <BrowserRouter>
-      <Nav></Nav>
+      <div>
+        {cafe.map((cafe, i) => (
+          <div key={i}>{cafe.cafeName}</div>
+        ))}
+      </div>
+      {/* <Nav></Nav>
 
       <Switch>
         <Route exact path="/">
@@ -50,7 +62,7 @@ const App = () => {
           <Mypage></Mypage>
         </Route>
       </Switch>
-      <Footer></Footer>
+      <Footer></Footer> */}
     </BrowserRouter>
   );
 };
