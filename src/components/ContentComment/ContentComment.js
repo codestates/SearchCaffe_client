@@ -33,7 +33,8 @@ const BackGroundCover = styled.div`
   z-index: 1;
 `;
 
-const ContentComment = ({comment}) => {
+const ContentComment = ({ comment }) => {
+  console.log(comment);
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
   // const comment =  useSelector(async(state) => await comment);
@@ -56,12 +57,14 @@ const ContentComment = ({comment}) => {
       ) : (
         ''
       )}
-      {!comment
-        ? <h1>없다</h1>
-        : comment.map((userComment, index) => {
-            console.log('userComment :' + userComment['cafeId']);
-            <Comment key={index} userComment={userComment}></Comment>;
-          })}
+      {!comment ? (
+        <h1>없다</h1>
+      ) : (
+        comment.map((userComment, index) => {
+          console.log('userComment :' + userComment['cafeId']);
+          return <Comment key={index} userComment={userComment}></Comment>;
+        })
+      )}
       {/* {cafeComment.filter((comment) => comment.cafeId === 0).length !== 0
         ? cafeComment
             .filter((comment) => comment.cafeId === 0)
@@ -74,7 +77,7 @@ const ContentComment = ({comment}) => {
 };
 function mapStateToProps(state, ownProps) {
   console.log(state);
-  return { ...state ,ownProps};
+  return { ...state, ownProps };
 }
 
 function mapDispatchToProps(dispatch) {

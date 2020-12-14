@@ -1,20 +1,58 @@
-import { authService } from '../../firebase/mainbase';
+import {
+  storageService,
+  authService,
+  dbService,
+  firebaseInstance,
+} from '../../firebase/mainbase';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../reducer/store';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './Profile.css';
+import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
 
-const Profile = (props) => {
+const Profile = ({
+  state,
+  userHandler,
+  userProfileHandler,
+  userDisplayNameHandler,
+}) => {
   const history = useHistory();
-  const [userInfo, setUserInfo] = useState(null);
-  const [attachment, setAttachment] = useState('');
+  const [userInfo, setUserInfo] = useState(state.user ? state.user : '');
+  const [attachment, setAttachment] = useState(
+    state.user ? state.user.photoURL : ''
+  );
+  const [photoFile, setPhotoFile] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
-  const [newDisplayName, setNewDisplayName] = useState('');
+  const [prePassword, setPrePassword] = useState('');
+  const [newDisplayName, setNewDisplayName] = useState(
+    state.user ? state.user.displayName : ''
+  );
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (!state.user) {
+      history.push('/');
+    }
+    // authService.onAuthStateChanged((user) => {
+    //   if (state.user) {
+    //     setUserInfo(state.user);
+    //     if (user.displayName) {
+    //       setNewDisplayName(user.displayName);
+    //     } else {
+    //       setNewDisplayName(user.email);
+    //     }
+    //   }
+    // });
+  }, []);
+
   const handleLogOut = () => {
     authService.signOut();
-    props.userHandler(null);
+    userHandler(null);
     history.push('/');
   };
+
   const onChange = (event) => {
     const {
       target: { value, name },
@@ -25,20 +63,11 @@ const Profile = (props) => {
       setNewPassword(value);
     } else if (name === 're-password') {
       setRePassword(value);
+    } else if (name === 'pre-password') {
+      setPrePassword(value);
     }
   };
-  useEffect(() => {
-    authService.onAuthStateChanged((user) => {
-      if (user) {
-        setUserInfo(user);
-        if (user.displayName) {
-          setNewDisplayName(user.displayName);
-        } else {
-          setNewDisplayName(user.email);
-        }
-      }
-    });
-  }, []);
+
   const onFileChange = (event) => {
     const {
       target: { files },
@@ -51,15 +80,85 @@ const Profile = (props) => {
       } = finishedEvent;
       setAttachment(result);
     };
+    setPhotoFile(theFile);
     reader.readAsDataURL(theFile);
   };
-  const handleChange = (event) => {
+
+  const handleChange = async (event) => {
     const {
       target: { name },
     } = event;
     if (name === 'change-avatar') {
-      console.log(name);
-      userInfo.updateProfile({ photoURL: attachment });
+      async function upLoadTaskPromise(image) {
+        const upLoadTask = storageService
+          .ref(`commentImage/${image.name}`)
+          .put(image);
+        return new Promise((res, rej) => {
+          upLoadTask.on(
+            'state_changed',
+            (snapshot) => {},
+            (error) => {
+              console.log(error);
+              rej();
+            },
+            async () => {
+              let url = await storageService
+                .ref('commentImage')
+                .child(image.name)
+                .getDownloadURL();
+              res(url);
+            }
+          );
+        });
+      }
+      let theFile = photoFile;
+      let url = await upLoadTaskPromise(theFile);
+      console.log(url);
+      userProfileHandler(url);
+    } else if (name === 'change-username') {
+      dbService.collection('users').doc(state.user.uid).update({
+        displayName: newDisplayName,
+      });
+
+      userDisplayNameHandler(newDisplayName);
+    }
+  };
+  const handlePasswordChange = async (event) => {
+    if (state.user.providerId === 'firebase') {
+      if ((rePassword === newPassword) & (rePassword.length >= 8)) {
+        const credential = await firebaseInstance.auth.EmailAuthProvider.credential(
+          state.user.email,
+          prePassword
+        );
+        authService.currentUser
+          .reauthenticateWithCredential(credential)
+          .then((res) => {
+            authService.currentUser
+              .updatePassword(newPassword)
+              .then(() => {
+                setErrorMessage('비밀번호 변경 성공');
+              })
+              .catch((error) => {
+                console.log(error);
+              })
+              .finally(() => {
+                setPrePassword('');
+                setNewPassword('');
+                setRePassword('');
+              });
+          })
+          .catch((err) => {
+            if (err.code === 'auth/wrong-password') {
+              setErrorMessage('현재 비밀번호가 틀렸습니다');
+            }
+          });
+      } else if (rePassword !== newPassword) {
+        setErrorMessage('두 비밀번호가 일치하지 않습니다');
+      } else if ((rePassword === newPassword) & (rePassword.length < 8)) {
+        setErrorMessage('비밀번호는 8자리 이상이어야 합니다');
+      }
+    } else {
+      setErrorMessage('소셜 로그인 사용자');
     }
   };
   return (
@@ -87,7 +186,7 @@ const Profile = (props) => {
             <input
               type="file"
               id="input-file"
-              onChange={onFileChange}
+              onChange={(event) => onFileChange(event)}
               accept="image/*"
               style={{ display: 'none' }}
             />
@@ -110,7 +209,11 @@ const Profile = (props) => {
                 />
               </div>
             </div>
-            <button className="change-btn" name="change-username">
+            <button
+              className="change-btn"
+              onClick={handleChange}
+              name="change-username"
+            >
               변경
             </button>
             <h3>비밀번호 변경</h3>
@@ -118,7 +221,9 @@ const Profile = (props) => {
               <input
                 className="pwchange"
                 type="password"
+                name="pre-password"
                 placeholder="현재 비밀번호"
+                onChange={onChange}
               ></input>
             </div>
             <div>
@@ -140,11 +245,12 @@ const Profile = (props) => {
                 placeholder="새 비밀번호 확인"
               ></input>
             </div>
+            <div>{errorMessage}</div>
             <div>
               <button
                 className="change-btn"
                 name="change-pw"
-                onClick={handleChange}
+                onClick={handlePasswordChange}
               >
                 변경
               </button>
@@ -156,5 +262,20 @@ const Profile = (props) => {
     </div>
   );
 };
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return { state };
+}
 
-export default Profile;
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+    userProfileHandler: (profile) =>
+      dispatch(actionCreators.changeUserProfile(profile)),
+    userDisplayNameHandler: (display) => {
+      dispatch(actionCreators.changeUserDisplayName(display));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
