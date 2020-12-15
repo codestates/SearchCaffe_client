@@ -158,7 +158,7 @@ const Profile = ({
         setErrorMessage('비밀번호는 8자리 이상이어야 합니다');
       }
     } else {
-      setErrorMessage('소셜 로그인 사용자');
+      setErrorMessage('소셜 계정 변경 불가');
     }
   };
   return (
@@ -224,6 +224,7 @@ const Profile = ({
                 name="pre-password"
                 placeholder="현재 비밀번호"
                 onChange={onChange}
+                disabled={userInfo.providerId !== 'firebase' ? true : false}
               ></input>
             </div>
             <div>
@@ -234,6 +235,7 @@ const Profile = ({
                 name="password"
                 placeholder="새 비밀번호"
                 value={newPassword}
+                disabled={userInfo.providerId !== 'firebase' ? true : false}
               ></input>
             </div>
             <div>
@@ -243,6 +245,7 @@ const Profile = ({
                 type="password"
                 name="re-password"
                 placeholder="새 비밀번호 확인"
+                disabled={userInfo.providerId !== 'firebase' ? true : false}
               ></input>
             </div>
             <div>{errorMessage}</div>
@@ -251,8 +254,9 @@ const Profile = ({
                 className="change-btn"
                 name="change-pw"
                 onClick={handlePasswordChange}
+                disabled={userInfo.providerId !== 'firebase' ? true : false}
               >
-                변경
+                {userInfo.providerId !== 'firebase' ? '소셜 계정 불가' : '변경'}
               </button>
               {/* {this.state.error ? <div className="alert-box">{this.state.error}</div> : ''} */}
             </div>
