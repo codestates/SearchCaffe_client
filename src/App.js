@@ -17,7 +17,7 @@ import getNearbyCafe from './getNearbyCafe';
 const App = () => {
   const [cafe, setCafe] = useState([]);
   const getData = async () => {
-    let cafe = await getNearbyCafe();
+    // let cafe = await getNearbyCafe();
     setCafe(cafe);
   };
   // const cafes = fakeData.map((cafe, i) => <Cafe place={cafe.address} key={i} />);

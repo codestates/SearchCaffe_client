@@ -193,10 +193,7 @@ const CommentWrite = ({
   useEffect(() => {
     if(beforeModify) {
       setModifyObj(beforeModify);
-      // setTags(beforeModify.userTag);
-      // setSubmitComment(modifyObj.userComment);
       setImages(beforeModify.userImg);
-      // setScope(beforeModify.userStar);
     }
   },[])
 
@@ -231,9 +228,9 @@ const CommentWrite = ({
         return pres;
       });
     }
-    settingCommentData();
+    await settingCommentData();
     handleModal();
-    refreshCommentData();
+    await refreshCommentData();
   };
 
   const submitModifyCommentWrite = async () => {
@@ -267,9 +264,9 @@ const CommentWrite = ({
         return pres;
       });
     }
-    updateCommentData();
+    await updateCommentData();
     handleModal();
-    refreshCommentData();
+    await refreshCommentData();
   }
 
   const refreshCommentData = async() => {

@@ -145,7 +145,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   const [beforeModify, setBeforeModify] = useState();
   useEffect(() => {
     setImages(userComment.userImg);
-  }, []);
+  }, []); 
 
   const handleModal = () => {
     setCommentModal((pres) => !pres);
@@ -174,7 +174,6 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
       let cafeCommentArr = [];
       const data = await dbService.collection('CafeComment').get();
       data.forEach((commentData) => {
-        console.log('currentCafe :' + currentCafe.cafeid);
         if (currentCafe.cafeid === commentData.data().cafeId) {
           cafeCommentArr.push(commentData.data());
         }

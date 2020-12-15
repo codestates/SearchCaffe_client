@@ -116,15 +116,15 @@ const CardWrapper = ({ state, cardList }) => {
   let cozyCafe = [];
   let goodForTask = [];
 
-  const getData = async () => {
-    let cafe = await getNearbyCafe();
-    cafe: cafe.length > 6
-      ? (cafe = cafe.slice(0, 6))
-      : cafe.length > 3
-      ? cafe.slice(0, 3)
-      : (cafe = []);
-    setNearbyCafe(cafe);
-  };
+  // const getData = async () => {
+  //   let cafe = await getNearbyCafe();
+  //   cafe: cafe.length > 6
+  //     ? (cafe = cafe.slice(0, 6))
+  //     : cafe.length > 3
+  //     ? cafe.slice(0, 3)
+  //     : (cafe = []);
+  //   setNearbyCafe(cafe);
+  // };
   // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
     dbService
@@ -142,7 +142,7 @@ const CardWrapper = ({ state, cardList }) => {
       .finally(function () {
         cardList(cardListArr);
         setCards(cardListArr);
-        getData();
+        // getData();
         console.log(nearbyCafe);
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
