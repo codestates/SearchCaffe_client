@@ -92,7 +92,7 @@ const ContentComment = ({
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
   const [like, setLike] = useState(
-    !user.heart | (user.heart?.indexOf(currentCafe.cafeName) === -1)
+    !user | !user?.heart | (user?.heart?.indexOf(currentCafe.cafeName) === -1)
       ? likeImg
       : likedImg
   );
@@ -122,24 +122,24 @@ const ContentComment = ({
   console.log('contentComment work', comment);
   useEffect(() => {
     console.log('work!');
-    let filtered = comment?.filter((com) => com.username === user.displayName);
-    let userCommentArray = user.comment ? user.comment : [];
-    console.log(
-      filtered.length,
-      user.comment,
-      user.comment?.indexOf(currentCafe.cafeName)
-    );
-    if (
-      (filtered.length === 0) &
-      (userCommentArray.indexOf(currentCafe.cafeName) !== -1)
-    ) {
-      let tempComment = user.comment ? user.comment : [];
-      console.log('removing....');
-      tempComment.splice(user.comment.indexOf(currentCafe.cafeName), 1);
-      handleUserMyComment(tempComment);
-      dbService.collection('users').doc(user.uid).update({
-        comment: tempComment,
-      });
+    if (user) {
+      let filtered = comment?.filter(
+        (com) => com.username === user.displayName
+      );
+      let userCommentArray = user.comment ? user.comment : [];
+      console.log(filtered);
+      if (
+        (filtered?.length === 0) &
+        (userCommentArray.indexOf(currentCafe.cafeName) !== -1)
+      ) {
+        let tempComment = user.comment ? user.comment : [];
+        console.log('removing....');
+        tempComment.splice(user.comment.indexOf(currentCafe.cafeName), 1);
+        handleUserMyComment(tempComment);
+        dbService.collection('users').doc(user.uid).update({
+          comment: tempComment,
+        });
+      }
     }
   }, [comment?.length]);
   // const comment =  useSelector(async(state) => await comment);

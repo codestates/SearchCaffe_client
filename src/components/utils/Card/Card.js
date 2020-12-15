@@ -167,8 +167,8 @@ const Card = (props) => {
         <CardTags>
           {props.cafeTag
             ? props.cafeTag.map((tag) => (
-                <Tag key={tag} isSmall={true} tagName={tag}></Tag>
-              ))
+              <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+            ))
             : ''}
         </CardTags>
       </LinkContent>

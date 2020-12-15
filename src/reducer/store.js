@@ -115,10 +115,11 @@ const reducer = (state = [], action) => {
           state[i] = currentCafe;
         }
       }
-      return Object.assign({}, state, {
+      return (Object.assign({}, state, {
         ...state,
         currentCafe,
-      });
+      })
+      )
     case CURRENTUSER:
       let user = action.user;
       for (let i in state) {
