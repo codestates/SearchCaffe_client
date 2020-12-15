@@ -179,7 +179,7 @@ const CommentWrite = ({
   user,
   handleModal,
   currentCafeComment,
-  beforeModify
+  beforeModify,
 }) => {
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
@@ -191,14 +191,23 @@ const CommentWrite = ({
   const [modifyObj, setModifyObj] = useState({});
 
   useEffect(() => {
-    if(beforeModify) {
+    if (beforeModify) {
       setModifyObj(beforeModify);
       setImages(beforeModify.userImg);
+      setTags(beforeModify.userTag);
     }
-  },[])
+  }, []);
+
+  const submitChange = (e) => {
+    const {
+      target: { value },
+    } = e;
+
+    setSubmitComment(value);
+  };
 
   const submitCommentWrite = async () => {
-    console.log("Setting Work!");
+    console.log('Setting Work!');
     async function upLoadTaskPromise(image) {
       const upLoadTask = storageService
         .ref(`commentImage/${image.name}`)
@@ -234,7 +243,7 @@ const CommentWrite = ({
   };
 
   const submitModifyCommentWrite = async () => {
-    console.log("Modify Work!");
+    console.log('Modify Work!');
     async function upLoadTaskPromise(image) {
       const upLoadTask = storageService
         .ref(`commentImage/${image.name}`)
@@ -260,16 +269,16 @@ const CommentWrite = ({
     for (let i = 0; i < imagesRowData.length; i++) {
       let url = await upLoadTaskPromise(imagesRowData[i]);
       setImages((pres) => {
-        pres[i] = url;
+        pres[images.length-1] = url;
         return pres;
       });
     }
     await updateCommentData();
     handleModal();
     await refreshCommentData();
-  }
+  };
 
-  const refreshCommentData = async() => {
+  const refreshCommentData = async () => {
     try {
       let cafeCommentArr = [];
       const data = await dbService.collection('CafeComment').get();
@@ -282,35 +291,37 @@ const CommentWrite = ({
     } catch (error) {
       console.error('CafeComment get Error :' + error);
     }
-  }
+  };
 
-  const settingCommentData = async() => {
-    console.log("Set Cafe Info :" + `${currentCafe.cafeid}&${(comment.length + 1)}`);
+  const settingCommentData = async () => {
+    console.log(
+      'Set Cafe Info :' + `${currentCafe.cafeid}&${comment.length + 1}`
+    );
     await dbService
-        .collection('CafeComment')
-        .doc(`${currentCafe.cafeid}&${(comment.length + 1)}`)
-        .set({
-          cafeId: currentCafe.cafeid,
-          commentId: comment.length + 1,
-          userComment: submitComment,
-          userImg: images,
-          userStar: scope,
-          username: user.displayName,
-          userTag : selectedTags
-        });
-  }
+      .collection('CafeComment')
+      .doc(`${currentCafe.cafeid}&${comment.length + 1}`)
+      .set({
+        cafeId: currentCafe.cafeid,
+        commentId: comment.length + 1,
+        userComment: submitComment,
+        userImg: images,
+        userStar: scope,
+        username: user.displayName,
+        userTag: selectedTags,
+      });
+  };
 
-  const updateCommentData = async() => {
+  const updateCommentData = async () => {
     await dbService
-    .collection('CafeComment')
-    .doc(`${beforeModify.cafeId}&${beforeModify.commentId}`)
-    .update({
-      userComment: submitComment,
-      userImg: images,
-      userStar: scope,
-      userTag : selectedTags
-    });
-  }  
+      .collection('CafeComment')
+      .doc(`${beforeModify.cafeId}&${beforeModify.commentId}`)
+      .update({
+        userComment: submitComment.length === 0 ? beforeModify.userComment : submitComment,
+        userImg: images,
+        userStar: scope ? scope : beforeModify.userStar,
+        userTag: selectedTags,
+      });
+  };
   const upLoadTaskHandler = (inputImage) => {
     if (images.length > 2) {
       return;
@@ -368,7 +379,10 @@ const CommentWrite = ({
       <UserAndScope>
         <CommentTitle>카페에 대한 리뷰를 작성해주세요</CommentTitle>
         <ScopeContainer>
-          <Scope setScope={setScope} modifyScope={beforeModify ? beforeModify.userStar : ''}></Scope>
+          <Scope
+            setScope={setScope}
+            modifyScope={beforeModify ? beforeModify.userStar : ''}
+          ></Scope>
         </ScopeContainer>
       </UserAndScope>
 
@@ -390,11 +404,9 @@ const CommentWrite = ({
           </span>
         ))}
       </TagWrapper>
-      <CommentInput
-        onChange={(e) => {
-          setSubmitComment(e.target.value);
-        }}
-      >{beforeModify ? beforeModify.userComment : ''}</CommentInput>
+      <CommentInput onChange={submitChange}>
+        {beforeModify ? beforeModify.userComment : ''}
+      </CommentInput>
       <CommentImgWrapper>
         <UploadImg>
           <UploadImgInput
@@ -431,7 +443,11 @@ const CommentWrite = ({
           );
         })}
         <ButtonWrapper>
-          <CommentSubmitButton onClick={beforeModify ? submitModifyCommentWrite :submitCommentWrite}>
+          <CommentSubmitButton
+            onClick={
+              beforeModify ? submitModifyCommentWrite : submitCommentWrite
+            }
+          >
             제출
           </CommentSubmitButton>
           <CommentOutButton onClick={handleModal}>나가기</CommentOutButton>

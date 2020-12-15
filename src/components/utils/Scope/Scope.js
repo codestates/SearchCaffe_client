@@ -87,7 +87,6 @@ const Scope = (props) => {
 
   // 고정된 scope
   useMemo(() => {
-    if (!props.modifyScope) {
       let tempStars = [];
       for (let i = 0; i <= scope; i++) {
         tempStars.push(
@@ -110,7 +109,6 @@ const Scope = (props) => {
         );
       }
       setFixedStars(tempStars);
-    }
   }, [scope]);
 
   if (props.isScope) {
