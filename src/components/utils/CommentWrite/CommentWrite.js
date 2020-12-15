@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeConsumer } from 'styled-components';
 import { actionCreators } from '../../../reducer/store';
 import { ImageModal } from '../ImageModal/ImageModal';
 import Scope from '../Scope/index';
@@ -219,18 +219,19 @@ const CommentWrite = ({
   const [scope, setScope] = useState(-1);
   const [submitComment, setSubmitComment] = useState('');
   const [images, setImages] = useState([]);
-  const [imagesRowData, setImagesRowData] = useState([]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
   const [limitImgError, setLimitImgError] = useState(false);
   const [limitCommentError, setLimitCommentError] = useState(false);
   const [modifyObj, setModifyObj] = useState({});
-
+  console.log(beforeModify);
   useEffect(() => {
     if (beforeModify) {
       setModifyObj(beforeModify);
       setImages(beforeModify.userImg);
       setTags(beforeModify.userTag);
+      setScope(beforeModify.userStar);
+      setSubmitComment(beforeModify.userComment);
     }
   }, []);
   useMemo(() => {
@@ -244,75 +245,14 @@ const CommentWrite = ({
     }
   }, [submitComment]);
   const submitCommentWrite = async () => {
-    console.log('Setting Work!');
-    async function upLoadTaskPromise(image) {
-      const upLoadTask = storageService
-        .ref(`commentImage/${image.name}`)
-        .put(image);
-      return new Promise((res, rej) => {
-        upLoadTask.on(
-          'state_changed',
-          (snapshot) => {},
-          (error) => {
-            console.log(error);
-            rej();
-          },
-          async () => {
-            let url = await storageService
-              .ref('commentImage')
-              .child(image.name)
-              .getDownloadURL();
-            res(url);
-          }
-        );
-      });
-    }
-    for (let i = 0; i < imagesRowData.length; i++) {
-      let url = await upLoadTaskPromise(imagesRowData[i]);
-      setImages((pres) => {
-        pres[i] = url;
-        return pres;
-      });
-    }
     await settingCommentData();
     handleModal();
     await refreshCommentData();
   };
-
   const submitModifyCommentWrite = async () => {
-    console.log('Modify Work!');
-    async function upLoadTaskPromise(image) {
-      const upLoadTask = storageService
-        .ref(`commentImage/${image.name}`)
-        .put(image);
-      return new Promise((res, rej) => {
-        upLoadTask.on(
-          'state_changed',
-          (snapshot) => {},
-          (error) => {
-            console.log(error);
-            rej();
-          },
-          async () => {
-            let url = await storageService
-              .ref('commentImage')
-              .child(image.name)
-              .getDownloadURL();
-            res(url);
-          }
-        );
-      });
-    }
-    for (let i = 0; i < imagesRowData.length; i++) {
-      let url = await upLoadTaskPromise(imagesRowData[i]);
-      setImages((pres) => {
-        pres[images.length - 1] = url;
-        return pres;
-      });
-    }
     await updateCommentData();
-    handleModal();
     await refreshCommentData();
+    handleModal();
   };
 
   const refreshCommentData = async () => {
@@ -347,7 +287,6 @@ const CommentWrite = ({
         userTag: selectedTags,
       });
   };
-
   const updateCommentData = async () => {
     await dbService
       .collection('CafeComment')
@@ -360,7 +299,9 @@ const CommentWrite = ({
         userTag: selectedTags,
       });
   };
-  const upLoadTaskHandler = (inputImage) => {
+
+  const getUrlFromFirestore = async (inputImage) => {
+    console.log(inputImage);
     if (images.length > 2) {
       setLimitImgError(true);
       let imgTimer = setTimeout(() => {
@@ -369,18 +310,33 @@ const CommentWrite = ({
       return;
     }
     setImages((preImages) => [...preImages, loading]);
-    const reader = new FileReader();
-    reader.onloadend = (finishedEvent) => {
-      const {
-        currentTarget: { result },
-      } = finishedEvent;
-      setImages((preImages) => {
-        preImages.splice(preImages.length - 1, 1, result);
-        return [...preImages];
-      });
-      setImagesRowData((pres) => [...pres, inputImage]);
-    };
-    reader.readAsDataURL(inputImage);
+    let nowDate = new Date();
+    let imageName = `${nowDate.getDate()}day ${nowDate.getHours()}hour ${nowDate.getSeconds()}second`;
+    const upLoadTask = storageService
+      .ref(`commentImage/${imageName}`)
+      .put(inputImage);
+    return new Promise((res, rej) => {
+      upLoadTask.on(
+        'state_changed',
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+          rej();
+        },
+        () => {
+          storageService
+            .ref('commentImage')
+            .child(imageName)
+            .getDownloadURL()
+            .then((url) => {
+              setImages((preImages) => {
+                console.log(preImages);
+                return [...preImages.slice(0, preImages.length - 1), url];
+              });
+            });
+        }
+      );
+    });
   };
 
   const handleTags = (tag) => {
@@ -403,10 +359,6 @@ const CommentWrite = ({
       pres.splice(index, 1);
       return [...pres];
     });
-    setImagesRowData((pres) => {
-      pres.splice(index, 1);
-      return [...pres];
-    });
   };
   const handleImageEnlarge = (index) => {
     setCurrentImg(images[index]);
@@ -423,43 +375,45 @@ const CommentWrite = ({
         <ScopeContainer>
           <Scope
             setScope={setScope}
-            modifyScope={beforeModify ? beforeModify.userStar : ''}
+            modifyScope={beforeModify ? beforeModify.userStar : -1}
           ></Scope>
         </ScopeContainer>
       </UserAndScope>
+      <CommentContainer>
+        <TagWrapper>
+          {commentTags.map((tag) => (
+            <span
+              key={tag}
+              onClick={() => {
+                handleTags(tag);
+              }}
+            >
+              <Tag
+                tagName={tag}
+                isSmall={true}
+                color="white"
+                isButton={true}
+                modifyTag={beforeModify ? beforeModify.userTag : ''}
+              ></Tag>
+            </span>
+          ))}
+        </TagWrapper>
+        <CommentInput
+          onChange={(e) => {
+            setSubmitComment(e.target.value);
+          }}
+        >
+          {beforeModify ? beforeModify.userComment : ''}
+        </CommentInput>
+      </CommentContainer>
 
-      <TagWrapper>
-        {commentTags.map((tag) => (
-          <span
-            key={tag}
-            onClick={() => {
-              handleTags(tag);
-            }}
-          >
-            <Tag
-              tagName={tag}
-              isSmall={true}
-              color="white"
-              isButton={true}
-              modifyTag={beforeModify ? beforeModify.userTag : ''}
-            ></Tag>
-          </span>
-        ))}
-      </TagWrapper>
-      <CommentInput
-        onChange={() => {
-          setSubmitComment(e.target.value);
-        }}
-      >
-        {beforeModify ? beforeModify.userComment : ''}
-      </CommentInput>
       <CommentImgWrapper>
         <UploadImg>
           <UploadImgInput
             type="file"
             onChange={(e) => {
               if (e.target.files[0]) {
-                upLoadTaskHandler(e.target.files[0]);
+                getUrlFromFirestore(e.target.files[0]);
               }
             }}
           ></UploadImgInput>
@@ -488,16 +442,7 @@ const CommentWrite = ({
             </Uploaded>
           );
         })}
-        <ButtonWrapper>
-          <CommentSubmitButton
-            onClick={
-              beforeModify ? submitModifyCommentWrite : submitCommentWrite
-            }
-          >
-            제출
-          </CommentSubmitButton>
-          <CommentOutButton onClick={handleModal}>나가기</CommentOutButton>
-        </ButtonWrapper>
+        <ButtonWrapper></ButtonWrapper>
       </CommentImgWrapper>
       <Limit error={limitImgError}>{images.length}/3</Limit>
       <ButtonWrapper>
@@ -535,3 +480,26 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentWrite);
+
+// const getUrlFromFirestore = (inputImage) => {
+//   if (images.length > 2) {
+//     setLimitImgError(true);
+//     let imgTimer = setTimeout(() => {
+//       setLimitImgError(false);
+//     }, 1500);
+//     return;
+//   }
+//   setImages((preImages) => [...preImages, loading]);
+//   const reader = new FileReader();
+//   reader.onloadend = (finishedEvent) => {
+//     const {
+//       currentTarget: { result },
+//     } = finishedEvent;
+//     setImages((preImages) => {
+//       preImages.splice(preImages.length - 1, 1, result);
+//       return [...preImages];
+//     });
+//     setImagesRowData((pres) => [...pres, inputImage]);
+//   };
+//   reader.readAsDataURL(inputImage);
+// };
