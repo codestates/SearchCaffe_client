@@ -31,7 +31,7 @@ const Main = (props) => {
   return (
     <MainStyle>
       <MainImgCover>
-        <img src={coffeeImg}></img>
+        {/* <img src={coffeeImg}></img> */}
       </MainImgCover>
       <MainImg />
       <SearchWrapper></SearchWrapper>

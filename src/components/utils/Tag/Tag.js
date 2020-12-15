@@ -18,7 +18,7 @@ import tomtom from './asset/tomtom.png';
 import twosome from './asset/twosome.png';
 import conversation from './asset/conversation.png';
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 
@@ -115,6 +115,15 @@ const Tag = (props) => {
   const [isClick, setClick] = useState(false);
   const tagValue = useRef(null);
   const handleTags = props.handleTags ? props.handleTags : () => {};
+  useEffect(() => {
+    if (props.modifyTag) {
+      props.modifyTag.forEach((x) => {
+        if (x === props.tagName) {
+          setClick((pres) => !pres);
+        }
+      });
+    }
+  }, []);
   if (props.isSmall) {
     return (
       <SmallTagStyle
