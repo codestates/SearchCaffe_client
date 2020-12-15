@@ -35,10 +35,10 @@ const currentCafeClick = (currentCafe) => {
   };
 };
 
-const currentCafeComment = (currentCafeComment) => {
+const currentCafeComment = (comment) => {
   return {
     type: CURRENTCAFECOMMENT,
-    currentCafeComment,
+    comment,
   };
 };
 
@@ -75,15 +75,15 @@ const reducer = (state = [], action) => {
         keyword,
       });
     case CURRENTCAFECOMMENT:
-      let currentCafeComment = action.currentCafeComment;
+      let comment = action.comment;
       for (let i in state) {
-        if (i === 'currentCafeComment') {
-          state[i] = currentCafeComment;
+        if (i === 'comment') {
+          state[i] = comment;
         }
       }
       return Object.assign({}, state, {
         ...state,
-        currentCafeComment,
+        comment,
       });
     case CURRENTCAFE:
       let currentCafe = action.currentCafe;
@@ -92,10 +92,11 @@ const reducer = (state = [], action) => {
           state[i] = currentCafe;
         }
       }
-      return Object.assign({}, state, {
+      return (Object.assign({}, state, {
         ...state,
         currentCafe,
-      });
+      })
+      )
     case CURRENTUSER:
       let user = action.user;
       for (let i in state) {

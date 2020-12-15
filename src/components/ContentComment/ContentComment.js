@@ -2,7 +2,10 @@ import Comment from '../utils/Comment/index';
 import CommentWrite from '../utils/CommentWrite/index';
 import { cafeComment } from '../../cafeInfos';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { actionCreators } from '../../reducer/store';
+
 const Detail3 = styled.div`
   width: 90%;
   height: 100%;
@@ -30,16 +33,20 @@ const BackGroundCover = styled.div`
   z-index: 1;
 `;
 
-const ContentComment = (props) => {
+const ContentComment = ({ comment }) => {
   const [commentModal, setModal] = useState(false);
+  const [commentArr, setCommentArr] = useState([]);
+  // const comment =  useSelector(async(state) => await comment);
   const handleModal = () => {
     setModal((pres) => !pres);
   };
+  useEffect(() => {
+    console.log(typeof comment);
+  }, []);
   return (
     <Detail3>
       <div className="Line2">REVEIW</div>
       <button onClick={handleModal}>리뷰작성</button>
-
       {commentModal ? (
         <>
           <BackGroundCover>
@@ -47,18 +54,33 @@ const ContentComment = (props) => {
           </BackGroundCover>
         </>
       ) : (
-        ''
-      )}
-
-      {cafeComment.filter((comment) => comment.cafeId === 0).length !== 0
+          ''
+        )}
+      {!comment
+        ? <h1>없다</h1>
+        : comment.map((userComment, index) => {
+          console.log('userComment :' + userComment['cafeId']);
+          <Comment key={index} userComment={userComment}></Comment>;
+        })}
+      {/* {cafeComment.filter((comment) => comment.cafeId === 0).length !== 0
         ? cafeComment
             .filter((comment) => comment.cafeId === 0)
             .map((userComment, index) => (
               <Comment key={index} userComment={userComment}></Comment>
             ))
-        : ''}
+        : ''} */}
     </Detail3>
   );
 };
+function mapStateToProps(state, ownProps) {
+  console.log('========= comment state', state);
+  return { ...state, ownProps };
+}
 
-export default ContentComment;
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContentComment);

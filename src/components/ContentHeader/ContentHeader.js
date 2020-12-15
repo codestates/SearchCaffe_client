@@ -26,7 +26,7 @@ const MainImgCover = styled.div`
 `;
 
 const MainImage = styled.div`
-  background-image: url(${'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4'});
+  background-image: ${props => `url(${props.background})`};
   background-position: center;
   background-size: 100% auto;
   display: inline-block;
@@ -107,7 +107,7 @@ const DescribeContainer = styled.div`
 `;
 
 const SlideContainer = styled.div`
-  width: 300px;
+  width: 1000px;
   height: 300px;
   margin: auto;
 `;
@@ -121,7 +121,7 @@ const Image = styled.img`
   height: 100%;
   object-fit: contain;
 `;
-const imgUrl = require('./Table.svg');
+const imgUrl = 'cafeImage';
 
 const items = [
   { id: 1, url: imgUrl },
@@ -130,55 +130,41 @@ const items = [
 ];
 
 const settings = {
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 500,
-  slidesToShow: 3,
-  slidesToScroll: 3
+  slidesToShow: 1,
+  slidesToScroll: 1
 };
 
 const ContentHeader = (props) => {
+  console.log('=========== currentcafe >>', props.currentCafe);
+  console.log('=========== cardArr>>', props.cardArr[1]);
+
+  const { cafeid, cafeTag, cafeName, cafeAddress, cafeImage, cafeStar } = props.currentCafe
+
   return (
     <>
       <MainImgCover />
-      <MainImage />
+      <MainImage background-image={cafeImage} />
       <Detail>
         <SlideContainer>
           <StyledSlider {...settings}>
-            <div>
-              <Image
-                alt="#"
-                src={
-                  'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4'
-                }
-              />
-            </div>
-            <div>
-              <Image
-                alt="#"
-                src={
-                  'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F20208172316_editor_image.jpg?alt=media&token=c5b05234-8a38-4f0a-9054-42565f2f7d2f'
-                }
-              />
-            </div>
-            {/*          {items.map(item => {
-    return (
-      <div key={item.id}>
-        <ImageContainer>
-          <Image src={item.url} />
-        </ImageContainer>
-      </div>
-    )
-  })}
-*/}
+            {/* {cafeImage.map(el => {
+              return (
+                <div >
+                  <Image src={el} />
+                </div>
+              )
+            })} */}
           </StyledSlider>
         </SlideContainer>
         <DescribeContainer>
-          <h1>{props.cafeName ? props.cafeName : '카페 이름'}</h1>
-          <div className="adress">{props.cafeAdress ? props.cafeAdress : '카페 주소'}</div>
-          <div className="describe">
-            {props.dscribe ? props.describe : '당신이 찾는 그 카페'}
-          </div>
+          <h1>{cafeName ? cafeName : "해당 정보를 불러오는 중입니다."}</h1>
+
+          <div className="adress">{cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}</div>
+
+          <div className="describe"></div>
           <SvgContainer>
             <Table />
             <Line />
@@ -187,7 +173,16 @@ const ContentHeader = (props) => {
             <Time />
           </SvgContainer>
           <div className="tagBox">
-            <Tag
+            {cafeTag.map((el) => {
+              return (
+                <Tag
+                  isButton={true}
+                  color="#ffffff"
+                  isSmall={true}
+                  tagName={el} />
+              )
+            })}
+            {/* <Tag
               isButton={true}
               color="#ffffff"
               isSmall={true}
@@ -204,7 +199,7 @@ const ContentHeader = (props) => {
               color="#ffffff"
               isSmall={true}
               tagName={tagName['애완 동물 동반']}
-            ></Tag>
+            ></Tag> */}
           </div>
         </DescribeContainer>
       </Detail>
@@ -213,13 +208,14 @@ const ContentHeader = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  return { state };
+  return { ...state };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    currentCafe: (currentCafe) =>
-      dispatch(actionCreators.currentCafeClick(currentCafe)),
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(ContentHeader);
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     addcurrentCafe: (currentCafe) =>
+//       dispatch(actionCreators.currentCafeClick(currentCafe)),
+//   };
+// }
+
+export default connect(mapStateToProps, null)(ContentHeader);

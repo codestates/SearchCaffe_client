@@ -4,16 +4,22 @@ import SignIn from '../Signin/SignIn';
 import { authService } from '../../firebase/mainbase';
 import { Link } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
+import { dbService } from '../../firebase/mainbase';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../reducer/store';
 
-const Nav = () => {
+const Nav = ({ userHandler }) => {
   // const [Login, setLogin] = useState(false);
   const [showSignin, setShowSignin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
+    authService.onAuthStateChanged(async (user) => {
       if (user) {
         setIsLogin(true);
+        const checkDB = await dbService.collection('users').doc(user.uid).get();
+        const data = checkDB.data();
+        userHandler({ ...data });
       } else {
         setIsLogin(false);
       }
@@ -65,4 +71,14 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

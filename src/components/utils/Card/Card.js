@@ -122,14 +122,18 @@ const Card = (props) => {
     currnetCafeObj['cafeAddress'] = props.cafeAddress;
     currnetCafeObj['cafeImage'] = props.cafeImage;
     currnetCafeObj['cafeStar'] = props.cafeStar;
-    props.currentCafe(currnetCafeObj);
-    const data = await dbService.collection('CafeComment').get();
-    data.forEach((doc) => {
-      if (props.cafeid === doc.data().cafeId) {
-        cafeCommentArr.push(doc.data());
-      }
-    });
-    props.currentCafeComment(cafeCommentArr);
+    await props.currentCafe(currnetCafeObj);
+    try {
+      const data = await dbService.collection('CafeComment').get();
+      data.forEach((doc) => {
+        if (props.cafeid === doc.data().cafeId) {
+          cafeCommentArr.push(doc.data());
+        }
+      });
+    } catch (error) {
+      console.log("error" + error)
+    }
+    await props.currentCafeComment(cafeCommentArr);
   };
   if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
@@ -173,8 +177,8 @@ function mapDispatchToProps(dispatch) {
   return {
     currentCafe: (currentCafe) =>
       dispatch(actionCreators.currentCafeClick(currentCafe)),
-    currentCafeComment: (cafeComment) =>
-      dispatch(actionCreators.currentCafeComment(cafeComment)),
+    currentCafeComment: (comment) =>
+      dispatch(actionCreators.currentCafeComment(comment)),
   };
 }
 
