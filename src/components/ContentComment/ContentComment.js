@@ -18,7 +18,7 @@ const Detail3 = styled.div`
   position: relative;
   background: #fafafa;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
-
+  margin-bottom: 150px;
   margin-top: 5rem;
   padding-top: 48px;
   padding-left: 32px;
@@ -90,6 +90,7 @@ const ContentComment = ({ comment }) => {
       setLike(likeImg);
     }
   };
+
   // const comment =  useSelector(async(state) => await comment);
   const handleModal = () => {
     setModal((pres) => !pres);

@@ -15,7 +15,9 @@ import {
 import Recommendation from './Recommendation';
 import getNearbyCafe from '../../getNearbyCafe';
 
-const CardWrapperCover = styled.div``;
+const CardWrapperCover = styled.div`
+  margin-bottom: 150px;
+`;
 
 const WrapperLine = styled.span`
   display: inline-block;
@@ -117,15 +119,10 @@ const CardWrapper = ({ state, cardList }) => {
   let cozyCafe = [];
   let goodForTask = [];
 
-  // const getData = async () => {
-  //   let cafe = await getNearbyCafe();
-  //   cafe: cafe.length > 6
-  //     ? (cafe = cafe.slice(0, 6))
-  //     : cafe.length > 3
-  //     ? cafe.slice(0, 3)
-  //     : (cafe = []);
-  //   setNearbyCafe(cafe);
-  // };
+  const getData = async () => {
+    let cafe = await getNearbyCafe();
+    setNearbyCafe(cafe);
+  };
   // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
     dbService
@@ -145,7 +142,7 @@ const CardWrapper = ({ state, cardList }) => {
         console.log('From Firebase ========>', cardListArr);
         cardList(cardListArr);
         setCards(cardListArr);
-        // getData();
+        getData();
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
@@ -256,14 +253,20 @@ const CardWrapper = ({ state, cardList }) => {
       <CardWrapperStyle>
         <Recommendation recommendation={isGoodForTask}></Recommendation>
       </CardWrapperStyle>
-      <WrapperTitle>
-        <WrapperLineRight />
-        <span>내 주변 카페</span>
-        <WrapperLineLeft />
-      </WrapperTitle>
-      <CardWrapperStyle>
-        <Recommendation recommendation={nearbyCafe}></Recommendation>
-      </CardWrapperStyle>
+      {nearbyCafe.length !== 0 ? (
+        <>
+          <WrapperTitle>
+            <WrapperLineRight />
+            <span>내 주변 카페</span>
+            <WrapperLineLeft />
+          </WrapperTitle>
+          <CardWrapperStyle>
+            <Recommendation recommendation={nearbyCafe}></Recommendation>
+          </CardWrapperStyle>
+        </>
+      ) : (
+        ''
+      )}
     </CardWrapperCover>
   ) : (
     // NOTE 검색결과(키워드 또는 태그 => 아직은 둘 중 하나만 가능)

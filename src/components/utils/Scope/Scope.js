@@ -42,9 +42,13 @@ const Scope = (props) => {
   const [scope, setScope] = useState(-1);
   const [stars, setStars] = useState([]);
   const [fixedStars, setFixedStars] = useState([]);
+
   useEffect(() => {
     if (props.modifyScope) {
       setScope(props.modifyScope - 1);
+      if ((props.modifyScope === -1) | (props.modifyScope === '')) {
+        setScope(-1);
+      }
     }
   }, []);
   // 변하는 scope
@@ -87,28 +91,28 @@ const Scope = (props) => {
 
   // 고정된 scope
   useMemo(() => {
-      let tempStars = [];
-      for (let i = 0; i <= scope; i++) {
-        tempStars.push(
-          <Star
-            click={() => {
-              if (scope === -1) {
-                setScope(i);
-              }
-            }}
-            key={i}
-            index={i}
-            size={size}
-            color="#f59642"
-          ></Star>
-        );
-      }
-      for (let i = scope + 1; i < 5; i++) {
-        tempStars.push(
-          <Star color="#dddddd" key={i} index={i} size={size}></Star>
-        );
-      }
-      setFixedStars(tempStars);
+    let tempStars = [];
+    for (let i = 0; i <= scope; i++) {
+      tempStars.push(
+        <Star
+          click={() => {
+            if (scope === -1) {
+              setScope(i);
+            }
+          }}
+          key={i}
+          index={i}
+          size={size}
+          color="#f59642"
+        ></Star>
+      );
+    }
+    for (let i = scope + 1; i < 5; i++) {
+      tempStars.push(
+        <Star color="#dddddd" key={i} index={i} size={size}></Star>
+      );
+    }
+    setFixedStars(tempStars);
   }, [scope]);
 
   if (props.isScope) {
@@ -129,6 +133,7 @@ const Scope = (props) => {
     }
     return <span>{contentsScope}</span>;
   }
+
   if (scope !== -1) {
     return (
       <ScopeStyle
