@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import { cafeComment } from './cafeInfos';
 
 const App = () => {
-
   return (
     <BrowserRouter>
       <Nav></Nav>
@@ -25,8 +24,9 @@ const App = () => {
         <Route path="/content">
           <Content></Content>
         </Route>
-        <Route path="/mypage"></Route>
-        <Mypage></Mypage>
+        <Route path="/mypage">
+          <Mypage></Mypage>
+        </Route>
       </Switch>
 
       <Footer></Footer>
