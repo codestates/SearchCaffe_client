@@ -137,7 +137,13 @@ const Detail3 = styled.div`
   border-bottom: 1px solid #e9ecef;
 `;
 
-const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
+const Comment = ({
+  userComment,
+  currentCafe,
+  user,
+  currentCafeComment,
+  refreshUser,
+}) => {
   const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
@@ -145,7 +151,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   const [beforeModify, setBeforeModify] = useState();
   useEffect(() => {
     setImages(userComment.userImg);
-  }, []); 
+  }, []);
 
   const handleModal = () => {
     setCommentModal((pres) => !pres);
@@ -189,14 +195,14 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
       const data = await dbService
         .collection('CafeComment')
         .doc(`${userComment.cafeId}&${userComment.commentId}`)
-        .get()
-      
+        .get();
+
       const tempObj = await data.data();
       setBeforeModify(tempObj);
       setCommentModal((pres) => !pres);
     } catch (error) {
       console.error(`can't find ModifyComment:` + error);
-    } 
+    }
   };
 
   return (
@@ -209,7 +215,11 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
           <>
             <Detail3>
               <BackGroundCover>
-                <CommentWrite onChange={commentModal} beforeModify={beforeModify} handleModal={handleModal}></CommentWrite>
+                <CommentWrite
+                  onChange={commentModal}
+                  beforeModify={beforeModify}
+                  handleModal={handleModal}
+                ></CommentWrite>
               </BackGroundCover>
             </Detail3>
           </>
@@ -224,13 +234,33 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
           ></Scope>
         </ScopeContainer>
       </UserAndScope>
-      {userComment.username === user.displayName ? (
-        <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+      {user ? (
+        userComment.username === user.displayName ? (
+          <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+        ) : (
+          ''
+        )
+      ) : refreshUser ? (
+        userComment.username === refreshUser.displayName ? (
+          <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+        ) : (
+          ''
+        )
       ) : (
         ''
       )}
-      {userComment.username === user.displayName ? (
-        <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+      {user ? (
+        userComment.username === user.displayName ? (
+          <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+        ) : (
+          ''
+        )
+      ) : refreshUser ? (
+        userComment.username === refreshUser.displayName ? (
+          <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+        ) : (
+          ''
+        )
       ) : (
         ''
       )}

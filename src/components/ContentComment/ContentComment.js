@@ -9,6 +9,7 @@ import Button from '../utils/Button/Button';
 import likeImg from './like.png';
 import likedImg from './liked.png';
 import reviewImg from './review.png';
+import { dbService } from '../../firebase/mainbase';
 const Detail3 = styled.div`
   width: 90%;
   height: 100%;
@@ -79,10 +80,38 @@ const WhenNoReviewContent = styled.div`
   margin: 10px 0 20px 0;
 `;
 
-const ContentComment = ({ comment }) => {
+const ContentComment = ({ comment, user }) => {
   const [commentModal, setModal] = useState(false);
-  const [commentArr, setCommentArr] = useState([]);
+  const [refreshCommentArr, setRefreshCommentArr] = useState([]);
   const [like, setLike] = useState(likeImg);
+
+  useEffect(async () => {
+    if (!comment) {
+      refreshPage();
+      console.log('work!!');
+    }
+  }, []);
+
+  const refreshPage = async() => {
+    const location = window.location.href;
+    let cafeId = '';
+    let tempArr = [];
+    for (let i in location) {
+      if (cafeId[0] === '/') {
+        break;
+      }
+      cafeId = location.slice(-Number(i) - 1);
+    }
+    // ID부분만 추출
+    cafeId = Number(cafeId.slice(1, cafeId.length));
+    const commentData = await dbService.collection('CafeComment').get();
+    commentData.forEach((doc) => {
+      if (doc.data().cafeId === cafeId) {
+        tempArr.push(doc.data());
+      }
+    });
+    setRefreshCommentArr(tempArr);
+  }
   const handleLike = () => {
     if (like === likeImg) {
       setLike(likedImg);
@@ -143,14 +172,18 @@ const ContentComment = ({ comment }) => {
       ) : (
         ''
       )}
-      {!comment | (comment?.length === 0) ? (
+      {!comment | (comment?.length === 0) && refreshCommentArr.length === 0 ? (
         <WhenNoReview>
           <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
           <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
         </WhenNoReview>
-      ) : (
+      ) : comment ? (
         comment.map((userComment, index) => {
           return <Comment key={index} userComment={userComment}></Comment>;
+        })
+      ) : (
+        refreshCommentArr.map((userComment, index) => {
+          return <Comment key={index} userComment={userComment} refreshUser={user}></Comment>;
         })
       )}
     </Detail3>
