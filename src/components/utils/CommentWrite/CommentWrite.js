@@ -230,6 +230,7 @@ const CommentWrite = ({
     if (beforeModify) {
       setModifyObj(beforeModify);
       setImages(beforeModify.userImg);
+      setTags(beforeModify.userTag);
     }
   }, []);
   useMemo(() => {
@@ -305,7 +306,7 @@ const CommentWrite = ({
     for (let i = 0; i < imagesRowData.length; i++) {
       let url = await upLoadTaskPromise(imagesRowData[i]);
       setImages((pres) => {
-        pres[i] = url;
+        pres[images.length - 1] = url;
         return pres;
       });
     }
@@ -352,9 +353,10 @@ const CommentWrite = ({
       .collection('CafeComment')
       .doc(`${beforeModify.cafeId}&${beforeModify.commentId}`)
       .update({
-        userComment: submitComment,
+        userComment:
+          submitComment.length === 0 ? beforeModify.userComment : submitComment,
         userImg: images,
-        userStar: scope,
+        userStar: scope ? scope : beforeModify.userStar,
         userTag: selectedTags,
       });
   };
@@ -425,36 +427,32 @@ const CommentWrite = ({
           ></Scope>
         </ScopeContainer>
       </UserAndScope>
-      <CommentContainer>
-        <TagWrapper>
-          {commentTags.map((tag) => (
-            <span
-              key={tag}
-              onClick={() => {
-                handleTags(tag);
-              }}
-            >
-              <Tag
-                tagName={tag}
-                isSmall={true}
-                color="white"
-                isButton={true}
-                modifyTag={beforeModify ? beforeModify.userTag : ''}
-              ></Tag>
-            </span>
-          ))}
-        </TagWrapper>
-        <CommentInput
-          onChange={(e) => {
-            setSubmitComment(e.target.value);
-          }}
-        >
-          {beforeModify ? beforeModify.userComment : ''}
-        </CommentInput>
-      </CommentContainer>
-      <LimitComment error={limitCommentError}>
-        {submitComment.length}/300
-      </LimitComment>
+
+      <TagWrapper>
+        {commentTags.map((tag) => (
+          <span
+            key={tag}
+            onClick={() => {
+              handleTags(tag);
+            }}
+          >
+            <Tag
+              tagName={tag}
+              isSmall={true}
+              color="white"
+              isButton={true}
+              modifyTag={beforeModify ? beforeModify.userTag : ''}
+            ></Tag>
+          </span>
+        ))}
+      </TagWrapper>
+      <CommentInput
+        onChange={() => {
+          setSubmitComment(e.target.value);
+        }}
+      >
+        {beforeModify ? beforeModify.userComment : ''}
+      </CommentInput>
       <CommentImgWrapper>
         <UploadImg>
           <UploadImgInput
@@ -490,7 +488,16 @@ const CommentWrite = ({
             </Uploaded>
           );
         })}
-        <ButtonWrapper></ButtonWrapper>
+        <ButtonWrapper>
+          <CommentSubmitButton
+            onClick={
+              beforeModify ? submitModifyCommentWrite : submitCommentWrite
+            }
+          >
+            제출
+          </CommentSubmitButton>
+          <CommentOutButton onClick={handleModal}>나가기</CommentOutButton>
+        </ButtonWrapper>
       </CommentImgWrapper>
       <Limit error={limitImgError}>{images.length}/3</Limit>
       <ButtonWrapper>
