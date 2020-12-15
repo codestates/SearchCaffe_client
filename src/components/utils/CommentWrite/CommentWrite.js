@@ -288,7 +288,7 @@ const CommentWrite = ({
   }
 
   const settingCommentData = async() => {
-    console.log("commentId :" + (comment.length + 1));
+    console.log("Set Cafe Info :" + `${currentCafe.cafeid}&${(comment.length + 1)}`);
     await dbService
         .collection('CafeComment')
         .doc(`${currentCafe.cafeid}&${(comment.length + 1)}`)
