@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
+import { actionCreators } from '../../../reducer/store';
 import { ImageModal } from '../ImageModal/ImageModal';
 import Scope from '../Scope/index';
 import Tag from '../Tag/index';
@@ -10,7 +10,6 @@ import enlargeImg from './images/enlarge.png';
 import removeImg from './images/remove.png';
 import loading from './images/loading.svg';
 import { storageService, dbService } from '../../../firebase/mainbase';
-import { actionCreators } from '../../../reducer/store';
 
 const CommentWriteStyle = styled.div`
   display: block;
@@ -174,73 +173,161 @@ const commentTags = [
   '바다가 보이는',
 ];
 
-const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
+const CommentWrite = ({
+  currentCafe,
+  comment,
+  user,
+  handleModal,
+  currentCafeComment,
+  beforeModify
+}) => {
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [submitComment, setSubmitComment] = useState('');
   const [images, setImages] = useState([]);
+  const [imagesRowData, setImagesRowData] = useState([]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
+  const [modifyObj, setModifyObj] = useState({});
+
+  useEffect(() => {
+    if (beforeModify) {
+      setModifyObj(beforeModify);
+      setImages(beforeModify.userImg);
+    }
+  }, [])
 
   const submitCommentWrite = async () => {
-    await dbService.collection('CafeComment').doc(`${currentCafe.cafeid}&${comment.length + 1}`).set({
-      cafeId: currentCafe.cafeid,
-      commentId: comment.length + 1,
-      userComment: submitComment,
-      userImg: images,
-      userStar: scope,
-      username: user.displayName
-    });
-    console.log('set', {
-      cafeId: currentCafe.cafeid,
-      commentId: comment.length + 1,
-      userComment: submitComment,
-      userImg: images,
-      userStar: scope,
-      username: user.displayName
+    console.log("Setting Work!");
+    async function upLoadTaskPromise(image) {
+      const upLoadTask = storageService
+        .ref(`commentImage/${image.name}`)
+        .put(image);
+      return new Promise((res, rej) => {
+        upLoadTask.on(
+          'state_changed',
+          (snapshot) => { },
+          (error) => {
+            console.log(error);
+            rej();
+          },
+          async () => {
+            let url = await storageService
+              .ref('commentImage')
+              .child(image.name)
+              .getDownloadURL();
+            res(url);
+          }
+        );
+      });
     }
-    )
-    console.log('image :' + images);
-
+    for (let i = 0; i < imagesRowData.length; i++) {
+      let url = await upLoadTaskPromise(imagesRowData[i]);
+      setImages((pres) => {
+        pres[i] = url;
+        return pres;
+      });
+    }
+    await settingCommentData();
     handleModal();
+    await refreshCommentData();
+  };
+
+  const submitModifyCommentWrite = async () => {
+    console.log("Modify Work!");
+    async function upLoadTaskPromise(image) {
+      const upLoadTask = storageService
+        .ref(`commentImage/${image.name}`)
+        .put(image);
+      return new Promise((res, rej) => {
+        upLoadTask.on(
+          'state_changed',
+          (snapshot) => { },
+          (error) => {
+            console.log(error);
+            rej();
+          },
+          async () => {
+            let url = await storageService
+              .ref('commentImage')
+              .child(image.name)
+              .getDownloadURL();
+            res(url);
+          }
+        );
+      });
+    }
+    for (let i = 0; i < imagesRowData.length; i++) {
+      let url = await upLoadTaskPromise(imagesRowData[i]);
+      setImages((pres) => {
+        pres[i] = url;
+        return pres;
+      });
+    }
+    await updateCommentData();
+    handleModal();
+    await refreshCommentData();
   }
 
+  const refreshCommentData = async () => {
+    try {
+      let cafeCommentArr = [];
+      const data = await dbService.collection('CafeComment').get();
+      data.forEach((commentData) => {
+        if (currentCafe.cafeid === commentData.data().cafeId) {
+          cafeCommentArr.push(commentData.data());
+        }
+      });
+      currentCafeComment(cafeCommentArr);
+    } catch (error) {
+      console.error('CafeComment get Error :' + error);
+    }
+  }
+
+  const settingCommentData = async () => {
+    console.log("Set Cafe Info :" + `${currentCafe.cafeid}&${(comment.length + 1)}`);
+    await dbService
+      .collection('CafeComment')
+      .doc(`${currentCafe.cafeid}&${(comment.length + 1)}`)
+      .set({
+        cafeId: currentCafe.cafeid,
+        commentId: comment.length + 1,
+        userComment: submitComment,
+        userImg: images,
+        userStar: scope,
+        username: user.displayName,
+        userTag: selectedTags
+      });
+  }
+
+  const updateCommentData = async () => {
+    await dbService
+      .collection('CafeComment')
+      .doc(`${beforeModify.cafeId}&${beforeModify.commentId}`)
+      .update({
+        userComment: submitComment,
+        userImg: images,
+        userStar: scope,
+        userTag: selectedTags
+      });
+  }
   const upLoadTaskHandler = (inputImage) => {
     if (images.length > 2) {
       return;
     }
     setImages((preImages) => [...preImages, loading]);
-    // const reader = new FileReader();
-    // reader.onloadend = (finishedEvent) => {
-    //   const {
-    //     currentTarget: { result },
-    //   } = finishedEvent;
-    //   setImages([...result,loading]);
-    //   console.log("result :" + result);
-    // }
-    // reader.readAsDataURL(inputImage);
-    const upLoadTask = storageService
-      .ref(`commentImage/${inputImage.name}`)
-      .put(inputImage);
-    upLoadTask.on(
-      'state_changed',
-      (snapshot) => { },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        storageService
-          .ref('commentImage')
-          .child(inputImage.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImages((preImages) => {
-              preImages.splice(preImages.length - 1, 1, url);
-              return [...preImages];
-            });
-          });
-      }
-    );
+    const reader = new FileReader();
+    reader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setImages((preImages) => {
+        preImages.splice(preImages.length - 1, 1, result);
+        return [...preImages];
+      });
+      setImagesRowData((pres) => [...pres, inputImage]);
+    };
+    reader.readAsDataURL(inputImage);
   };
 
   const handleTags = (tag) => {
@@ -263,6 +350,10 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
       pres.splice(index, 1);
       return [...pres];
     });
+    setImagesRowData((pres) => {
+      pres.splice(index, 1);
+      return [...pres];
+    });
   };
   const handleImageEnlarge = (index) => {
     setCurrentImg(images[index]);
@@ -277,7 +368,7 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
       <UserAndScope>
         <CommentTitle>카페에 대한 리뷰를 작성해주세요</CommentTitle>
         <ScopeContainer>
-          <Scope setScope={setScope}></Scope>
+          <Scope setScope={setScope} modifyScope={beforeModify ? beforeModify.userStar : ''}></Scope>
         </ScopeContainer>
       </UserAndScope>
 
@@ -294,6 +385,7 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
               isSmall={true}
               color="white"
               isButton={true}
+              modifyTag={beforeModify ? beforeModify.userTag : ''}
             ></Tag>
           </span>
         ))}
@@ -302,7 +394,7 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
         onChange={(e) => {
           setSubmitComment(e.target.value);
         }}
-      ></CommentInput>
+      >{beforeModify ? beforeModify.userComment : ''}</CommentInput>
       <CommentImgWrapper>
         <UploadImg>
           <UploadImgInput
@@ -339,17 +431,14 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
           );
         })}
         <ButtonWrapper>
-          <CommentSubmitButton onClick={submitCommentWrite}>
+          <CommentSubmitButton onClick={beforeModify ? submitModifyCommentWrite : submitCommentWrite}>
             제출
-            </CommentSubmitButton>
-          <CommentOutButton onClick={handleModal}>나가기 </CommentOutButton>
+          </CommentSubmitButton>
+          <CommentOutButton onClick={handleModal}>나가기</CommentOutButton>
         </ButtonWrapper>
       </CommentImgWrapper>
       {imageModal ? (
-        <ImageModal
-          image={currentImg}
-          unEnlarge={handleUnEnlarge}
-        ></ImageModal>
+        <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
       ) : (
           ''
         )}
@@ -358,49 +447,18 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
 };
 
 function mapStateToProps(state, ownProps) {
+  console.log(state);
   return { ...state };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+    userProfileHandler: (profile) =>
+      dispatch(actionCreators.changeUserProfile(profile)),
+    currentCafeComment: (comment) =>
+      dispatch(actionCreators.currentCafeComment(comment)),
   };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentWrite);
-// useEffect(() => {
-//   getData();
-// }, []);
-// const getData = async () => {
-//   const data = await storageService.ref().child('cafeImage');
-//   console.log(data);
-// };
-
-// const [isFile, setIsFile] = useState();
-// const onFileChange = (e) => {
-//   const {
-//     target: { files },
-//   } = e;
-//   const theFile = files[0];
-//   const reader = new FileReader();
-//   reader.onloadend = (e) => {
-//     const {
-//       currentTarget: { result },
-//     } = e;
-//     setIsFile(result);
-//   };
-//   reader.readAsDataURL(theFile);
-// };
-// const onSubmit = async (event) => {
-//   event.preventDefault();
-//   const fileRef = storageService.ref().child(`cafeImage/practice`);
-//   const response = await fileRef.putString(isFile, 'data_url');
-//   const publirUrl = await response.ref.getDownloadURL();
-//   console.log(publirUrl);
-// };
-
-// function mapStateToProps(state, ownProps) {
-//   return { state };
-// }
-
-// export default connect(mapStateToProps)(CommentWrite);

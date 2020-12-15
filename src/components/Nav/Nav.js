@@ -1,14 +1,13 @@
 import './Nav.css';
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import SignIn from '../Signin/SignIn';
-import { authService } from '../../firebase/mainbase';
+import { actionCreators } from '../../reducer/store';
+import { authService, dbService } from '../../firebase/mainbase';
 import { Link } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
-import { dbService } from '../../firebase/mainbase';
-import { connect } from 'react-redux';
-import { actionCreators } from '../../reducer/store';
 
-const Nav = ({ userHandler }) => {
+const Nav = ({ state, userHandler }) => {
   // const [Login, setLogin] = useState(false);
   const [showSignin, setShowSignin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);

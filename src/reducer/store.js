@@ -7,48 +7,70 @@ const KEYWORD = 'KEYWORD';
 const CURRENTCAFE = 'CURRENTCAFE';
 const CURRENTCAFECOMMENT = 'CURRENTCAFECOMMENT';
 const CURRENTUSER = 'CURRENTUSER';
+const CHANGEUSERPROFILE = 'CHANGEUSERPROFILE';
+const CHANGEDISPLAYNAME = 'CHANGEDISPLAYNAME';
+const CHANGEUSERCOMMENT = 'CHANGEUSERCOMMENT';
+const CHANGEUSERHEART = 'CHANGEUSERCHEART';
 const tagNameArray = (tagName) => {
   return {
     type: TAGARRAY,
     tagName,
   };
 };
-
 const addCardList = (card) => {
   return {
     type: CARDARRAY,
     card,
   };
 };
-
 const searchKeyword = (keyword) => {
   return {
     type: KEYWORD,
     keyword,
   };
 };
-
 const currentCafeClick = (currentCafe) => {
   return {
     type: CURRENTCAFE,
     currentCafe,
   };
 };
-
 const currentCafeComment = (comment) => {
   return {
     type: CURRENTCAFECOMMENT,
     comment,
   };
 };
-
 const currentUser = (user) => {
   return {
     type: CURRENTUSER,
     user,
   };
 };
-
+const changeUserProfile = (profile) => {
+  return {
+    type: CHANGEUSERPROFILE,
+    profile,
+  };
+};
+const changeUserDisplayName = (display) => {
+  return {
+    type: CHANGEDISPLAYNAME,
+    display,
+  };
+};
+const changeUserComment = (comment) => {
+  return {
+    type: CHANGEUSERCOMMENT,
+    comment,
+  };
+};
+const changeUserHeart = (heart) => {
+  return {
+    type: CHANGEUSERHEART,
+    heart,
+  };
+};
 const reducer = (state = [], action) => {
   switch (action.type) {
     case TAGARRAY:
@@ -108,6 +130,44 @@ const reducer = (state = [], action) => {
         ...state,
         user,
       });
+    case CHANGEUSERPROFILE:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          photoURL: action.profile,
+        },
+      };
+    case CHANGEUSERCOMMENT:
+      if (!state.user.comment) {
+        state.user.comment = [];
+      }
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          comment: [...state.user.comment, action.comment],
+        },
+      };
+    case CHANGEDISPLAYNAME:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          displayName: action.display,
+        },
+      };
+    case CHANGEUSERHEART:
+      if (!state.user.heart) {
+        state.user.heart = [];
+      }
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          heart: [...state.user.heart, action.heart],
+        },
+      };
     default:
       return state;
   }
@@ -122,6 +182,10 @@ export const actionCreators = {
   currentCafeClick,
   currentCafeComment,
   currentUser,
+  changeUserProfile,
+  changeUserDisplayName,
+  changeUserComment,
+  changeUserHeart,
 };
 
 export default store;

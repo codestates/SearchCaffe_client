@@ -16,15 +16,15 @@ import CardSkeleton from '../Card/CardSkeleton';
 
 const CardStyle = styled.span`
   width: 345px;
-  display: block; // inline-block => block으로 바꿨더니 해결
+  display: inline-block; // inline-block => block으로 바꿨더니 해결
   break-inside: avoid-column;
   box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
   margin: 13px 20px 10px 10px;
   padding: 8px;
   padding-bottom: 10px;
   font-size: 1rem;
-
-  background-color: #ffffff;
+  border-radius: 10px;
+  background-color: ${(props) => (props.inMypage ? '#eaeaea' : '#ffffff')};
 
   transition: opacity 0.4s ease-in-out;
   transition: 0.3s;
@@ -61,7 +61,7 @@ const CardStyle = styled.span`
 const CardImg = styled.img`
   width: 345px;
   max-height: 400px;
-  height: auto;
+  height: ${(props) => (!props.inMypage ? 'auto' : '330px')};
   min-height: 250px;
 
   border-bottom: 1px solid #dfdfdf;
@@ -103,12 +103,11 @@ const ScopeContain = styled.div`
 `;
 
 const LinkContent = styled(Link)`
-  a {
-    text-decoration: none;
-    &:before {
-      color: #24292e;
-      cursor: default !important;
-    }
+  color: black;
+  text-decoration: none;
+  &:before {
+    color: #24292e;
+    cursor: default !important;
   }
 `;
 
@@ -122,6 +121,8 @@ const Card = (props) => {
     currnetCafeObj['cafeAddress'] = props.cafeAddress;
     currnetCafeObj['cafeImage'] = props.cafeImage;
     currnetCafeObj['cafeStar'] = props.cafeStar;
+    currnetCafeObj['cafeDetail'] = props.cafeDetail;
+    currnetCafeObj['cafePhoneNumber'] = props.cafePhoneNumber;
     await props.currentCafe(currnetCafeObj);
     try {
       const data = await dbService.collection('CafeComment').get();
@@ -131,21 +132,26 @@ const Card = (props) => {
         }
       });
     } catch (error) {
-      console.log("error" + error)
+      console.log('error' + error);
     }
     await props.currentCafeComment(cafeCommentArr);
   };
   if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
   }
+
   return (
-    <LinkContent to={`/content/${props.cafeid}`}>
-      <CardStyle
-        cafeid={props.cafeid}
-        tag={props.cafeTag}
-        onClick={addCurrentCafe}
-      >
-        <CardImg src={props.cafeImage || defaultImg} />
+    <CardStyle
+      inMypage={props.inMypage}
+      cafeid={props.cafeid}
+      tag={props.cafeTag}
+      onClick={addCurrentCafe}
+    >
+      <LinkContent to={`/content/${props.cafeid}`}>
+        <CardImg
+          inMypage={props.inMypage}
+          src={props.cafeImage || defaultImg}
+        />
         <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
         <CardAddress>
           <CardLocationImg src={LocationImg}></CardLocationImg>
@@ -162,15 +168,15 @@ const Card = (props) => {
             ? props.cafeTag.map((tag) => (
               <Tag key={tag} isSmall={true} tagName={tag}></Tag>
             ))
-            : '관련 태그가 없습니다'}
+            : ''}
         </CardTags>
-      </CardStyle>
-    </LinkContent>
+      </LinkContent>
+    </CardStyle>
   );
 };
 
 function mapStateToProps(state, ownProps) {
-  return { state };
+  return { state, ownProps };
 }
 
 function mapDispatchToProps(dispatch) {

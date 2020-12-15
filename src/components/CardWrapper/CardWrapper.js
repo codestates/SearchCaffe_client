@@ -12,6 +12,8 @@ import {
   TransitionGroup,
   Transition,
 } from 'react-transition-group';
+import Recommendation from './Recommendation';
+import getNearbyCafe from '../../getNearbyCafe';
 
 const CardWrapperCover = styled.div``;
 
@@ -42,17 +44,14 @@ const WrapperTitle = styled.div`
   text-align: center;
 `;
 const CardWrapperStyle = styled.div`
-  column-width: 340px;
-  columns: 3;
-
-  column-gap: 20px;
+  display: flex;
+  flex-direction: row;
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
   background-color: #ebebeb;
 
-  display: block;
-  &.appearingCard-enter {
+  /* &.appearingCard-enter {
     opacity: 0;
   }
   &.appearingCard-enter-active {
@@ -69,7 +68,7 @@ const CardWrapperStyle = styled.div`
   }
   &.appearingCard-appear-active {
     opacity: 0;
-  }
+  } */
 `;
 
 const NoSearchResultContainer = styled.div`
@@ -110,12 +109,22 @@ const CardWrapper = ({ state, cardList }) => {
   const [cards, setCards] = useState([]);
   const [isCozyCafe, setCozyCafe] = useState(Skeleton);
   const [isGoodForTask, setGoodForTask] = useState(Skeleton);
+  const [nearbyCafe, setNearbyCafe] = useState(Skeleton);
   const [currentKeyword, setCurrentKeyword] = useState('');
 
   let cardListArr = [];
   let cozyCafe = [];
   let goodForTask = [];
 
+  // const getData = async () => {
+  //   let cafe = await getNearbyCafe();
+  //   cafe: cafe.length > 6
+  //     ? (cafe = cafe.slice(0, 6))
+  //     : cafe.length > 3
+  //     ? cafe.slice(0, 3)
+  //     : (cafe = []);
+  //   setNearbyCafe(cafe);
+  // };
   // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
     dbService
@@ -133,7 +142,8 @@ const CardWrapper = ({ state, cardList }) => {
       .finally(function () {
         cardList(cardListArr);
         setCards(cardListArr);
-
+        // getData();
+        console.log(nearbyCafe);
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
@@ -154,6 +164,7 @@ const CardWrapper = ({ state, cardList }) => {
           : goodForTask.length > 3
           ? goodForTask.slice(0, 3)
           : (goodForTask = []);
+
         setCozyCafe(cozyCafe);
         setGoodForTask(goodForTask);
       });
@@ -206,9 +217,9 @@ const CardWrapper = ({ state, cardList }) => {
   // NOTE 검색 결과 없음'
   if (cards) {
     if (
-      (!tags | (tags !== '')) &
-      (!state.keyword | (state.keyword !== '')) &
-      (!cards | (cards.length === 0))
+      (tags && tags !== '') &
+      (state && state.keyword !== '') &
+      (cards && cards.length === 0)
     ) {
       return (
         <NoSearchResultContainer>
@@ -218,17 +229,7 @@ const CardWrapper = ({ state, cardList }) => {
             어떠신가요?
           </NoSearchResultTitle>
           <CardWrapperStyle>
-            {isGoodForTask.map((card, index) => (
-              <Card
-                key={index}
-                cafeid={card.id}
-                cafeName={card.cafeName}
-                cafeTag={card.cafeTag}
-                cafeAddress={card.cafeAddress}
-                cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                cafeStar={card.cafeStar}
-              ></Card>
-            ))}
+            <Recommendation recommendation={isGoodForTask}></Recommendation>
           </CardWrapperStyle>
         </NoSearchResultContainer>
       );
@@ -243,17 +244,7 @@ const CardWrapper = ({ state, cardList }) => {
         <WrapperLineLeft />
       </WrapperTitle>
       <CardWrapperStyle>
-        {isCozyCafe.map((card, index) => (
-          <Card
-            key={index}
-            cafeid={card.id}
-            cafeName={card.cafeName}
-            cafeTag={card.cafeTag}
-            cafeAddress={card.cafeAddress}
-            cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-            cafeStar={card.cafeStar}
-          ></Card>
-        ))}
+        <Recommendation recommendation={isCozyCafe}></Recommendation>
       </CardWrapperStyle>
       <WrapperTitle>
         <WrapperLineRight />
@@ -261,17 +252,15 @@ const CardWrapper = ({ state, cardList }) => {
         <WrapperLineLeft />
       </WrapperTitle>
       <CardWrapperStyle>
-        {isGoodForTask.map((card, index) => (
-          <Card
-            key={index}
-            cafeid={card.id}
-            cafeName={card.cafeName}
-            cafeTag={card.cafeTag}
-            cafeAddress={card.cafeAddress}
-            cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-            cafeStar={card.cafeStar}
-          ></Card>
-        ))}
+        <Recommendation recommendation={isGoodForTask}></Recommendation>
+      </CardWrapperStyle>
+      <WrapperTitle>
+        <WrapperLineRight />
+        <span>내 주변 카페</span>
+        <WrapperLineLeft />
+      </WrapperTitle>
+      <CardWrapperStyle>
+        <Recommendation recommendation={nearbyCafe}></Recommendation>
       </CardWrapperStyle>
     </CardWrapperCover>
   ) : (
@@ -291,28 +280,7 @@ const CardWrapper = ({ state, cardList }) => {
       >
         <CardWrapperStyle>
           <TransitionGroup component={null}>
-            {cards &&
-              cards.map((card, index) => {
-                return (
-                  <CSSTransition
-                    timeout={300}
-                    in={true}
-                    classNames="fadeCard"
-                    mountOnEnter
-                    unmountOnExit
-                  >
-                    <Card
-                      key={index}
-                      cafeid={card.id}
-                      cafeName={card.cafeName}
-                      cafeTag={card.cafeTag}
-                      cafeAddress={card.cafeAddress}
-                      cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-                      cafeStar={card.cafeStar}
-                    />
-                  </CSSTransition>
-                );
-              })}
+            <Recommendation recommendation={cards}></Recommendation>
           </TransitionGroup>
         </CardWrapperStyle>
       </CSSTransition>
