@@ -113,6 +113,7 @@ const LinkContent = styled(Link)`
 
 const Card = (props) => {
   const addCurrentCafe = async () => {
+    console.log(props);
     let currnetCafeObj = {};
     let cafeCommentArr = [];
     currnetCafeObj['cafeid'] = props.cafeid;
