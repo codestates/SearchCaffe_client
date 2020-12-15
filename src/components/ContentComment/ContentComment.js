@@ -80,7 +80,6 @@ const WhenNoReviewContent = styled.div`
 `;
 
 const ContentComment = ({ comment }) => {
-  console.log(comment);
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
   const [like, setLike] = useState(likeImg);
@@ -95,9 +94,7 @@ const ContentComment = ({ comment }) => {
   const handleModal = () => {
     setModal((pres) => !pres);
   };
-  useEffect(() => {
-    console.log(typeof comment);
-  }, []);
+
   return (
     <Detail3>
       <TitleStyle>
@@ -153,17 +150,9 @@ const ContentComment = ({ comment }) => {
         </WhenNoReview>
       ) : (
         comment.map((userComment, index) => {
-          console.log('userComment :' + userComment['cafeId']);
           return <Comment key={index} userComment={userComment}></Comment>;
         })
       )}
-      {/* {cafeComment.filter((comment) => comment.cafeId === 0).length !== 0
-        ? cafeComment
-            .filter((comment) => comment.cafeId === 0)
-            .map((userComment, index) => (
-              <Comment key={index} userComment={userComment}></Comment>
-            ))
-        : ''} */}
     </Detail3>
   );
 };
