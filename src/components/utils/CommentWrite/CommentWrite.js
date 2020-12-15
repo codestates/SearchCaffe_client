@@ -225,7 +225,7 @@ const CommentWrite = ({
   const [limitImgError, setLimitImgError] = useState(false);
   const [limitCommentError, setLimitCommentError] = useState(false);
   const [modifyObj, setModifyObj] = useState({});
-
+  console.log(modifyObj);
   useEffect(() => {
     if (beforeModify) {
       setModifyObj(beforeModify);
@@ -421,7 +421,7 @@ const CommentWrite = ({
         <ScopeContainer>
           <Scope
             setScope={setScope}
-            modifyScope={beforeModify ? beforeModify.userStar : ''}
+            modifyScope={beforeModify ? beforeModify.userStar : -1}
           ></Scope>
         </ScopeContainer>
       </UserAndScope>

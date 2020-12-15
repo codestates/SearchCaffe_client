@@ -42,11 +42,15 @@ const Scope = (props) => {
   const [scope, setScope] = useState(-1);
   const [stars, setStars] = useState([]);
   const [fixedStars, setFixedStars] = useState([]);
+
   useEffect(() => {
-    if(props.modifyScope) {
-      setScope(props.modifyScope-1);
+    if (props.modifyScope) {
+      setScope(props.modifyScope - 1);
+      if ((props.modifyScope === -1) | (props.modifyScope === '')) {
+        setScope(-1);
+      }
     }
-  },[])
+  }, []);
   // 변하는 scope
   useMemo(() => {
     let tempStar = [];
@@ -129,6 +133,7 @@ const Scope = (props) => {
     }
     return <span>{contentsScope}</span>;
   }
+
   if (scope !== -1) {
     return (
       <ScopeStyle

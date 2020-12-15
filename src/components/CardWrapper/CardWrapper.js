@@ -15,7 +15,9 @@ import {
 import Recommendation from './Recommendation';
 import getNearbyCafe from '../../getNearbyCafe';
 
-const CardWrapperCover = styled.div``;
+const CardWrapperCover = styled.div`
+  margin-bottom: 150px;
+`;
 
 const WrapperLine = styled.span`
   display: inline-block;
