@@ -2,13 +2,15 @@ import Comment from '../utils/Comment/index';
 import CommentWrite from '../utils/CommentWrite/index';
 import { cafeComment } from '../../cafeInfos';
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import Button from '../utils/Button/Button';
 import likeImg from './like.png';
 import likedImg from './liked.png';
 import reviewImg from './review.png';
+import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
+import { dbService } from '../../firebase/mainbase';
 const Detail3 = styled.div`
   width: 90%;
   height: 100%;
@@ -79,18 +81,67 @@ const WhenNoReviewContent = styled.div`
   margin: 10px 0 20px 0;
 `;
 
-const ContentComment = ({ comment }) => {
+const ContentComment = ({
+  comment,
+  handleUserComment,
+  handleUserHeart,
+  user,
+  currentCafe,
+  handleUserMyComment,
+}) => {
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
-  const [like, setLike] = useState(likeImg);
-  const handleLike = () => {
+  const [like, setLike] = useState(
+    !user | !user?.heart | (user?.heart?.indexOf(currentCafe.cafeName) === -1)
+      ? likeImg
+      : likedImg
+  );
+  const handleLike = async () => {
     if (like === likeImg) {
       setLike(likedImg);
+      let tempHeart = [];
+      user.heart ? (tempHeart = user.heart) : (tempHeart = []);
+      tempHeart.push(currentCafe.cafeName);
+      console.log(tempHeart);
+      dbService.collection('users').doc(user.uid).update({
+        heart: tempHeart,
+      });
+      handleUserHeart(tempHeart);
     } else {
       setLike(likeImg);
+      let tempHeart = user.heart;
+      tempHeart.splice(tempHeart.indexOf(currentCafe.cafeName), 1);
+      console.log(tempHeart);
+      dbService.collection('users').doc(user.uid).update({
+        heart: tempHeart,
+      });
+      handleUserHeart(tempHeart);
     }
   };
-
+  console.log('userCommentUpdate?', user);
+  console.log('contentComment work', comment);
+  useEffect(() => {
+    console.log('work!');
+    if (user) {
+      let filtered = comment?.filter(
+        (com) => com.username === user.displayName
+      );
+      let userCommentArray = user.comment ? user.comment : [];
+      console.log(filtered);
+      if (
+        (filtered?.length === 0) &
+        (userCommentArray.indexOf(currentCafe.cafeName) !== -1)
+      ) {
+        let tempComment = user.comment ? user.comment : [];
+        console.log('removing....');
+        tempComment.splice(user.comment.indexOf(currentCafe.cafeName), 1);
+        handleUserMyComment(tempComment);
+        dbService.collection('users').doc(user.uid).update({
+          comment: tempComment,
+        });
+      }
+    }
+  }, [comment?.length]);
   // const comment =  useSelector(async(state) => await comment);
   const handleModal = () => {
     setModal((pres) => !pres);
@@ -142,18 +193,18 @@ const ContentComment = ({ comment }) => {
           </BackGroundCover>
         </>
       ) : (
-          ''
-        )}
+        ''
+      )}
       {!comment | (comment?.length === 0) ? (
         <WhenNoReview>
           <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
           <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
         </WhenNoReview>
       ) : (
-          comment.map((userComment, index) => {
-            return <Comment key={index} userComment={userComment}></Comment>;
-          })
-        )}
+        comment.map((userComment, index) => {
+          return <Comment key={index} userComment={userComment}></Comment>;
+        })
+      )}
     </Detail3>
   );
 };
@@ -165,6 +216,11 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+    handleUserComment: (cafe) =>
+      dispatch(actionCreators.changeUserComment(cafe)),
+    handleUserHeart: (cafe) => dispatch(actionCreators.changeUserHeart(cafe)),
+    handleUserMyComment: (cafe) =>
+      dispatch(actionCreators.changeUserComment(cafe)),
   };
 }
 

@@ -83,10 +83,10 @@ const MyCafe = ({ state }) => {
     <MyCafeStyle>
       <Title>찜한 카페</Title>
       <CafeCardStyle>
-        {commentList.length === 0 ? (
-          <WhenNoHeartCafe>아직 찜한 카페가 없습니다.</WhenNoHeartCafe>
+        {heartList.length === 0 ? (
+          <WhenNoCommentCafe>아직 찜한 카페가 없습니다.</WhenNoCommentCafe>
         ) : (
-          commentList.map((card, index) => {
+          heartList.map((card, index) => {
             return (
               <Card
                 inMypage={true}
@@ -102,12 +102,10 @@ const MyCafe = ({ state }) => {
       </CafeCardStyle>
       <Title>리뷰 작성한 카페</Title>
       <CafeCardStyle>
-        {heartList.length === 0 ? (
-          <WhenNoCommentCafe>
-            아직 리뷰를 작성한 카페가 없습니다.
-          </WhenNoCommentCafe>
+        {commentList.length === 0 ? (
+          <WhenNoHeartCafe>아직 리뷰를 작성한 카페가 없습니다.</WhenNoHeartCafe>
         ) : (
-          heartList.map((card, index) => {
+          commentList.map((card, index) => {
             return (
               <Card
                 inMypage={true}

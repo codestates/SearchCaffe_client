@@ -2,21 +2,18 @@ import { ReactComponent as Table } from './Table.svg';
 import { ReactComponent as Cup } from './Cup.svg';
 import { ReactComponent as Time } from './Time.svg';
 
-
 import { tagName } from '../../cafeInfos';
 import Tag from '../utils/Tag/index';
 import styled from 'styled-components';
-
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-
 import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { actionCreators } from '../../reducer/store'
+import { actionCreators } from '../../reducer/store';
 
 const MainImgCover = styled.div`
   width: 100%;
@@ -34,7 +31,6 @@ const MainImage = styled.div`
   height: 600px;
 `;
 
-
 const Detail = styled.div`
   width: 90%;
   height: 100%;
@@ -43,7 +39,7 @@ const Detail = styled.div`
   margin: auto;
 
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
 
   padding-top: 48px;
   padding-left: 32px;
@@ -51,7 +47,6 @@ const Detail = styled.div`
   padding-bottom: 24px;
 
   margin-top: 2rem;
-
 
   h1 {
     margin: 0;
@@ -106,24 +101,23 @@ const DescribeContainer = styled.div`
 `;
 
 const SlideContainer = styled.div`
-margin-left:35%;
-
+  margin-left: 35%;
 `;
 
 const SlideMaincontainer = styled.div`
   width: 760px;
   height: 12rem;
   margin: auto;
-`
-
-const StyledSlider = styled(Slider)`
 `;
+
+const StyledSlider = styled(Slider)``;
 
 const Image = styled.img`
   max-width: 70%;
   height: auto;
   border-radius: 8px;
-  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3),
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
+    0 8px 16px -8px hsla(0, 0%, 0%, 0.3);
 `;
 
 const Thumbnailcontainer = styled.div`
@@ -131,7 +125,7 @@ const Thumbnailcontainer = styled.div`
   height: 75px;
   text-align: center;
   width: 70%;
-`
+`;
 
 const ThumbnailImg = styled.img`
   width: 100px;
@@ -141,33 +135,28 @@ const ThumbnailImg = styled.img`
   display: flex;
   align-items: flex-end;
   border-radius: 4px;
-  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3),
-    0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
-
-`
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
+    0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+`;
 
 const SlickSlide = styled.div`
   text-align: center;
   position: relative;
-  margin : auto;
+  margin: auto;
   :focus {
     outline: none;
-  } 
-`
-
+  }
+`;
 
 const ContentHeader = (props) => {
-
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
   const [slider2, setSlider2] = useState(null);
 
   useEffect(() => {
-
     setNav1(slider1);
     setNav2(slider2);
-
   });
 
   const settingsMain = {
@@ -177,7 +166,7 @@ const ContentHeader = (props) => {
     arrows: false,
     fade: true,
     autoplay: true,
-    asNavFor: '.slider-nav'
+    asNavFor: '.slider-nav',
   };
 
   const settingsThumbs = {
@@ -188,13 +177,21 @@ const ContentHeader = (props) => {
     centerMode: true,
     swipeToSlide: true,
     focusOnSelect: true,
-    centerPadding: '10px'
+    centerPadding: '10px',
   };
 
+  const current = props.cardArr.filter(
+    (el) => el.id === props.currentCafe.cafeid
+  );
 
-  const current = (props.cardArr).filter(el => el.id === props.currentCafe.cafeid);
-
-  const { cafeid, cafeTag, cafeName, cafeAddress, cafeImg, cafeStar } = current[0];
+  const {
+    cafeid,
+    cafeTag,
+    cafeName,
+    cafeAddress,
+    cafeImg,
+    cafeStar,
+  } = current[0];
   //console.log('==================current>> :', current);
 
   return (
@@ -203,8 +200,10 @@ const ContentHeader = (props) => {
       <MainImage style={{ backgroundImage: `url(${cafeImg[0]})` }} />
       <Detail>
         <DescribeContainer>
-          <h1>{cafeName ? cafeName : "해당 정보를 불러오는 중입니다."}</h1>
-          <div className="adress">{cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}</div>
+          <h1>{cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}</h1>
+          <div className="adress">
+            {cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}
+          </div>
           <div className="describe"></div>
           <SvgContainer>
             <Table />
@@ -220,32 +219,41 @@ const ContentHeader = (props) => {
                   isButton={true}
                   color="#ffffff"
                   isSmall={true}
-                  tagName={el} />
-              )
+                  tagName={el}
+                />
+              );
             })}
           </div>
         </DescribeContainer>
 
         <SlideContainer>
           <SlideMaincontainer>
-            <StyledSlider {...settingsMain} asNavFor={nav2} ref={slider => (setSlider1(slider))}>
-              {cafeImg.map(el => {
+            <StyledSlider
+              {...settingsMain}
+              asNavFor={nav2}
+              ref={(slider) => setSlider1(slider)}
+            >
+              {cafeImg.map((el) => {
                 return (
                   <SlickSlide>
                     <Image src={el} />
                   </SlickSlide>
-                )
+                );
               })}
             </StyledSlider>
           </SlideMaincontainer>
           <Thumbnailcontainer>
-            <StyledSlider {...settingsThumbs} asNavFor={nav1} ref={slider => (setSlider2(slider))}>
-              {cafeImg.map(el => {
+            <StyledSlider
+              {...settingsThumbs}
+              asNavFor={nav1}
+              ref={(slider) => setSlider2(slider)}
+            >
+              {cafeImg.map((el) => {
                 return (
                   <SlickSlide>
                     <ThumbnailImg src={el} />
                   </SlickSlide>
-                )
+                );
               })}
             </StyledSlider>
           </Thumbnailcontainer>
