@@ -75,7 +75,7 @@ const NoSearchResultContainer = styled.div`
   margin: auto;
   width: 60%;
   height: auto;
-  position: relative;
+  position: relative; v
   top: 50px;
 `;
 const NoSearchResultTitle = styled.div`
@@ -106,7 +106,8 @@ const CardWrapper = ({ state, cardList }) => {
     <Card key={6} skeletonSize="445px"></Card>,
   ];
   const [isTag, setIsTag] = useState(false);
-  const [cards, setCards] = useState([]);
+  // const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState(cafes);
   const [isCozyCafe, setCozyCafe] = useState(Skeleton);
   const [isGoodForTask, setGoodForTask] = useState(Skeleton);
   const [nearbyCafe, setNearbyCafe] = useState(Skeleton);
@@ -116,15 +117,15 @@ const CardWrapper = ({ state, cardList }) => {
   let cozyCafe = [];
   let goodForTask = [];
 
-  const getData = async () => {
-    let cafe = await getNearbyCafe();
-    cafe: cafe.length > 6
-      ? (cafe = cafe.slice(0, 6))
-      : cafe.length > 3
-      ? cafe.slice(0, 3)
-      : (cafe = []);
-    setNearbyCafe(cafe);
-  };
+  // const getData = async () => {
+  //   let cafe = await getNearbyCafe();
+  //   cafe: cafe.length > 6
+  //     ? (cafe = cafe.slice(0, 6))
+  //     : cafe.length > 3
+  //     ? cafe.slice(0, 3)
+  //     : (cafe = []);
+  //   setNearbyCafe(cafe);
+  // };
   // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
     dbService
@@ -137,12 +138,14 @@ const CardWrapper = ({ state, cardList }) => {
       })
       .catch(function (error) {
         console.log('Error getting documents: ', error);
-        cardList = cafes;
+        cardList(cafes);
+        setCards(cafes);
       })
       .finally(function () {
+        console.log('From Firebase ========>', cardListArr);
         cardList(cardListArr);
         setCards(cardListArr);
-        getData();
+        // getData();
         console.log(nearbyCafe);
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag

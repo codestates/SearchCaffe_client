@@ -26,19 +26,19 @@ const Nav = ({ state, userHandler }) => {
   }, []);
   const openSignin = () => {
     setShowSignin(true);
-    document.body.style.overflow = 'hidden'; // 모달창이 열리면 스크롤 고정
+    // document.body.style.overflow = 'hidden'; // 모달창이 열리면 스크롤 고정
   };
   const closeSignin = () => {
     setShowSignin(false);
-    document.body.style.overflow = 'unset'; // 스크롤 고정 해제
+    // document.body.style.overflow = 'unset'; // 스크롤 고정 해제
   };
   const openSignup = () => {
     setShowSignup(true);
-    document.body.style.overflow = 'hidden'; // 모달창이 열리면 스크롤 고정
+    // document.body.style.overflow = 'hidden'; // 모달창이 열리면 스크롤 고정
   };
   const closeSignup = () => {
     setShowSignup(false);
-    document.body.style.overflow = 'unset'; // 스크롤 고정 해제
+    // document.body.style.overflow = 'unset'; // 스크롤 고정 해제
   };
   return (
     <div className="header">

@@ -8,7 +8,7 @@ import CommentWrite from '../CommentWrite/CommentWrite';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import { useEffect, useState } from 'react';
-import { storageService } from '../../../firebase/mainbase';
+import { dbService, storageService } from '../../../firebase/mainbase';
 const CommentStyle = styled.div`
   display: block;
   margin: auto;
@@ -24,6 +24,23 @@ const UserAndScope = styled.h3`
 
   display: relative;
 `;
+
+const DeleteButton = styled.button`
+  display: inline;
+  text-align: center;
+  text-decoration: none;
+  display: relative;
+`;
+
+const ModifyButton = styled.button`
+  display: inline;
+  margin-left: 40%;
+  margin-right: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: relative;
+`;
+
 const UserName = styled.span``;
 const ScopeContainer = styled.span`
   margin-left: 30px;
@@ -92,17 +109,47 @@ const Divide = styled.div`
   width: 93%;
 `;
 
-const Comment = (props) => {
-  console.log(props);
-  // const upLoadTask = storageService.ref('images');
+const BackGroundCover = styled.div`
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(220, 220, 220, 0.94);
+  z-index: 1;
+`;
+
+const Detail3 = styled.div`
+  width: 90%;
+  height: 100%;
+  margin: auto;
+  max-width: 1500px;
+  position: relative;
+  background: #fafafa;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+
+  margin-top: 5rem;
+  padding-top: 48px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e9ecef;
+`;
+
+const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
+  const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-  console.log(images);
+  const [beforeModify, setBeforeModify] = useState();
   useEffect(() => {
-    console.log('props :' + props);
-    setImages(props.userComment.userImg);
-  }, []);
+    setImages(userComment.userImg);
+  }, []); 
+
+  const handleModal = () => {
+    setCommentModal((pres) => !pres);
+  };
 
   const handleImageEnlarge = (index) => {
     setCurrentImg(images[index]);
@@ -112,24 +159,84 @@ const Comment = (props) => {
     setModal((pres) => !pres);
   };
 
+  const deleteComment = async () => {
+    try {
+      await dbService
+        .collection('CafeComment')
+        .doc(`${userComment.cafeId}&${userComment.commentId}`)
+        .delete();
+      console.log('Document successfully deleted!');
+    } catch (error) {
+      console.error('CafeComment Delete Fail :' + error);
+    }
+
+    try {
+      let cafeCommentArr = [];
+      const data = await dbService.collection('CafeComment').get();
+      data.forEach((commentData) => {
+        if (currentCafe.cafeid === commentData.data().cafeId) {
+          cafeCommentArr.push(commentData.data());
+        }
+      });
+      currentCafeComment(cafeCommentArr);
+    } catch (error) {
+      console.error('CafeComment get Error :' + error);
+    }
+    setCommentModal(false);
+  };
+  const modifyComment = async () => {
+    try {
+      const data = await dbService
+        .collection('CafeComment')
+        .doc(`${userComment.cafeId}&${userComment.commentId}`)
+        .get()
+      
+      const tempObj = await data.data();
+      setBeforeModify(tempObj);
+      setCommentModal((pres) => !pres);
+    } catch (error) {
+      console.error(`can't find ModifyComment:` + error);
+    } 
+  };
+
   return (
     <CommentStyle>
       <UserAndScope>
         <UserName>
-          {props.userComment.username ? props.userComment.username : '게스트'}
+          {userComment.username ? userComment.username : '게스트'}
         </UserName>
+        {commentModal ? (
+          <>
+            <Detail3>
+              <BackGroundCover>
+                <CommentWrite onChange={commentModal} beforeModify={beforeModify} handleModal={handleModal}></CommentWrite>
+              </BackGroundCover>
+            </Detail3>
+          </>
+        ) : (
+          ''
+        )}
         <ScopeContainer>
           <Scope
             isScope={true}
             size="20px"
-            scope={props.userComment.userStar ? props.userComment.userStar : -1}
+            scope={userComment.userStar ? userComment.userStar : -1}
           ></Scope>
         </ScopeContainer>
       </UserAndScope>
-
+      {userComment.username === user.displayName ? (
+        <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+      ) : (
+        ''
+      )}
+      {userComment.username === user.displayName ? (
+        <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+      ) : (
+        ''
+      )}
       <TagWrapper>
-        {props.userComment.userTag
-          ? props.userComment.userTag.map((tag) => {
+        {userComment.userTag
+          ? userComment.userTag.map((tag) => {
               return (
                 <Tag
                   key={tag}
@@ -141,8 +248,8 @@ const Comment = (props) => {
             })
           : ''}
       </TagWrapper>
-      {props.userComment.userComment ? (
-        <CommentInput>{props.userComment.userComment}</CommentInput>
+      {userComment.userComment ? (
+        <CommentInput>{userComment.userComment}</CommentInput>
       ) : (
         ''
       )}
@@ -176,25 +283,15 @@ const Comment = (props) => {
     </CommentStyle>
   );
 };
-// function mapStateToProps(state, ownProps) {
-
-//   return { state };
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Content);
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { ...state, ownProps };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    currentCafe: (currentCafe) =>
-      dispatch(actionCreators.currentCafeClick(currentCafe)),
     currentCafeComment: (comment) =>
       dispatch(actionCreators.currentCafeComment(comment)),
   };
 }
-
-export default Comment;
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
