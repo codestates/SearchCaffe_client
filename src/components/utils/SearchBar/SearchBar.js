@@ -19,7 +19,7 @@ const SearchBarStyle = styled.div`
   :hover {
   }
 `;
-const SearchBarImg = styled.img`
+export const SearchBarImg = styled.img`
   width: 25px;
   height: 25px;
   position: relative;
@@ -43,7 +43,7 @@ const SearchBarInput = styled.input`
   }
 `;
 
-const SearchBarButton = styled.button`
+export const SearchBarButton = styled.button`
   background: #5a403a;
   position: relative;
   font-size: 0.95rem;
