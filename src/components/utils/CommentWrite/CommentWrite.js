@@ -160,7 +160,6 @@ const EnlargeImg = styled.img`
   margin-top: 75px;
   margin-left: 9px;
 `;
-
 const UploadedImg = styled.img`
   border: 1px solid #d1d1d1;
   display: inline-block;
@@ -214,6 +213,7 @@ const CommentWrite = ({
   handleModal,
   currentCafeComment,
   beforeModify,
+  userMyCommentHandler,
 }) => {
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
@@ -224,7 +224,7 @@ const CommentWrite = ({
   const [limitImgError, setLimitImgError] = useState(false);
   const [limitCommentError, setLimitCommentError] = useState(false);
   const [modifyObj, setModifyObj] = useState({});
-  console.log(beforeModify);
+
   useEffect(() => {
     if (beforeModify) {
       setModifyObj(beforeModify);
@@ -244,7 +244,9 @@ const CommentWrite = ({
       }, 1500);
     }
   }, [submitComment]);
+
   const submitCommentWrite = async () => {
+    updateUserMyComment();
     await settingCommentData();
     handleModal();
     await refreshCommentData();
@@ -299,9 +301,17 @@ const CommentWrite = ({
         userTag: selectedTags,
       });
   };
-
+  const updateUserMyComment = () => {
+    if (!user.comment | (user.comment?.indexOf(currentCafe.cafeName) === -1)) {
+      let tempMyComment = user.comment ? user.comment : [];
+      tempMyComment.push(currentCafe.cafeName);
+      userMyCommentHandler(tempMyComment);
+      dbService.collection('users').doc(user.uid).update({
+        comment: tempMyComment,
+      });
+    }
+  };
   const getUrlFromFirestore = async (inputImage) => {
-    console.log(inputImage);
     if (images.length > 2) {
       setLimitImgError(true);
       let imgTimer = setTimeout(() => {
@@ -311,14 +321,16 @@ const CommentWrite = ({
     }
     setImages((preImages) => [...preImages, loading]);
     let nowDate = new Date();
-    let imageName = `${nowDate.getDate()}day ${nowDate.getHours()}hour ${nowDate.getSeconds()}second`;
+    let imageName = `${
+      inputImage.name
+    } ${nowDate.getDate()}day ${nowDate.getHours()}hour ${nowDate.getSeconds()}second`;
     const upLoadTask = storageService
       .ref(`commentImage/${imageName}`)
       .put(inputImage);
     return new Promise((res, rej) => {
       upLoadTask.on(
         'state_changed',
-        (snapshot) => {},
+        (snapshot) => { },
         (error) => {
           console.log(error);
           rej();
@@ -458,8 +470,8 @@ const CommentWrite = ({
       {imageModal ? (
         <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
       ) : (
-        ''
-      )}
+          ''
+        )}
     </CommentWriteStyle>
   );
 };
@@ -476,6 +488,9 @@ function mapDispatchToProps(dispatch) {
       dispatch(actionCreators.changeUserProfile(profile)),
     currentCafeComment: (comment) =>
       dispatch(actionCreators.currentCafeComment(comment)),
+    userMyCommentHandler: (cafes) => {
+      dispatch(actionCreators.changeUserComment(cafes));
+    },
   };
 }
 

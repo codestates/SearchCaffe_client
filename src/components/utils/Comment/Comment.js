@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import { useEffect, useState } from 'react';
 import { dbService, storageService } from '../../../firebase/mainbase';
+import defaultUser from './defaultUser.png';
 const CommentStyle = styled.div`
   display: block;
   margin: auto;
@@ -23,6 +24,15 @@ const UserAndScope = styled.h3`
   padding-left: 5%;
 
   display: relative;
+`;
+
+const UserProfile = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 15px;
+  position: relative;
+  top: 10px;
 `;
 
 const DeleteButton = styled.button`
@@ -143,10 +153,20 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
   const [beforeModify, setBeforeModify] = useState();
+  const [userProfileImg, setUserProfileImg] = useState(defaultUser);
+
   useEffect(() => {
     setImages(userComment.userImg);
+    dbService
+      .collection('users')
+      .where('displayName', '==', userComment.username)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          setUserProfileImg(doc.data().photoURL);
+        });
+      });
   }, []);
-  console.log(userComment);
   const handleModal = () => {
     setCommentModal((pres) => !pres);
   };
@@ -184,6 +204,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
     }
     setCommentModal(false);
   };
+
   const modifyComment = async () => {
     try {
       const data = await dbService
@@ -202,6 +223,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   return (
     <CommentStyle>
       <UserAndScope>
+        <UserProfile src={userProfileImg}></UserProfile>
         <UserName>
           {userComment.username ? userComment.username : '게스트'}
         </UserName>

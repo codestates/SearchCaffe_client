@@ -1,15 +1,13 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { dbService } from '../firebase/mainbase';
 
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
+// import { actionCreators } from '../reducer/store';
 
 import ContentHeader from '../components/ContentHeader/index';
 import ContentDetail from '../components/ContentDetail/index';
 import ContentComment from '../components/ContentComment/index';
 import { img } from './main.jpeg';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { actionCreators } from '../reducer/store';
 import { cafeComment } from '../cafeInfos';
 
 const GlobalStyle = createGlobalStyle`
@@ -19,17 +17,9 @@ body {
 }
 `;
 
-let cardListArr = [];
-const Content = ({ state }) => {
-  dbService
-    .collection('CafeInformation')
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        cardListArr.push(doc.data());
-      });
-    })
-    .catch((err) => console.log('ERROR!', err));
+
+
+const Content = (props) => {
 
   return (
     <>
@@ -41,14 +31,5 @@ const Content = ({ state }) => {
   );
 };
 
-function mapStateToProps(state, ownProps) {
-  return { state };
-}
 
-function mapDispatchToProps(dispatch) {
-  return {
-    cardList: (card) => dispatch(actionCreators.addCardList(card)),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Content);
+export default Content;
