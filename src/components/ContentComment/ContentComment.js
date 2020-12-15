@@ -90,6 +90,7 @@ const ContentComment = ({ comment }) => {
       setLike(likeImg);
     }
   };
+
   // const comment =  useSelector(async(state) => await comment);
   const handleModal = () => {
     setModal((pres) => !pres);
