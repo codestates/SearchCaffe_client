@@ -24,8 +24,9 @@ const App = () => {
         <Route path="/content">
           <Content></Content>
         </Route>
-        <Route path="/mypage"></Route>
-        <Mypage></Mypage>
+        <Route path="/mypage">
+          <Mypage></Mypage>
+        </Route>
       </Switch>
 
       <Footer></Footer>
