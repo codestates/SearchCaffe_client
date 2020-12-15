@@ -15,7 +15,6 @@ const MainImgCover = styled.div`
   background-color: #160a0a9f;
   position: absolute;
   display: grid;
-
   grid-template-columns: ;
   grid-template-rows: 25% 100px 40px 40px 40px 25%;
 `;

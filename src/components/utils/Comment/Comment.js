@@ -152,7 +152,6 @@ const Comment = ({
   useEffect(() => {
     setImages(userComment.userImg);
   }, []);
-
   const handleModal = () => {
     setCommentModal((pres) => !pres);
   };
@@ -285,8 +284,8 @@ const Comment = ({
       )}
 
       <CommentImages>
-        {images
-          ? images.map((img, index) => {
+        {userComment.userImg
+          ? userComment.userImg.map((img, index) => {
               return (
                 <Uploaded key={index}>
                   <UploadedImgCover>

@@ -1,6 +1,7 @@
 import Card from '../utils/Card/Card';
 import styled from 'styled-components';
 const CardColumn = styled.div``;
+const NoResult = styled.div``;
 const Recommendation = ({ recommendation }) => {
   return (
     <>
