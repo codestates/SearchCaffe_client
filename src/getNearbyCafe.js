@@ -13,7 +13,6 @@ const getNearbyCafe = async () => {
         if (status === kakao.maps.services.Status.OK) {
           let nearbyCafe;
           let address = result[0].address['address_name'];
-          //   console.log(address);
           address = address.split(' ');
           let cafe = await dbService
             .collection('test')
