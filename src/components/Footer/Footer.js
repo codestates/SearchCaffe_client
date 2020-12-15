@@ -5,7 +5,8 @@ const FooterStyle = styled.div`
   width: 100%;
   height: 330px;
   background-color: #ebebeb;
-
+  max-width: 2000px;
+  margin: auto;
   margin-bottom: 30px;
 `;
 
