@@ -74,7 +74,7 @@ const NoSearchResultContainer = styled.div`
   margin: auto;
   width: 60%;
   height: auto;
-  position: relative;
+  position: relative; v
   top: 50px;
 `;
 const NoSearchResultTitle = styled.div`
@@ -105,7 +105,8 @@ const CardWrapper = ({ state, cardList }) => {
     <Card key={6} skeletonSize="445px"></Card>,
   ];
   const [isTag, setIsTag] = useState(false);
-  const [cards, setCards] = useState([]);
+  // const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState(cafes);
   const [isCozyCafe, setCozyCafe] = useState(Skeleton);
   const [isGoodForTask, setGoodForTask] = useState(Skeleton);
   const [currentKeyword, setCurrentKeyword] = useState('');
@@ -126,12 +127,13 @@ const CardWrapper = ({ state, cardList }) => {
       })
       .catch(function (error) {
         console.log('Error getting documents: ', error);
-        cardList = cafes;
+        cardList(cafes);
+        setCards(cafes);
       })
       .finally(function () {
+        console.log('From Firebase ========>', cardListArr);
         cardList(cardListArr);
         setCards(cardListArr);
-
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])

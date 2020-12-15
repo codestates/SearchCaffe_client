@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { actionCreators } from '../../../reducer/store';
 import { ImageModal } from '../ImageModal/ImageModal';
 import Scope from '../Scope/index';
 import Tag from '../Tag/index';
+import Button from '../Button/Button';
 import { connect } from 'react-redux';
 import Blank from './images/BlankImg.png';
 import enlargeImg from './images/enlarge.png';
@@ -14,12 +15,12 @@ import { storageService, dbService } from '../../../firebase/mainbase';
 const CommentWriteStyle = styled.div`
   display: block;
   margin: auto;
-  min-width: 400px;
-  max-width: 1000px;
-
-  width: 60%;
+  min-width: 500px;
+  max-width: 850px;
+  border-radius: 20px;
+  width: 55%;
   position: relative;
-  top: 10%;
+  top: 15%;
   height: auto;
   border: 1px solid black;
   background-color: #fafafa;
@@ -31,81 +32,94 @@ const UserAndScope = styled.h3`
   margin-left: 6%;
 `;
 const CommentTitle = styled.span`
-  margin-top: 25px;
+  margin-top: 30px;
+  margin-left: 20px;
   display: inline-block;
 `;
 const ScopeContainer = styled.span`
   margin-left: 10px;
+  position: relative;
+  top: 5px;
 `;
 const TagWrapper = styled.div`
   position: relative;
+  margin-top: 5px;
+  margin-left: 2%;
+`;
+const CommentContainer = styled.div`
+  width: 88%;
+  height: 220px;
+  border: 1px solid #9d9d9d;
+  margin: auto;
   margin-top: 15px;
-  margin-left: 6%;
+  border-radius: 15px;
+  background-color: #fdfdfd;
 `;
 const CommentInput = styled.textarea`
   resize: none;
-  margin-left: 6%;
-  width: 80%;
-  height: 200px;
+  margin-left: 2.5%;
+  width: 95%;
+  height: 140px;
   margin-top: 20px;
+  border: initial;
+  background-color: inherit;
+
+  :focus {
+    outline: 0;
+  }
 `;
 const CommentImgWrapper = styled.div`
   min-width: 400px;
   width: 70%;
   height: 30%;
-  margin-bottom: 40px;
+  bottom: 30px;
   position: relative;
-  display: block;
-  left: 5%;
+  display: flex;
+
+  left: 7%;
   @media (max-width: 1750px) {
     display: inline-block;
   }
   @media (max-width: 980px) {
     left: 10%;
   }
+  @media (max-width: 840px) {
+    margin: auto;
+
+    left: 0%;
+  }
 `;
+
 const ButtonWrapper = styled.span`
   display: flex;
-  margin: 5px 0px 20px 0px;
-  flex-direction: column;
+  margin: 0px 0px 5px 0px;
+  flex-direction: row;
+  position: relative;
+  left: 60%;
+  bottom: 50px;
 
-  position: absolute;
-  bottom: 2%;
-  left: 100%;
+  @media (max-width: 1155px) {
+    left: 50%;
+  }
+  @media (max-width: 970px) {
+    left: 40%;
+  }
+  @media (max-width: 840px) {
+    justify-content: center;
+    left: 0%;
+  }
 `;
 const CommentSubmitButton = styled.button`
   width: 110px;
   height: 40px;
-  /* @media (max-width: 1750px) {
-    position: absolute;
-    bottom: 30%;
-    margin: 30px;
-    left: 95%;
-  }
-  @media (max-width: 1695px) {
-    position: absolute;
-    bottom: 30%;
-    margin: 30px;
-    left: 90%;
-  }
-  @media (max-width: 1290px) {
-    position: absolute;
-    bottom: 500px;
-    left: 80%;
-  }
-  @media (max-width: 980px) {
-    position: relative;
-    left: 160px;
-    float: none;
-  } */
 `;
 const CommentOutButton = styled(CommentSubmitButton)`
   margin-top: 30px;
 `;
 const UploadImg = styled.label`
   display: inline-block;
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   margin: 20px 20px 15px 20px;
   border: 1px solid #d1d1d1;
   background-size: cover;
@@ -124,8 +138,8 @@ const UploadImgInput = styled.input`
 const UploadedImgCover = styled.span`
   background-color: rgba(207, 204, 201, 0.61);
   position: absolute;
-  width: 122px;
-  height: 122px;
+  width: 102px;
+  height: 102px;
   margin-top: 11px;
   margin-left: 11px;
   visibility: hidden;
@@ -135,29 +149,46 @@ const UploadedImgCover = styled.span`
 const RemoveImg = styled.img`
   width: 25px;
   position: absolute;
-  margin-left: 90px;
+  margin-left: 75px;
   margin-top: 5px;
 `;
 const EnlargeImg = styled.img`
   width: 20px;
   position: absolute;
-  margin-top: 93px;
+  margin-top: 75px;
   margin-left: 9px;
 `;
 
 const UploadedImg = styled.img`
   border: 1px solid #d1d1d1;
   display: inline-block;
-  width: 120px;
-  height: 120px;
-  margin: 10px 30px 15px 10px;
+  width: 100px;
+  height: 100px;
+  margin: 10px 10px 15px 10px;
+`;
+const Limit = styled.div`
+  position: relative;
+  left: 14.5%;
+  bottom: 10px;
+  color: ${(props) => (props.error ? 'red' : '#7f7f7f')};
+  @media (max-width: 1155px) {
+    bottom: 185px;
+    left: 150px;
+  }
+`;
+const LimitComment = styled.div`
+  margin-top: 2px;
+  position: relative;
+  left: 85%;
+  color: ${(props) => (props.error ? 'red' : '#7f7f7f')};
 `;
 
+const UploadImgContainer = styled.div``;
 const Uploaded = styled.span`
   display: inline-block;
   width: 122px;
   height: 122px;
-  margin: 10px 30px 15px 10px;
+  margin: 10px 10px 0px 10px;
   &:hover ${UploadedImgCover} {
     visibility: visible;
     opacity: 1;
@@ -181,7 +212,19 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
   const [imagesRowData, setImagesRowData] = useState([]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
+  const [limitImgError, setLimitImgError] = useState(false);
+  const [limitCommentError, setLimitCommentError] = useState(false);
 
+  useMemo(() => {
+    if (submitComment.length > 300) {
+      setSubmitComment(submitComment.slice(0, 300));
+      setLimitCommentError(true);
+
+      let timer = setTimeout(() => {
+        setLimitCommentError(false);
+      }, 1500);
+    }
+  }, [submitComment]);
   const submitCommentWrite = async () => {
     async function upLoadTaskPromise(image) {
       const upLoadTask = storageService
@@ -216,7 +259,7 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
         return pres;
       });
     }
-
+    console.log(setLimitImgError);
     console.log('after', images);
     await dbService
       .collection('CafeComment')
@@ -234,6 +277,10 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
 
   const upLoadTaskHandler = (inputImage) => {
     if (images.length > 2) {
+      setLimitImgError(true);
+      let imgTimer = setTimeout(() => {
+        setLimitImgError(false);
+      }, 1500);
       return;
     }
     setImages((preImages) => [...preImages, loading]);
@@ -293,29 +340,33 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
           <Scope setScope={setScope}></Scope>
         </ScopeContainer>
       </UserAndScope>
-
-      <TagWrapper>
-        {commentTags.map((tag) => (
-          <span
-            key={tag}
-            onClick={() => {
-              handleTags(tag);
-            }}
-          >
-            <Tag
-              tagName={tag}
-              isSmall={true}
-              color="white"
-              isButton={true}
-            ></Tag>
-          </span>
-        ))}
-      </TagWrapper>
-      <CommentInput
-        onChange={(e) => {
-          setSubmitComment(e.target.value);
-        }}
-      ></CommentInput>
+      <CommentContainer>
+        <TagWrapper>
+          {commentTags.map((tag) => (
+            <span
+              key={tag}
+              onClick={() => {
+                handleTags(tag);
+              }}
+            >
+              <Tag
+                tagName={tag}
+                isSmall={true}
+                color="white"
+                isButton={true}
+              ></Tag>
+            </span>
+          ))}
+        </TagWrapper>
+        <CommentInput
+          onChange={(e) => {
+            setSubmitComment(e.target.value);
+          }}
+        ></CommentInput>
+      </CommentContainer>
+      <LimitComment error={limitCommentError}>
+        {submitComment.length}/300
+      </LimitComment>
       <CommentImgWrapper>
         <UploadImg>
           <UploadImgInput
@@ -351,13 +402,18 @@ const CommentWrite = ({ currentCafe, comment, user, handleModal }) => {
             </Uploaded>
           );
         })}
-        <ButtonWrapper>
-          <CommentSubmitButton onClick={submitCommentWrite}>
-            제출
-          </CommentSubmitButton>
-          <CommentOutButton onClick={handleModal}>나가기 </CommentOutButton>
-        </ButtonWrapper>
       </CommentImgWrapper>
+      <Limit error={limitImgError}>{images.length}/3</Limit>
+      <ButtonWrapper>
+        <span onClick={submitCommentWrite}>
+          <Button name="작성하기"></Button>
+        </span>
+        <span onClick={handleModal}>
+          <Button hoverColor="#4f4f4f" color="#afafaf" name="취소">
+            나가기
+          </Button>
+        </span>
+      </ButtonWrapper>
       {imageModal ? (
         <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
       ) : (

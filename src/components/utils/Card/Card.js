@@ -134,9 +134,9 @@ const Card = (props) => {
     }
     await props.currentCafeComment(cafeCommentArr);
   };
-  if (!props.cafeid & (props.cafeid !== 0)) {
-    return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
-  }
+  // if (!props.cafeid & (props.cafeid !== 0)) {
+  //   return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
+  // }
 
   return (
     <CardStyle
