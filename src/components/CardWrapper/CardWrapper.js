@@ -13,6 +13,7 @@ import {
   Transition,
 } from 'react-transition-group';
 import Recommendation from './Recommendation';
+import getNearbyCafe from '../../getNearbyCafe';
 
 const CardWrapperCover = styled.div``;
 
@@ -108,12 +109,22 @@ const CardWrapper = ({ state, cardList }) => {
   const [cards, setCards] = useState([]);
   const [isCozyCafe, setCozyCafe] = useState(Skeleton);
   const [isGoodForTask, setGoodForTask] = useState(Skeleton);
+  const [nearbyCafe, setNearbyCafe] = useState(Skeleton);
   const [currentKeyword, setCurrentKeyword] = useState('');
 
   let cardListArr = [];
   let cozyCafe = [];
   let goodForTask = [];
 
+  const getData = async () => {
+    let cafe = await getNearbyCafe();
+    cafe: cafe.length > 6
+      ? (cafe = cafe.slice(0, 6))
+      : cafe.length > 3
+      ? cafe.slice(0, 3)
+      : (cafe = []);
+    setNearbyCafe(cafe);
+  };
   // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
     dbService
@@ -131,7 +142,8 @@ const CardWrapper = ({ state, cardList }) => {
       .finally(function () {
         cardList(cardListArr);
         setCards(cardListArr);
-
+        getData();
+        console.log(nearbyCafe);
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
@@ -152,6 +164,7 @@ const CardWrapper = ({ state, cardList }) => {
           : goodForTask.length > 3
           ? goodForTask.slice(0, 3)
           : (goodForTask = []);
+
         setCozyCafe(cozyCafe);
         setGoodForTask(goodForTask);
       });
@@ -240,6 +253,14 @@ const CardWrapper = ({ state, cardList }) => {
       </WrapperTitle>
       <CardWrapperStyle>
         <Recommendation recommendation={isGoodForTask}></Recommendation>
+      </CardWrapperStyle>
+      <WrapperTitle>
+        <WrapperLineRight />
+        <span>내 주변 카페</span>
+        <WrapperLineLeft />
+      </WrapperTitle>
+      <CardWrapperStyle>
+        <Recommendation recommendation={nearbyCafe}></Recommendation>
       </CardWrapperStyle>
     </CardWrapperCover>
   ) : (
