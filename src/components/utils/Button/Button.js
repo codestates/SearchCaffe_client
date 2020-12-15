@@ -23,7 +23,7 @@ const ButtonStyle = styled.div`
     background-color: ${(props) =>
       props.hoverColor ? props.hoverColor : '#5a403a'};
     color: ${(props) =>
-      props.hoverFontColor ? props.hoverFontColor : '#5a403a'};
+      props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
     font-size: ${(props) => (props.hoverFontColor ? '0.85rem' : '')};
   }
 `;
