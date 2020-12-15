@@ -1,10 +1,40 @@
 import { ReactComponent as Table } from './Table.svg';
 import { ReactComponent as Cup } from './Cup.svg';
 import { ReactComponent as Time } from './Time.svg';
+
+
 import { tagName } from '../../cafeInfos';
 import Tag from '../utils/Tag/index';
 import styled from 'styled-components';
+
+
 import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+
+import React, { useState, useEffect } from 'react';
+
+import { connect } from 'react-redux';
+import { actionCreators } from '../../reducer/store'
+
+const MainImgCover = styled.div`
+  width: 100%;
+  height: 600px;
+  background-color: #160a0a9f;
+  position: absolute;
+`;
+
+const MainImage = styled.div`
+  background-position: center;
+  background-size: 100% auto;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  height: 600px;
+`;
+
+
 const Detail = styled.div`
   width: 90%;
   height: 100%;
@@ -13,11 +43,15 @@ const Detail = styled.div`
   margin: auto;
 
   display: flex;
+  flex-direction:row;
 
   padding-top: 48px;
   padding-left: 32px;
   padding-right: 32px;
   padding-bottom: 24px;
+
+  margin-top: 2rem;
+
 
   h1 {
     margin: 0;
@@ -72,101 +106,164 @@ const DescribeContainer = styled.div`
 `;
 
 const SlideContainer = styled.div`
-  width: 300px;
-  height: 300px;
-  margin-left: auto;
+margin-left:35%;
+
 `;
 
+const SlideMaincontainer = styled.div`
+  width: 760px;
+  height: 12rem;
+  margin: auto;
+`
+
 const StyledSlider = styled(Slider)`
-  padding-top: 2rem;
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  max-width: 70%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3),
 `;
-const imgUrl = require('./Table.svg');
 
-const items = [
-  { id: 1, url: imgUrl },
-  { id: 2, url: imgUrl },
-  { id: 3, url: imgUrl },
-];
+const Thumbnailcontainer = styled.div`
+  margin-top: 15px;
+  height: 75px;
+  text-align: center;
+  width: 70%;
+`
 
-const settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: false,
-  centerMode: true,
-  autoplay: true,
-  autoplaySpeed: 4000,
-};
+const ThumbnailImg = styled.img`
+  width: 100px;
+  height: 100px;
+  margin-right: 16px;
+  background-image: ${({ src }) => (!!src ? `url(${src})` : 'none')};
+  display: flex;
+  align-items: flex-end;
+  border-radius: 4px;
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3),
+    0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+
+`
+
+const SlickSlide = styled.div`
+  text-align: center;
+  position: relative;
+  margin : auto;
+  :focus {
+    outline: none;
+  } 
+`
+
+
 const ContentHeader = (props) => {
+
+  const [nav1, setNav1] = useState(null);
+  const [nav2, setNav2] = useState(null);
+  const [slider1, setSlider1] = useState(null);
+  const [slider2, setSlider2] = useState(null);
+
+  useEffect(() => {
+
+    setNav1(slider1);
+    setNav2(slider2);
+
+  });
+
+  const settingsMain = {
+    centerMode: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    fade: true,
+    autoplay: true,
+    asNavFor: '.slider-nav'
+  };
+
+  const settingsThumbs = {
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    asNavFor: '.slider-for',
+    dots: true,
+    centerMode: true,
+    swipeToSlide: true,
+    focusOnSelect: true,
+    centerPadding: '10px'
+  };
+
+
+  const current = (props.cardArr).filter(el => el.id === props.currentCafe.cafeid);
+
+  const { cafeid, cafeTag, cafeName, cafeAddress, cafeImg, cafeStar } = current[0];
+  //console.log('==================current>> :', current);
+
   return (
-    <Detail>
-      <DescribeContainer>
-        <h1>나주 공간 카페</h1>
-        <div className="adress">전남 나주시 그린로 331</div>
-        <div className="describe">
-          모던한 인테리어와 수제 디저트가 특징인 카페
-        </div>
-        <SvgContainer>
-          <Table />
-          <Line />
-          <Cup />
-          <Line />
-          <Time />
-        </SvgContainer>
-        <div className="tagBox">
-          <Tag color="#ffffff" isSmall={true} tagName={tagName['가까운']}></Tag>
-          <Tag
-            color="#ffffff"
-            isSmall={true}
-            tagName={tagName['주차 가능']}
-          ></Tag>
-          <Tag
-            color="#ffffff"
-            isSmall={true}
-            tagName={tagName['애완 동물 동반']}
-          ></Tag>
-        </div>
-      </DescribeContainer>
-      <SlideContainer>
-        <StyledSlider {...settings}>
-          <div>
-            <Image
-              alt="#"
-              src={
-                'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4'
-              }
-            />
+    <>
+      <MainImgCover />
+      <MainImage style={{ backgroundImage: `url(${cafeImg[0]})` }} />
+      <Detail>
+        <DescribeContainer>
+          <h1>{cafeName ? cafeName : "해당 정보를 불러오는 중입니다."}</h1>
+          <div className="adress">{cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}</div>
+          <div className="describe"></div>
+          <SvgContainer>
+            <Table />
+            <Line />
+            <Cup />
+            <Line />
+            <Time />
+          </SvgContainer>
+          <div className="tagBox">
+            {cafeTag.map((el) => {
+              return (
+                <Tag
+                  isButton={true}
+                  color="#ffffff"
+                  isSmall={true}
+                  tagName={el} />
+              )
+            })}
           </div>
-          <div>
-            <Image
-              alt="#"
-              src={
-                'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F20208172316_editor_image.jpg?alt=media&token=c5b05234-8a38-4f0a-9054-42565f2f7d2f'
-              }
-            />
-          </div>
-          {/*          {items.map(item => {
-    return (
-      <div key={item.id}>
-        <ImageContainer>
-          <Image src={item.url} />
-        </ImageContainer>
-      </div>
-    )
-  })}
-*/}{' '}
-        </StyledSlider>
-      </SlideContainer>
-    </Detail>
+        </DescribeContainer>
+
+        <SlideContainer>
+          <SlideMaincontainer>
+            <StyledSlider {...settingsMain} asNavFor={nav2} ref={slider => (setSlider1(slider))}>
+              {cafeImg.map(el => {
+                return (
+                  <SlickSlide>
+                    <Image src={el} />
+                  </SlickSlide>
+                )
+              })}
+            </StyledSlider>
+          </SlideMaincontainer>
+          <Thumbnailcontainer>
+            <StyledSlider {...settingsThumbs} asNavFor={nav1} ref={slider => (setSlider2(slider))}>
+              {cafeImg.map(el => {
+                return (
+                  <SlickSlide>
+                    <ThumbnailImg src={el} />
+                  </SlickSlide>
+                )
+              })}
+            </StyledSlider>
+          </Thumbnailcontainer>
+        </SlideContainer>
+      </Detail>
+    </>
   );
 };
 
-export default ContentHeader;
+function mapStateToProps(state, ownProps) {
+  return { ...state };
+}
+
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     addcurrentCafe: (currentCafe) =>
+//       dispatch(actionCreators.currentCafeClick(currentCafe)),
+//   };
+// }
+
+export default connect(mapStateToProps, null)(ContentHeader);

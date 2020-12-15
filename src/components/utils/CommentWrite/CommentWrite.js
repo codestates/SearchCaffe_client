@@ -318,7 +318,7 @@ const CommentWrite = ({
     return new Promise((res, rej) => {
       upLoadTask.on(
         'state_changed',
-        (snapshot) => {},
+        (snapshot) => { },
         (error) => {
           console.log(error);
           rej();
@@ -458,8 +458,8 @@ const CommentWrite = ({
       {imageModal ? (
         <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
       ) : (
-        ''
-      )}
+          ''
+        )}
     </CommentWriteStyle>
   );
 };

@@ -142,18 +142,18 @@ const ContentComment = ({ comment }) => {
           </BackGroundCover>
         </>
       ) : (
-        ''
-      )}
+          ''
+        )}
       {!comment | (comment?.length === 0) ? (
         <WhenNoReview>
           <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
           <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
         </WhenNoReview>
       ) : (
-        comment.map((userComment, index) => {
-          return <Comment key={index} userComment={userComment}></Comment>;
-        })
-      )}
+          comment.map((userComment, index) => {
+            return <Comment key={index} userComment={userComment}></Comment>;
+          })
+        )}
     </Detail3>
   );
 };
