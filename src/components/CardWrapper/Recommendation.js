@@ -7,17 +7,21 @@ const Recommendation = ({ recommendation }) => {
       <CardColumn>
         {recommendation
           .slice(0, parseInt(recommendation.length / 3))
-          .map((card, index) => (
-            <Card
-              key={index}
-              cafeid={card.id}
-              cafeName={card.cafeName}
-              cafeTag={card.cafeTag}
-              cafeAddress={card.cafeAddress}
-              cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
-              cafeStar={card.cafeStar}
-            ></Card>
-          ))}
+          .map((card, index) => {
+            return (
+              <Card
+                key={index}
+                cafeid={card.id}
+                cafeName={card.cafeName}
+                cafeTag={card.cafeTag}
+                cafeAddress={card.cafeAddress}
+                cafeImage={card.cafeImg ? card.cafeImg : ''}
+                cafeStar={card.cafeStar}
+                cafePhoneNumber={card.cafePhoneNumber}
+                cafeDetail={card.cafeDetail}
+              ></Card>
+            );
+          })}
       </CardColumn>
       <CardColumn>
         {recommendation
@@ -32,8 +36,10 @@ const Recommendation = ({ recommendation }) => {
               cafeName={card.cafeName}
               cafeTag={card.cafeTag}
               cafeAddress={card.cafeAddress}
-              cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+              cafeImage={card.cafeImg ? card.cafeImg : ''}
               cafeStar={card.cafeStar}
+              cafePhoneNumber={card.cafePhoneNumber}
+              cafeDetail={card.cafeDetail}
             ></Card>
           ))}
       </CardColumn>
@@ -47,8 +53,10 @@ const Recommendation = ({ recommendation }) => {
               cafeName={card.cafeName}
               cafeTag={card.cafeTag}
               cafeAddress={card.cafeAddress}
-              cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+              cafeImage={card.cafeImg ? card.cafeImg : ''}
               cafeStar={card.cafeStar}
+              cafePhoneNumber={card.cafePhoneNumber}
+              cafeDetail={card.cafeDetail}
             ></Card>
           ))}
       </CardColumn>

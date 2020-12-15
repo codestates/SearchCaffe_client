@@ -57,19 +57,12 @@ const SignUp = ({ handleClose, handleOpen, show, userHandler }) => {
                 }
               });
             });
-          // userHandler({
-          //   uid: user.uid,
-          //   email: user.email,
-          //   displayName: user.displayName,
-          //   photoURL: user.photoURL,
-          //   providerId: user.providerId,
-          // })
         }
       });
-      handleClose();
       setEmail('');
       setPassword('');
       setError('');
+      handleClose();
     } catch (error) {
       let code = error.code;
       if (code === 'auth/email-already-in-use') {
