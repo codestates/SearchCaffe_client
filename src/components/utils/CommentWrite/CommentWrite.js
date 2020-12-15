@@ -447,7 +447,7 @@ const CommentWrite = ({
         ))}
       </TagWrapper>
       <CommentInput
-        onChange={() => {
+        onChange={(e) => {
           setSubmitComment(e.target.value);
         }}
       >
