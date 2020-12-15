@@ -146,7 +146,6 @@ const CardWrapper = ({ state, cardList }) => {
         cardList(cardListArr);
         setCards(cardListArr);
         // getData();
-        console.log(nearbyCafe);
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
