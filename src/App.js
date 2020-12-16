@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import { cafeComment } from './cafeInfos';
 
 const App = () => {
-
   return (
     <BrowserRouter>
       <Nav></Nav>
