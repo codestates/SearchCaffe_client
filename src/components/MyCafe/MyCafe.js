@@ -14,12 +14,14 @@ const MyCafeStyle = styled.div`
 const CafeCardStyle = styled.div`
   margin: auto;
   position: relative;
-  max-width: 1500px;
+  width: 1200px;
   width: 70%;
   height: auto;
   min-height: 300px;
   background-color: #fafafa;
   border-radius: 30px;
+  overflow-x: scroll;
+  white-space: nowrap;
 `;
 const Title = styled.div`
   width: 65%;

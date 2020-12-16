@@ -9,7 +9,7 @@ const ButtonStyle = styled.div`
   width: ${(props) =>
     props.name ? 80 + props.name.length * 5 + 'px' : '80px'};
   height: 40px;
-  font-size: ${(props) => (props.hoverFontSize ? props.hoverFontSize : '12px')};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : '12px')};
   color: ${(props) => (props.fontColor ? props.fontColor : '#ffffff')};
   display: flex;
   align-items: center;

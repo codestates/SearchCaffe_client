@@ -7,7 +7,17 @@ import {
 import Auth from './auth';
 import { actionCreators } from '../../reducer/store';
 import { connect } from 'react-redux';
+import removeImg from './remove.png';
 import './SignIn.css';
+import styled from 'styled-components';
+
+const Cover = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
 
 const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
   const showHideClassName = show
@@ -71,9 +81,7 @@ const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
   return (
     <div className={showHideClassName}>
       <section className="modal-signin-main">
-        <div className="close-btn" onClick={handleClose}>
-          x
-        </div>
+        <img src={removeImg} className="close-btn" onClick={handleClose}></img>
         <h1 className="header-signin">로그인</h1>
         <div className="email-login container">
           <form className="login-form" onSubmit={onSubmit}>
@@ -105,11 +113,14 @@ const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
           </form>
           <div className="errorMsg">{error}</div>
         </div>
+
         <Auth handleClose={handleClose} />
+
         <span className="link-signup" onClick={onClick}>
           이메일로 회원가입
         </span>
       </section>
+      <Cover onClick={handleClose}></Cover>
     </div>
   );
 };

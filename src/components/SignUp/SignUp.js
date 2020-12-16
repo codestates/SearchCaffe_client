@@ -6,7 +6,17 @@ import {
 } from '../../firebase/mainbase';
 import { actionCreators } from '../../reducer/store';
 import { connect } from 'react-redux';
+import removeImg from '../Signin/remove.png';
 import './SignUp.css';
+import styled from 'styled-components';
+
+const Cover = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
 
 const SignUp = ({ handleClose, handleOpen, show, userHandler }) => {
   const showHideClassName = show
@@ -83,41 +93,46 @@ const SignUp = ({ handleClose, handleOpen, show, userHandler }) => {
     setError('');
   };
   return (
-    <div className={showHideClassName}>
-      <section className="modal-signup-main">
-        <div className="close-btn" onClick={handleClose}>
-          x
-        </div>
-        <h1 className="header-signup">회원가입</h1>
-        <form className="signup-form" onSubmit={handleSubmit}>
-          <input
-            className="input-signup"
-            type="text"
-            name="email"
-            onChange={handleChange}
-            placeholder="email"
-            value={email}
-            required
-          />
-          <input
-            className="input-signup"
-            type="password"
-            name="password"
-            onChange={handleChange}
-            placeholder="password"
-            value={password}
-            required
-          />
-          <button type="submit" className="signup-btn">
-            이메일 회원가입
-          </button>
-        </form>
-        <div className="errorMsg">{error}</div>
-        <span className="link-signin" onClick={onClick}>
-          이미 아이디가 있으신가요?
-        </span>
-      </section>
-    </div>
+    <>
+      <div className={showHideClassName}>
+        <section className="modal-signup-main">
+          <img
+            src={removeImg}
+            className="close-btn"
+            onClick={handleClose}
+          ></img>
+          <h1 className="header-signup">회원가입</h1>
+          <form className="signup-form" onSubmit={handleSubmit}>
+            <input
+              className="input-signup"
+              type="text"
+              name="email"
+              onChange={handleChange}
+              placeholder="email"
+              value={email}
+              required
+            />
+            <input
+              className="input-signup"
+              type="password"
+              name="password"
+              onChange={handleChange}
+              placeholder="password"
+              value={password}
+              required
+            />
+            <button type="submit" className="signup-btn">
+              이메일 회원가입
+            </button>
+          </form>
+          <div className="errorMsg">{error}</div>
+          <span className="link-signin" onClick={onClick}>
+            이미 아이디가 있으신가요?
+          </span>
+        </section>
+        <Cover onClick={handleClose}></Cover>
+      </div>
+    </>
   );
 };
 
