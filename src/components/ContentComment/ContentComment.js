@@ -98,23 +98,34 @@ const ContentComment = ({
       : likedImg
   );
   const handleLike = async () => {
-    if (like === likeImg) {
-      setLike(likedImg);
-      let tempHeart = [];
-      user.heart ? (tempHeart = user.heart) : (tempHeart = []);
-      tempHeart.push(currentCafe.cafeName);
-      dbService.collection('users').doc(user.uid).update({
-        heart: tempHeart,
-      });
-      handleUserHeart(tempHeart);
+    if (user) {
+      if (like === likeImg) {
+        setLike(likedImg);
+        let tempHeart = [];
+        user.heart ? (tempHeart = user.heart) : (tempHeart = []);
+        tempHeart.push(currentCafe.cafeName);
+        console.log(tempHeart);
+        dbService.collection('users').doc(user.uid).update({
+          heart: tempHeart,
+        });
+        handleUserHeart(tempHeart);
+      } else {
+        setLike(likeImg);
+        let tempHeart = user.heart;
+        tempHeart.splice(tempHeart.indexOf(currentCafe.cafeName), 1);
+        console.log(tempHeart);
+        dbService.collection('users').doc(user.uid).update({
+          heart: tempHeart,
+        });
+        handleUserHeart(tempHeart);
+      }
+      return;
     } else {
-      setLike(likeImg);
-      let tempHeart = user.heart;
-      tempHeart.splice(tempHeart.indexOf(currentCafe.cafeName), 1);
-      dbService.collection('users').doc(user.uid).update({
-        heart: tempHeart,
-      });
-      handleUserHeart(tempHeart);
+      if (like === likeImg) {
+        setLike(likedImg);
+      } else {
+        setLike(likeImg);
+      }
     }
   };
 

@@ -40,15 +40,33 @@ const DeleteButton = styled.button`
   text-align: center;
   text-decoration: none;
   display: relative;
+  border: none;
+  background-color: inherit;
+  color: #555555;
+  transition: 0.2s;
+  :hover {
+    color: #222222;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
 `;
 
 const ModifyButton = styled.button`
   display: inline;
-  margin-left: 40%;
-  margin-right: 5px;
+  margin-left: 45%;
+  margin-right: 7px;
   text-align: center;
   text-decoration: none;
   display: relative;
+  border: none;
+  background-color: inherit;
+  color: #555555;
+  transition: 0.2s;
+  :hover {
+    color: #222222;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
 `;
 
 const UserName = styled.span``;
@@ -59,10 +77,10 @@ const ScopeContainer = styled.span`
 `;
 const TagWrapper = styled.div`
   margin-top: 13px;
-  padding-left: 2%;
+  padding-left: 5%;
 `;
 const CommentInput = styled.div`
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 5%;
   padding-left: 2%;
   width: 85%;
@@ -97,14 +115,14 @@ const Uploaded = styled.span`
     opacity: 1;
   }
 `;
-const UploadedImg = styled.span`
+const UploadedImg = styled.img`
   border: 1px solid #d1d1d1;
   display: inline-block;
   width: 100px;
   height: 100px;
   margin: 10px 20px 10px 10px;
-  background-image: ${(props) => 'url(' + props.img + ')'};
-  background-size: 100%;
+  /* background-image: ${(props) => 'url(' + props.img + ')'};
+  background-size: 100%; */
 `;
 const EnlargeImg = styled.img`
   width: 17px;
@@ -320,7 +338,7 @@ const Comment = ({
                       src={enlargeImg}
                     ></EnlargeImg>
                   </UploadedImgCover>
-                  <UploadedImg img={img}></UploadedImg>
+                  <UploadedImg src={img}></UploadedImg>
                 </Uploaded>
               );
             })
