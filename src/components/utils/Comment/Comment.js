@@ -49,6 +49,7 @@ const DeleteButton = styled.button`
   background-color: inherit;
   color: #555555;
   transition: 0.2s;
+  cursor: pointer;
   :hover {
     color: #222222;
     font-size: 0.9rem;
@@ -73,6 +74,7 @@ const ModifyButton = styled.button`
   background-color: inherit;
   color: #555555;
   transition: 0.2s;
+  cursor: pointer;
   :hover {
     color: #222222;
     font-size: 0.9rem;
@@ -182,7 +184,12 @@ const Detail3 = styled.div`
   border-bottom: 1px solid #e9ecef;
 `;
 
-const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
+const Comment = ({
+  userComment,
+  currentCafe,
+  user,
+  currentCafeComment,
+}) => {
   const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
@@ -299,7 +306,6 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
           )}
         </span>
       </UserAndScope>
-
       <TagWrapper>
         {userComment.userTag
           ? userComment.userTag.map((tag) => {

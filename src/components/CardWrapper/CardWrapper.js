@@ -137,8 +137,7 @@ const CardWrapper = ({ state, cardList }) => {
         cardList(cafes);
         setCards(cafes);
       })
-      .finally(async function () {
-        console.log('From Firebase ========>', cardListArr);
+      .finally(async function() {
         cardList(cardListArr);
         setCards(cardListArr);
         let cafe = await getNearbyCafe();
