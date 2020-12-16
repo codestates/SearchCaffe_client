@@ -6,11 +6,12 @@ import { useState, useEffect, useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import Button from '../utils/Button/Button';
-import likeImg from './like.png';
-import likedImg from './liked.png';
 import reviewImg from './review.png';
 import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
 import { dbService } from '../../firebase/mainbase';
+import SignIn from '../Signin/SignIn';
+import SignUp from '../SignUp/SignUp';
+import Like from '../utils/Like/Like';
 const Detail3 = styled.div`
   width: 90%;
   height: 100%;
@@ -18,7 +19,7 @@ const Detail3 = styled.div`
   margin: auto;
   max-width: 1500px;
   position: relative;
-  background: #fafafa;
+  background: #ffffff;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
   margin-bottom: 150px;
   margin-top: 5rem;
@@ -83,7 +84,6 @@ const WhenNoReviewContent = styled.div`
 
 const ContentComment = ({
   comment,
-  handleUserComment,
   handleUserHeart,
   user,
   currentCafe,
@@ -91,42 +91,10 @@ const ContentComment = ({
 }) => {
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
-  const [like, setLike] = useState(
-    !user | !user?.heart | (user?.heart?.indexOf(currentCafe.cafeName) === -1)
-      ? likeImg
-      : likedImg
-  );
-  const handleLike = async () => {
-    if (user) {
-      if (like === likeImg) {
-        setLike(likedImg);
-        let tempHeart = [];
-        user.heart ? (tempHeart = user.heart) : (tempHeart = []);
-        tempHeart.push(currentCafe.cafeName);
-        console.log(tempHeart);
-        dbService.collection('users').doc(user.uid).update({
-          heart: tempHeart,
-        });
-        handleUserHeart(tempHeart);
-      } else {
-        setLike(likeImg);
-        let tempHeart = user.heart;
-        tempHeart.splice(tempHeart.indexOf(currentCafe.cafeName), 1);
-        console.log(tempHeart);
-        dbService.collection('users').doc(user.uid).update({
-          heart: tempHeart,
-        });
-        handleUserHeart(tempHeart);
-      }
-      return;
-    } else {
-      if (like === likeImg) {
-        setLike(likedImg);
-      } else {
-        setLike(likeImg);
-      }
-    }
-  };
+  const [showSignin, setShowSignin] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
+  const [isLogin, setIsLogin] = useState(!!user);
+
   console.log('userCommentUpdate?', user);
   console.log('contentComment work', comment);
   useEffect(() => {
@@ -156,15 +124,37 @@ const ContentComment = ({
     setModal((pres) => !pres);
   };
 
+  const openSignin = () => {
+    setShowSignin(true);
+  };
+  const closeSignin = () => {
+    setShowSignin(false);
+  };
+  const openSignup = () => {
+    setShowSignup(true);
+  };
+  const closeSignup = () => {
+    setShowSignup(false);
+  };
   return (
     <Detail3>
+      <SignIn
+        show={showSignin}
+        handleClose={closeSignin}
+        handleOpen={openSignup}
+      />
+      <SignUp
+        show={showSignup}
+        handleClose={closeSignup}
+        handleOpen={openSignin}
+      />
       <TitleStyle>
         <TitleDiv />
         <TitleName>Review</TitleName>
         <TitleDiv />
       </TitleStyle>
       <div>
-        <ButtonStyleReview onClick={handleModal}>
+        <ButtonStyleReview onClick={isLogin ? handleModal : openSignin}>
           <Button
             name="리뷰 작성"
             icon={reviewImg}
@@ -178,21 +168,7 @@ const ContentComment = ({
             리뷰 작성
           </Button>
         </ButtonStyleReview>
-        <ButtonStyle onClick={handleLike}>
-          <Button
-            name="찜하기"
-            icon={like}
-            color="inherit"
-            hoverColor="inherit"
-            fontColor="#333333"
-            hoverFontColor="#8a705a"
-            noBorder={true}
-            imgSize="18px"
-            margin="1px"
-          >
-            리뷰 작성
-          </Button>
-        </ButtonStyle>
+        <Like></Like>
       </div>
 
       {commentModal ? (
@@ -225,8 +201,6 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     userHandler: (user) => dispatch(actionCreators.currentUser(user)),
-    handleUserComment: (cafe) =>
-      dispatch(actionCreators.changeUserComment(cafe)),
     handleUserHeart: (cafe) => dispatch(actionCreators.changeUserHeart(cafe)),
     handleUserMyComment: (cafe) =>
       dispatch(actionCreators.changeUserComment(cafe)),
