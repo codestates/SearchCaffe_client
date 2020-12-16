@@ -11,6 +11,7 @@ const CHANGEUSERPROFILE = 'CHANGEUSERPROFILE';
 const CHANGEDISPLAYNAME = 'CHANGEDISPLAYNAME';
 const CHANGEUSERCOMMENT = 'CHANGEUSERCOMMENT';
 const CHANGEUSERHEART = 'CHANGEUSERCHEART';
+
 const tagNameArray = (tagName) => {
   return {
     type: TAGARRAY,
@@ -114,10 +115,11 @@ const reducer = (state = [], action) => {
           state[i] = currentCafe;
         }
       }
-      return Object.assign({}, state, {
+      return (Object.assign({}, state, {
         ...state,
         currentCafe,
-      });
+      })
+      )
     case CURRENTUSER:
       let user = action.user;
       for (let i in state) {
@@ -145,7 +147,7 @@ const reducer = (state = [], action) => {
         ...state,
         user: {
           ...state.user,
-          comment: [...state.user.comment, action.comment],
+          comment: action.comment,
         },
       };
     case CHANGEDISPLAYNAME:
@@ -160,11 +162,12 @@ const reducer = (state = [], action) => {
       if (!state.user.heart) {
         state.user.heart = [];
       }
+
       return {
         ...state,
         user: {
           ...state.user,
-          heart: [...state.user.heart, action.heart],
+          heart: action.heart,
         },
       };
     default:
