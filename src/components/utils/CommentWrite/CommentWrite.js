@@ -74,7 +74,7 @@ const CommentImgWrapper = styled.div`
   min-width: 400px;
   width: 70%;
   height: 30%;
-  bottom: 5px;
+  bottom: 10px;
   position: relative;
   display: flex;
 
@@ -170,7 +170,7 @@ const UploadedImg = styled.img`
 const Limit = styled.div`
   position: relative;
   left: 18%;
-  bottom: 15px;
+  bottom: 20px;
   color: ${(props) => (props.error ? 'red' : '#7f7f7f')};
   @media (max-width: 1155px) {
     bottom: 185px;
@@ -330,7 +330,7 @@ const CommentWrite = ({
     return new Promise((res, rej) => {
       upLoadTask.on(
         'state_changed',
-        (snapshot) => { },
+        (snapshot) => {},
         (error) => {
           console.log(error);
           rej();
@@ -418,7 +418,7 @@ const CommentWrite = ({
           {beforeModify ? beforeModify.userComment : ''}
         </CommentInput>
       </CommentContainer>
-
+      <LimitComment>{submitComment.length}/300</LimitComment>
       <CommentImgWrapper>
         <UploadImg>
           <UploadImgInput
@@ -470,8 +470,8 @@ const CommentWrite = ({
       {imageModal ? (
         <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
       ) : (
-          ''
-        )}
+        ''
+      )}
     </CommentWriteStyle>
   );
 };

@@ -9,9 +9,9 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import { cafes } from '../../cafeInfos';
 import React, { useState, useEffect } from 'react';
-
+import defaultImg from '../utils/Card/dummyImg/defaultCafe.jpeg';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 
@@ -180,6 +180,7 @@ const ContentHeader = (props) => {
     centerPadding: '10px',
   };
 
+  // const cardArr = props.cardArr ? props.cardArr : cafes;
   const current = props.cardArr.filter(
     (el) => el.id === props.currentCafe.cafeid
   );
@@ -197,7 +198,13 @@ const ContentHeader = (props) => {
   return (
     <>
       <MainImgCover />
-      <MainImage style={{ backgroundImage: `url(${cafeImg[0]})` }} />
+      <MainImage
+        style={
+          cafeImg
+            ? { backgroundImage: `url(${cafeImg[0]})` }
+            : { backgroundImage: `url(${defaultImg})` }
+        }
+      />
       <Detail>
         <DescribeContainer>
           <h1>{cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}</h1>
@@ -248,13 +255,15 @@ const ContentHeader = (props) => {
               asNavFor={nav1}
               ref={(slider) => setSlider2(slider)}
             >
-              {cafeImg.map((el) => {
-                return (
-                  <SlickSlide>
-                    <ThumbnailImg src={el} />
-                  </SlickSlide>
-                );
-              })}
+              {cafeImg
+                ? cafeImg.map((el) => {
+                    return (
+                      <SlickSlide>
+                        <ThumbnailImg src={el} />
+                      </SlickSlide>
+                    );
+                  })
+                : ''}
             </StyledSlider>
           </Thumbnailcontainer>
         </SlideContainer>

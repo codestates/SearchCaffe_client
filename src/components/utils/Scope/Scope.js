@@ -13,6 +13,7 @@ const ScopeStyle = styled.button`
   outline: none;
   border: initial;
   display: inherit;
+  z-index: 1;
 `;
 
 const Star = (props) => {

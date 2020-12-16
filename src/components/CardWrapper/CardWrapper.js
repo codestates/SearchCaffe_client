@@ -216,9 +216,8 @@ const CardWrapper = ({ state, cardList }) => {
   // NOTE 검색 결과 없음'
   if (cards) {
     if (
-      (tags && tags !== '') &
-      (state && state.keyword !== '') &
-      (cards && cards.length === 0)
+      ((tags !== '') | (state?.keyword?.length !== '')) &
+      (cards?.length === 0)
     ) {
       return (
         <NoSearchResultContainer>

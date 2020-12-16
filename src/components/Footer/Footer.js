@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import logo from '../../pages/logo.png';
 const FooterStyle = styled.div`
   width: 100%;
   height: 330px;
@@ -25,9 +26,14 @@ const FooterContainer = styled.div`
   color: #5a403a;
 `;
 const CafeLogoContainer = styled.div`
-  background-color: grey;
   width: 100px;
   height: 100px;
+`;
+const LogoImg = styled.img`
+  width: 200px;
+  position: relative;
+  right: 20px;
+  bottom: 20px;
 `;
 const MemberContainer = styled.div`
   text-align: center;
@@ -54,7 +60,9 @@ const Footer = (props) => {
     <FooterStyle>
       <LineTop />
       <FooterContainer>
-        <CafeLogoContainer>LOGO</CafeLogoContainer>
+        <CafeLogoContainer>
+          <LogoImg src={logo}></LogoImg>
+        </CafeLogoContainer>
         <VerticalLine />
         <MemberContainer>
           Contribution<br></br>&<br></br>
