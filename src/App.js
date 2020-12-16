@@ -12,6 +12,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { cafeComment } from './cafeInfos';
+import NearbyCafe from './components/NearbyCafe/NearbyCafe';
 
 const App = () => {
   return (
@@ -28,7 +29,14 @@ const App = () => {
           <Mypage></Mypage>
         </Route>
       </Switch>
-
+      <NearbyCafe
+        cafeInfo={{
+          cafeName: '블루보틀 역삼',
+          region_1depth: '서울',
+          region_2depth: '강남구',
+          region_3depth: '역삼동',
+        }}
+      ></NearbyCafe>
       <Footer></Footer>
     </BrowserRouter>
   );
