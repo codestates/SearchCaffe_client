@@ -245,6 +245,20 @@ const CommentWrite = ({
     }
   }, [submitComment]);
 
+  const updateCafeStarScore = async (cafeId) => {
+    const data = await dbService
+      .collection('CafeInformation')
+      .where('id', '==', cafeId)
+      .update({});
+
+    // .update({
+    //   userComment:
+    //     submitComment.length === 0 ? beforeModify.userComment : submitComment,
+    //   userImg: images,
+    //   userStar: scope ? scope : beforeModify.userStar,
+    //   userTag: selectedTags,
+    // });
+  };
   const submitCommentWrite = async () => {
     updateUserMyComment();
     await settingCommentData();
@@ -288,6 +302,36 @@ const CommentWrite = ({
         username: user.displayName,
         userTag: selectedTags,
       });
+    // 처음 올릴떄 처리
+    if (comment.length + 1 === 1) {
+      let averageStar = Math.round(scope / (comment.length + 1));
+      console.log('averageStar :' + averageStar);
+      await dbService
+        .collection('CafeInformation')
+        .doc(`${currentCafe.cafeName}`)
+        .update({
+          cafeStar: averageStar,
+        });
+    } else {
+      // 처음이 아닐때 평균값 처리
+      const data = await dbService.collection('CafeComment').get();
+      let accumulateStar = 0;
+      let length = 0;
+      data.forEach((doc) => {
+        if (doc.data().cafeId === currentCafe.cafeid) {
+          length++;
+          accumulateStar += doc.data().userStar;
+        }
+      });
+      let averageStar = Math.round(accumulateStar / length);
+      console.log('averageStar :' + averageStar);
+      await dbService
+        .collection('CafeInformation')
+        .doc(`${currentCafe.cafeName}`)
+        .update({
+          cafeStar: averageStar,
+        });
+    }
   };
   const updateCommentData = async () => {
     await dbService
@@ -299,6 +343,24 @@ const CommentWrite = ({
         userImg: images,
         userStar: scope ? scope : beforeModify.userStar,
         userTag: selectedTags,
+      });
+    // 평균값
+    const data = await dbService.collection('CafeComment').get();
+    let accumulateStar = 0;
+    let length = 0;
+    data.forEach((doc) => {
+      if (doc.data().cafeId === beforeModify.cafeId) {
+        length++;
+        accumulateStar += doc.data().userStar;
+      }
+    });
+    //평균값 처리
+    let averageStar = Math.round(accumulateStar / length);
+    await dbService
+      .collection('CafeInformation')
+      .doc(`${currentCafe.cafeName}`)
+      .update({
+        cafeStar: averageStar,
       });
   };
   const updateUserMyComment = () => {

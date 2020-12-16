@@ -1,4 +1,4 @@
-// /* global kakao */
+/* global kakao */
 
 import { dbService } from './firebase/mainbase';
 import getCurrentPosition from './getCurrentPosition';

@@ -2,7 +2,8 @@ import Card from '../utils/Card/Card';
 import styled from 'styled-components';
 const CardColumn = styled.div``;
 const NoResult = styled.div``;
-const Recommendation = ({ recommendation }) => {
+const Recommendation = ({ recommendation, isMain }) => {
+  console.log(isMain);
   return (
     <>
       <CardColumn>
@@ -11,6 +12,7 @@ const Recommendation = ({ recommendation }) => {
           .map((card, index) => {
             return (
               <Card
+                isMain={isMain}
                 key={index}
                 cafeid={card.id}
                 cafeName={card.cafeName}
@@ -32,6 +34,7 @@ const Recommendation = ({ recommendation }) => {
           )
           .map((card, index) => (
             <Card
+              isMain={isMain}
               key={index}
               cafeid={card.id}
               cafeName={card.cafeName}
@@ -49,6 +52,7 @@ const Recommendation = ({ recommendation }) => {
           .slice(parseInt((recommendation.length * 2) / 3))
           .map((card, index) => (
             <Card
+              isMain={isMain}
               key={index}
               cafeid={card.id}
               cafeName={card.cafeName}

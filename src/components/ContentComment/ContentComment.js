@@ -95,8 +95,6 @@ const ContentComment = ({
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(!!user);
 
-  console.log('userCommentUpdate?', user);
-  console.log('contentComment work', comment);
   useEffect(() => {
     console.log('work!');
     if (user) {

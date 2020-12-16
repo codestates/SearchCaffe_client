@@ -92,7 +92,7 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
           fontColor="#333333"
           hoverFontColor="#8a705a"
           noBorder={true}
-          imgSize="18px"
+          imgSize="30px"
           margin="1px"
         >
           리뷰 작성

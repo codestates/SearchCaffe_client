@@ -139,7 +139,6 @@ const CardWrapper = ({ state, cardList }) => {
         setCards(cafes);
       })
       .finally(async function () {
-        console.log('From Firebase ========>', cardListArr);
         cardList(cardListArr);
         setCards(cardListArr);
         let cafe = await getNearbyCafe();
@@ -235,7 +234,10 @@ const CardWrapper = ({ state, cardList }) => {
             어떠신가요?
           </NoSearchResultTitle>
           <CardWrapperStyle>
-            <Recommendation recommendation={isGoodForTask}></Recommendation>
+            <Recommendation
+              isMain={true}
+              recommendation={isGoodForTask}
+            ></Recommendation>
           </CardWrapperStyle>
         </NoSearchResultContainer>
       );
@@ -250,7 +252,10 @@ const CardWrapper = ({ state, cardList }) => {
         <WrapperLineLeft />
       </WrapperTitle>
       <CardWrapperStyle>
-        <Recommendation recommendation={isCozyCafe}></Recommendation>
+        <Recommendation
+          isMain={true}
+          recommendation={isCozyCafe}
+        ></Recommendation>
       </CardWrapperStyle>
       <WrapperTitle>
         <WrapperLineRight />
@@ -258,7 +263,10 @@ const CardWrapper = ({ state, cardList }) => {
         <WrapperLineLeft />
       </WrapperTitle>
       <CardWrapperStyle>
-        <Recommendation recommendation={isGoodForTask}></Recommendation>
+        <Recommendation
+          isMain={true}
+          recommendation={isGoodForTask}
+        ></Recommendation>
       </CardWrapperStyle>
       {nearbyCafe.length !== 0 ? (
         <>
@@ -268,7 +276,10 @@ const CardWrapper = ({ state, cardList }) => {
             <WrapperLineLeft />
           </WrapperTitle>
           <CardWrapperStyle>
-            <Recommendation recommendation={nearbyCafe}></Recommendation>
+            <Recommendation
+              isMain={true}
+              recommendation={nearbyCafe}
+            ></Recommendation>
           </CardWrapperStyle>
         </>
       ) : (
