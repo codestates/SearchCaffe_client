@@ -7,8 +7,8 @@ import Card from '../utils/Card/index';
 import CardSkeleton from '../utils/Card/CardSkeleton';
 const MyCafeStyle = styled.div`
   width: 90%;
-  height: 1100px;
-  margin: auto;
+  height: auto;
+  margin: auto auto 300px auto;
 `;
 
 const CafeCardStyle = styled.div`

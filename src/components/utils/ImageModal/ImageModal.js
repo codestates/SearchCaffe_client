@@ -16,7 +16,7 @@ const ImageContainer = styled.div`
   top: 5%;
   right: 10%;
   width: 80%;
-  height: 80%;
+  height: 90%;
   background-color: black;
   z-index: 2;
 `;

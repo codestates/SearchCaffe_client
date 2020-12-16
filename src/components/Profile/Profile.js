@@ -10,6 +10,14 @@ import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './Profile.css';
 import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
+import styled from 'styled-components';
+import loading from './loading.svg';
+
+const Divide = styled.div`
+  border-right: 1px solid #959292;
+  height: 50%;
+  margin: auto;
+`;
 
 const Profile = ({
   state,
@@ -47,12 +55,6 @@ const Profile = ({
     // });
   }, []);
 
-  const handleLogOut = () => {
-    authService.signOut();
-    userHandler(null);
-    history.push('/');
-  };
-
   const onChange = (event) => {
     const {
       target: { value, name },
@@ -89,6 +91,7 @@ const Profile = ({
       target: { name },
     } = event;
     if (name === 'change-avatar') {
+      setAttachment(loading);
       async function upLoadTaskPromise(image) {
         const upLoadTask = storageService
           .ref(`commentImage/${image.name}`)
@@ -113,7 +116,7 @@ const Profile = ({
       }
       let theFile = photoFile;
       let url = await upLoadTaskPromise(theFile);
-      console.log(url);
+      setAttachment(url);
       userProfileHandler(url);
     } else if (name === 'change-username') {
       dbService.collection('users').doc(state.user.uid).update({
@@ -163,6 +166,7 @@ const Profile = ({
   };
   return (
     <div className="myprofile">
+      <div></div>
       {userInfo && (
         <>
           <div className="avatar-upload">
@@ -190,79 +194,89 @@ const Profile = ({
               accept="image/*"
               style={{ display: 'none' }}
             />
-            <button className="logout-btn" onClick={handleLogOut}>
-              로그아웃
-            </button>
           </div>
+          <Divide></Divide>
           <div className="user-info">
-            <h3>유저 정보</h3>
-            <div className="user-inf">
-              <div className="user-em-id">이메일: {userInfo.email}</div>
-              <div className="user-em-id">
-                <span>닉네임:</span>
-                <input
-                  type="text"
-                  name="username"
-                  className="username"
-                  onChange={onChange}
-                  value={newDisplayName}
-                />
+            <div></div>
+            <div className="divide-container">
+              <h3>유저 정보</h3>
+              <div className="user-inf">
+                <div className="user-em-id">이메일: {userInfo.email}</div>
+                <div className="user-em-id">
+                  <span>닉네임:</span>
+                  <input
+                    type="text"
+                    name="username"
+                    className="username"
+                    onChange={onChange}
+                    value={newDisplayName}
+                  />
+                </div>
+              </div>
+              <div>
+                <button
+                  className="change-btn"
+                  onClick={handleChange}
+                  name="change-username"
+                >
+                  변경
+                </button>
               </div>
             </div>
-            <button
-              className="change-btn"
-              onClick={handleChange}
-              name="change-username"
-            >
-              변경
-            </button>
-            <h3>비밀번호 변경</h3>
-            <div>
-              <input
-                className="pwchange"
-                type="password"
-                name="pre-password"
-                placeholder="현재 비밀번호"
-                onChange={onChange}
-                disabled={userInfo.providerId !== 'firebase' ? true : false}
-              ></input>
-            </div>
-            <div>
-              <input
-                className="pwchange"
-                onChange={onChange}
-                type="password"
-                name="password"
-                placeholder="새 비밀번호"
-                value={newPassword}
-                disabled={userInfo.providerId !== 'firebase' ? true : false}
-              ></input>
-            </div>
-            <div>
-              <input
-                className="pwchange"
-                onChange={onChange}
-                type="password"
-                name="re-password"
-                placeholder="새 비밀번호 확인"
-                disabled={userInfo.providerId !== 'firebase' ? true : false}
-              ></input>
-            </div>
-            <div>{errorMessage}</div>
-            <div>
-              <button
-                className="change-btn"
-                name="change-pw"
-                onClick={handlePasswordChange}
-                disabled={userInfo.providerId !== 'firebase' ? true : false}
-              >
-                {userInfo.providerId !== 'firebase' ? '소셜 계정 불가' : '변경'}
-              </button>
-              {/* {this.state.error ? <div className="alert-box">{this.state.error}</div> : ''} */}
-            </div>
+
+            {userInfo.providerId === 'firebase' ? (
+              <div className="divide-container">
+                <h3>비밀번호 변경</h3>
+                <div>
+                  <input
+                    className="pwchange"
+                    type="password"
+                    name="pre-password"
+                    placeholder="현재 비밀번호"
+                    onChange={onChange}
+                  ></input>
+                </div>
+                <div>
+                  <input
+                    className="pwchange"
+                    onChange={onChange}
+                    type="password"
+                    name="password"
+                    placeholder="새 비밀번호"
+                    value={newPassword}
+                  ></input>
+                </div>
+                <div>
+                  <input
+                    className="pwchange"
+                    onChange={onChange}
+                    type="password"
+                    name="re-password"
+                    placeholder="새 비밀번호 확인"
+                  ></input>
+                </div>
+                <div>{errorMessage}</div>
+                <div>
+                  <button
+                    className="change-btn"
+                    name="change-pw"
+                    onClick={handlePasswordChange}
+                  >
+                    {userInfo.providerId !== 'firebase'
+                      ? '소셜 계정 불가'
+                      : '변경'}
+                  </button>
+                  {/* {this.state.error ? <div className="alert-box">{this.state.error}</div> : ''} */}
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
+            <div></div>
           </div>
         </>
       )}
+      <div></div>
     </div>
   );
 };
