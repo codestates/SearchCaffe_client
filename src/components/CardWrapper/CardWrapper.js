@@ -48,6 +48,7 @@ const WrapperTitle = styled.div`
 const CardWrapperStyle = styled.div`
   display: flex;
   flex-direction: row;
+
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
