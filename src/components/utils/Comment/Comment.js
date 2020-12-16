@@ -18,6 +18,11 @@ const CommentStyle = styled.div`
   width: 50%;
   height: auto;
   padding-top: 50px;
+  :hover {
+    transition: 0.2s;
+    background-color: ${(props) =>
+      props.hoverColor ? props.hoverColor : '#F3F3F3'};
+  }
 `;
 const UserAndScope = styled.h3`
   display: inline;
@@ -44,6 +49,7 @@ const DeleteButton = styled.button`
   background-color: inherit;
   color: #555555;
   transition: 0.2s;
+  cursor: pointer;
   :hover {
     color: #222222;
     font-size: 0.9rem;
@@ -62,6 +68,7 @@ const ModifyButton = styled.button`
   background-color: inherit;
   color: #555555;
   transition: 0.2s;
+  cursor: pointer;
   :hover {
     color: #222222;
     font-size: 0.9rem;
@@ -170,7 +177,6 @@ const Comment = ({
   currentCafe,
   user,
   currentCafeComment,
-  refreshUser,
 }) => {
   const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
@@ -277,33 +283,13 @@ const Comment = ({
       {user ? (
         userComment.username === user.displayName ? (
           <ModifyButton onClick={modifyComment}>수정</ModifyButton>
-        ) : (
-          ''
-        )
-      ) : refreshUser ? (
-        userComment.username === refreshUser.displayName ? (
-          <ModifyButton onClick={modifyComment}>수정</ModifyButton>
-        ) : (
-          ''
-        )
-      ) : (
-        ''
-      )}
+        ) : '' ) : ''
+      }
       {user ? (
         userComment.username === user.displayName ? (
           <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
-        ) : (
-          ''
-        )
-      ) : refreshUser ? (
-        userComment.username === refreshUser.displayName ? (
-          <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
-        ) : (
-          ''
-        )
-      ) : (
-        ''
-      )}
+        ) : '' ) : ''
+      }
       <TagWrapper>
         {userComment.userTag
           ? userComment.userTag.map((tag) => {

@@ -137,7 +137,7 @@ const CardWrapper = ({ state, cardList }) => {
         cardList(cafes);
         setCards(cafes);
       })
-      .finally(function () {
+      .finally(async function() {
         cardList(cardListArr);
         setCards(cardListArr);
         let cafe = await getNearbyCafe();
