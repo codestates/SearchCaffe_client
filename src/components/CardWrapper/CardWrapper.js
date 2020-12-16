@@ -139,7 +139,6 @@ const CardWrapper = ({ state, cardList }) => {
         setCards(cafes);
       })
       .finally(function () {
-        console.log('From Firebase ========>', cardListArr);
         cardList(cardListArr);
         setCards(cardListArr);
         getData();
