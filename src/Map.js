@@ -44,7 +44,7 @@ const Map = ({ cafeInfo }) => {
     }
   };
   places.keywordSearch(cafeInfo.cafeName, callback);
-  return <div id="staticMap" style={{ width: '300px', height: '300px' }}></div>;
+  return <div id="staticMap" style={{ width: '400px', height: '300px' }}></div>;
 };
 
 export default Map;

@@ -1,0 +1,37 @@
+.side-wrap {
+  margin: 0;
+  box-sizing: border-box;
+  width: 400px;
+  height: 1000px;
+  margin: auto;
+  background-color: white;
+}
+.cafe-list {
+  list-style: none;
+  padding: 0;
+  margin-left: 20px;
+}
+.cafe-list-title {
+  color: #5a403a;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+.cafe {
+  padding: 15px 0 15px 0;
+  width: 100%;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.cafe-img {
+  width: 100px;
+  height: 100px;
+}
+
+.cafe-info {
+  padding: 10px;
+}
+
+.cafe-address {
+  font-size: 14px;
+  margin-top: 10px;
+}
