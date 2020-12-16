@@ -120,8 +120,7 @@ const CardWrapper = ({ state, cardList }) => {
   let goodForTask = [];
 
   const getData = async () => {
-    let cafe = await getNearbyCafe();
-    setNearbyCafe(cafe);
+    return await getNearbyCafe();
   };
   // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
@@ -138,11 +137,12 @@ const CardWrapper = ({ state, cardList }) => {
         cardList(cafes);
         setCards(cafes);
       })
-      .finally(function () {
+      .finally(async function () {
         console.log('From Firebase ========>', cardListArr);
         cardList(cardListArr);
         setCards(cardListArr);
-        getData();
+        let cafe = await getNearbyCafe();
+        setNearbyCafe(cafe);
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
@@ -175,7 +175,14 @@ const CardWrapper = ({ state, cardList }) => {
     if (tags !== '') {
       let results = state.cardArr;
       let tags = state.tagArr ? state.tagArr : [];
+      if (tags.includes('가까운')) {
+        results = nearbyCafe;
+        console.log(results);
+        console.log(tags);
+      }
+
       for (let tag of tags) {
+        if (tag === '가까운') continue;
         results = results.filter((card) => {
           if (!card.cafeTag) {
             card.cafeTag = [];
@@ -183,7 +190,7 @@ const CardWrapper = ({ state, cardList }) => {
           return card.cafeTag.indexOf(tag) !== -1;
         });
       }
-
+      console.log(results);
       setCards(results);
     }
 
