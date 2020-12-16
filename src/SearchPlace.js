@@ -4,8 +4,9 @@ const places = new kakao.maps.services.Places();
 var geocoder = new kakao.maps.services.Geocoder();
 
 const setCafeInfo = () => {
-  dbService.collection('test').onSnapshot((snapshot) => {
+  dbService.collection('CafeInformation').onSnapshot((snapshot) => {
     const cafeInfo = snapshot.docs.map((doc) => {
+      console.log(doc);
       if (!doc.data().addressname) {
         let keyword = doc.data().cafeName;
         let address = doc.data().cafeAddress;
@@ -32,7 +33,7 @@ const setCafeInfo = () => {
                     let address = result[0].address;
                     console.log(address);
                     console.log(doc.id);
-                    await dbService.doc(`test/${doc.id}`).update({
+                    await dbService.doc(`CafeInformation/${doc.id}`).update({
                       addressname: address.address_name,
                       region_1depth: address.region_1depth_name,
                       region_2depth: address.region_2depth_name,
@@ -50,7 +51,7 @@ const setCafeInfo = () => {
                   if (status === kakao.maps.services.Status.OK) {
                     let address = AddrResult[0].address;
                     console.log(address);
-                    await dbService.doc(`test/${doc.id}`).update({
+                    await dbService.doc(`CafeInformation/${doc.id}`).update({
                       addressname: address.address_name,
                       region_1depth: address.region_1depth_name,
                       region_2depth: address.region_2depth_name,
@@ -67,4 +68,4 @@ const setCafeInfo = () => {
   });
 };
 
-export default SearchPlace;
+export default setCafeInfo;

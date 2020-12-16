@@ -18,7 +18,7 @@ const getNearbyCafe = async () => {
           //   console.log(address);
           address = address.split(' ');
           let cafe = await dbService
-            .collection('test')
+            .collection('CafeInformation')
             .where('region_1depth', '==', address[0])
             .where('region_2depth', '==', address[1])
             .where('region_3depth', '==', address[2])
