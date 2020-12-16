@@ -14,7 +14,7 @@ import React, { useState, useEffect } from 'react';
 import defaultImg from '../utils/Card/dummyImg/defaultCafe.jpeg';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
-
+import Like from '../utils/Like/Like';
 const MainImgCover = styled.div`
   width: 100%;
   height: 600px;
@@ -207,6 +207,7 @@ const ContentHeader = (props) => {
       />
       <Detail>
         <DescribeContainer>
+          <Like></Like>
           <h1>{cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}</h1>
           <div className="adress">
             {cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}

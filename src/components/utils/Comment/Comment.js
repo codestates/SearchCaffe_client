@@ -12,19 +12,19 @@ import { dbService, storageService } from '../../../firebase/mainbase';
 import defaultUser from './defaultUser.png';
 const CommentStyle = styled.div`
   display: block;
-  margin: auto;
+  margin: 0 auto 10px auto;
   min-width: 400px;
   max-width: 800px;
   width: 50%;
   height: auto;
   padding-top: 50px;
+  transition: 0.2s;
   :hover {
+    background-color: #efefef;
     transition: 0.2s;
-    background-color: ${(props) =>
-      props.hoverColor ? props.hoverColor : '#F3F3F3'};
   }
 `;
-const UserAndScope = styled.h3`
+const UserAndScope = styled.div`
   display: inline;
   padding-left: 5%;
 
@@ -41,10 +41,10 @@ const UserProfile = styled.img`
 `;
 
 const DeleteButton = styled.button`
-  display: inline;
+  display: inline-block;
   text-align: center;
   text-decoration: none;
-  display: relative;
+  position: relative;
   border: none;
   background-color: inherit;
   color: #555555;
@@ -55,15 +55,21 @@ const DeleteButton = styled.button`
     font-size: 0.9rem;
     transition: 0.2s;
   }
+  :focus {
+    color: #222222;
+    outline: 0;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
 `;
 
 const ModifyButton = styled.button`
-  display: inline;
-  margin-left: 45%;
+  display: inline-block;
+  margin-left: 30%;
   margin-right: 7px;
   text-align: center;
   text-decoration: none;
-  display: relative;
+  position: relative;
   border: none;
   background-color: inherit;
   color: #555555;
@@ -71,6 +77,12 @@ const ModifyButton = styled.button`
   cursor: pointer;
   :hover {
     color: #222222;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
+  :focus {
+    color: #222222;
+    outline: 0;
     font-size: 0.9rem;
     transition: 0.2s;
   }
@@ -84,13 +96,13 @@ const ScopeContainer = styled.span`
 `;
 const TagWrapper = styled.div`
   margin-top: 13px;
-  padding-left: 5%;
+  padding-left: 8%;
 `;
 const CommentInput = styled.div`
   margin-top: 10px;
-  margin-left: 5%;
+  margin-left: 8%;
   padding-left: 2%;
-  width: 85%;
+  width: 80%;
   height: auto;
   min-height: 50px;
 
@@ -98,7 +110,7 @@ const CommentInput = styled.div`
 `;
 const CommentImages = styled.div`
   margin-top: 13px;
-  margin-left: 5%;
+  margin-left: 7%;
 `;
 
 const UploadedImgCover = styled.span`
@@ -106,8 +118,8 @@ const UploadedImgCover = styled.span`
   position: absolute;
   width: 102px;
   height: 102px;
-  margin-top: 11px;
-  margin-left: 10px;
+  margin-top: 1px;
+  margin-left: 11px;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0.2s linear, opacity 0.2s linear;
@@ -116,7 +128,7 @@ const Uploaded = styled.span`
   display: inline-block;
   width: 122px;
   height: 122px;
-  margin: 10px 10px 15px 10px;
+  margin: 0px 10px 0px 10px;
   &:hover ${UploadedImgCover} {
     visibility: visible;
     opacity: 1;
@@ -127,7 +139,7 @@ const UploadedImg = styled.img`
   display: inline-block;
   width: 100px;
   height: 100px;
-  margin: 10px 20px 10px 10px;
+  margin: 0px 10px 0px 10px;
   /* background-image: ${(props) => 'url(' + props.img + ')'};
   background-size: 100%; */
 `;
@@ -138,9 +150,9 @@ const EnlargeImg = styled.img`
   margin-left: 10px;
 `;
 const Divide = styled.div`
-  padding-top: 20px;
-  border-bottom: 1px solid black;
-  margin: auto;
+  padding-top: 5px;
+  border-bottom: 1px solid #888888;
+  margin: auto auto auto auto;
   width: 93%;
 `;
 
@@ -279,17 +291,21 @@ const Comment = ({
             scope={userComment.userStar ? userComment.userStar : -1}
           ></Scope>
         </ScopeContainer>
+        <span>
+          {userComment.username === user?.displayName ? (
+            <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+          ) : (
+            ''
+          )}
+        </span>
+        <span>
+          {userComment.username === user?.displayName ? (
+            <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+          ) : (
+            ''
+          )}
+        </span>
       </UserAndScope>
-      {user ? (
-        userComment.username === user.displayName ? (
-          <ModifyButton onClick={modifyComment}>수정</ModifyButton>
-        ) : '' ) : ''
-      }
-      {user ? (
-        userComment.username === user.displayName ? (
-          <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
-        ) : '' ) : ''
-      }
       <TagWrapper>
         {userComment.userTag
           ? userComment.userTag.map((tag) => {
@@ -298,14 +314,16 @@ const Comment = ({
                   key={tag}
                   tagName={tag}
                   isSmall={true}
-                  color="#ffffff"
+                  color="#efefef"
                 ></Tag>
               );
             })
           : ''}
       </TagWrapper>
       {userComment.userComment ? (
-        <CommentInput>{userComment.userComment}</CommentInput>
+        <CommentInput>
+          <span>{userComment.userComment}</span>
+        </CommentInput>
       ) : (
         ''
       )}
