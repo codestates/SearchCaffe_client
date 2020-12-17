@@ -12,7 +12,7 @@ import { dbService } from '../../firebase/mainbase';
 import SignIn from '../Signin/SignIn';
 import SignUp from '../SignUp/SignUp';
 import Like from '../utils/Like/Like';
-
+import Fade from 'react-reveal/Fade';
 const Detail3 = styled.div`
   width: 1000px;
   height: 100%;
@@ -77,6 +77,11 @@ const WhenNoReviewContent = styled.div`
   text-align: center;
   font-size: 1.1rem;
   margin: 10px 0 20px 0;
+`;
+const CommentWraper = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  min-height: 50px;
 `;
 
 const ContentComment = ({
@@ -165,26 +170,32 @@ const ContentComment = ({
         </ButtonStyleReview>
         <Like></Like>
       </div>
-
-      {commentModal ? (
-        <>
-          <BackGroundCover>
-            <CommentWrite handleModal={handleModal}></CommentWrite>
-          </BackGroundCover>
-        </>
-      ) : (
-        ''
-      )}
-      {!comment | (comment?.length === 0) ? (
-        <WhenNoReview>
-          <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
-          <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
-        </WhenNoReview>
-      ) : (
-        comment.map((userComment, index) => {
-          return <Comment key={index} userComment={userComment}></Comment>;
-        })
-      )}
+      <CommentWraper>
+        {commentModal ? (
+          <>
+            <BackGroundCover>
+              <CommentWrite handleModal={handleModal}></CommentWrite>
+            </BackGroundCover>
+          </>
+        ) : (
+          ''
+        )}
+        {!comment | (comment?.length === 0) ? (
+          <WhenNoReview>
+            <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
+            <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
+          </WhenNoReview>
+        ) : (
+          comment.map((userComment, index) => {
+            return (
+              <Fade top collpase>
+                <Comment key={index} userComment={userComment}></Comment>
+              </Fade>
+            );
+          })
+          // .reverse()
+        )}
+      </CommentWraper>
     </Detail3>
   );
 };
