@@ -88,56 +88,16 @@ const ContentComment = ({
   user,
   currentCafe,
   handleUserMyComment,
-  refreshCommentArr
+  refreshCommentArr,
 }) => {
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
-<<<<<<< HEAD
-  const [like, setLike] = useState(
-    !user | !user?.heart | (user?.heart?.indexOf(currentCafe.cafeName) === -1)
-      ? likeImg
-      : likedImg
-  );
-  const handleLike = async () => {
-    if (user) {
-      if (like === likeImg) {
-        setLike(likedImg);
-        let tempHeart = [];
-        user.heart ? (tempHeart = user.heart) : (tempHeart = []);
-        tempHeart.push(currentCafe.cafeName);
-        console.log(tempHeart);
-        dbService.collection('users').doc(user.uid).update({
-          heart: tempHeart,
-        });
-        handleUserHeart(tempHeart);
-      } else {
-        setLike(likeImg);
-        let tempHeart = user.heart;
-        tempHeart.splice(tempHeart.indexOf(currentCafe.cafeName), 1);
-        console.log(tempHeart);
-        dbService.collection('users').doc(user.uid).update({
-          heart: tempHeart,
-        });
-        handleUserHeart(tempHeart);
-      }
-      return;
-    } else {
-      if (like === likeImg) {
-        setLike(likedImg);
-      } else {
-        setLike(likeImg);
-      }
-    }
-  };
-
-=======
   const [showSignin, setShowSignin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(!!user);
 
   console.log('userCommentUpdate?', user);
   console.log('contentComment work', comment);
->>>>>>> bc674b4dc4433162ad1831acd44d811d1da57ccd
   useEffect(() => {
     if (user) {
       let filtered = comment?.filter(
@@ -218,7 +178,7 @@ const ContentComment = ({
       ) : (
         ''
       )}
-      {!comment | (comment?.length === 0)  ? (
+      {!comment | (comment?.length === 0) ? (
         <WhenNoReview>
           <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
           <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
@@ -227,10 +187,18 @@ const ContentComment = ({
         comment.map((userComment, index) => {
           return <Comment key={index} userComment={userComment}></Comment>;
         })
-      ) : ( refreshCommentArr ?
+      ) : refreshCommentArr ? (
         refreshCommentArr.map((userComment, index) => {
-          return <Comment key={index} userComment={userComment} refreshUser={user}></Comment>;
-        }) : ''
+          return (
+            <Comment
+              key={index}
+              userComment={userComment}
+              refreshUser={user}
+            ></Comment>
+          );
+        })
+      ) : (
+        ''
       )}
     </Detail3>
   );
