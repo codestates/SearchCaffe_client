@@ -1,17 +1,21 @@
 import styled from 'styled-components';
 
 const ButtonStyle = styled.div`
+  position: relative;
   border-radius: 30px;
-  margin-left: ${(props) => (props.margin ? props.margin : '25px')};
+  margin-left: ${(props) => (props.marginLeft ? props.marginLeft : '25px')};
+
   border: none;
   background-color: ${(props) => (props.color ? props.color : '#8a706a')};
   outline: none;
   width: ${(props) =>
     props.name ? 80 + props.name.length * 5 + 'px' : '80px'};
-  height: ${props => props.hight ? props.higth : "40px"};
-  font-size: ${props => props.fontSize ? props.fontSize : "12px"} ;
+  height: ${(props) => (props.height ? props.heigth : '40px')};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : '12px')};
   color: ${(props) => (props.fontColor ? props.fontColor : '#ffffff')};
   display: flex;
+  flex-direction: ${(props) =>
+    props.flexDirection ? props.flexDirection : 'row'};
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -20,9 +24,9 @@ const ButtonStyle = styled.div`
   :hover {
     transition: 0.2s;
     background-color: ${(props) =>
-    props.hoverColor ? props.hoverColor : '#5a403a'};
+      props.hoverColor ? props.hoverColor : '#5a403a'};
     color: ${(props) =>
-    props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
+      props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
     font-size: ${(props) => (props.hoverFontSize ? '1.3rem' : '')};
   }
 `;

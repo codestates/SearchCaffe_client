@@ -16,13 +16,7 @@ const Recommendation = ({ recommendation, isMain }) => {
                 isMain={isMain}
                 key={index}
                 cafeid={card.id}
-                cafeName={card.cafeName}
-                cafeTag={card.cafeTag}
-                cafeAddress={card.cafeAddress}
                 cafeImage={card.cafeImg ? card.cafeImg : ''}
-                cafeStar={card.cafeStar}
-                cafePhoneNumber={card.cafePhoneNumber}
-                cafeDetail={card.cafeDetail}
               ></Card>
             );
           })}
@@ -33,21 +27,18 @@ const Recommendation = ({ recommendation, isMain }) => {
             parseInt(recommendation.length / 3),
             parseInt((recommendation.length * 2) / 3)
           )
-          .map((card, index) => (
-            <Card
-              {...card}
-              isMain={isMain}
-              key={index}
-              cafeid={card.id}
-              cafeName={card.cafeName}
-              cafeTag={card.cafeTag}
-              cafeAddress={card.cafeAddress}
-              cafeImage={card.cafeImg ? card.cafeImg : ''}
-              cafeStar={card.cafeStar}
-              cafePhoneNumber={card.cafePhoneNumber}
-              cafeDetail={card.cafeDetail}
-            ></Card>
-          ))}
+          .map((card, index) => {
+            console.log('card in recommendation ', card);
+            return (
+              <Card
+                {...card}
+                isMain={isMain}
+                key={index}
+                cafeid={card.id}
+                cafeImage={card.cafeImg ? card.cafeImg : ''}
+              ></Card>
+            );
+          })}
       </CardColumn>
       <CardColumn>
         {recommendation
@@ -58,13 +49,7 @@ const Recommendation = ({ recommendation, isMain }) => {
               isMain={isMain}
               key={index}
               cafeid={card.id}
-              cafeName={card.cafeName}
-              cafeTag={card.cafeTag}
-              cafeAddress={card.cafeAddress}
               cafeImage={card.cafeImg ? card.cafeImg : ''}
-              cafeStar={card.cafeStar}
-              cafePhoneNumber={card.cafePhoneNumber}
-              cafeDetail={card.cafeDetail}
             ></Card>
           ))}
       </CardColumn>

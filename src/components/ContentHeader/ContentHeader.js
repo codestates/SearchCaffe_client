@@ -9,12 +9,13 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import locationImg from './location.png';
 import Like from '../utils/Like/Like';
 import React, { useState, useEffect } from 'react';
 import defaultImg from '../utils/Card/dummyImg/defaultCafe.jpeg';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
+import { $CombinedState } from 'redux';
 
 const MainImgCover = styled.div`
   width: 100%;
@@ -38,9 +39,10 @@ const Detail = styled.div`
   justify-content: space-evenly;
   /* padding: 20px auto auto 20px; */
   width: 1424px;
-  height:800px;
-  background: #FAFAFA;
-  flex:1;
+  height: 800px;
+  background: #fafafa;
+  flex: 1;
+
   padding: 20px 20px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
   margin: 0 auto;
@@ -81,18 +83,11 @@ const ActionButtonWrap = styled.div`
 
 const LikeWrap = styled.div`
   position: relative;
-  padding-top: -10px;
   cursor: pointer;
   display: inline-block;
-  text-align: center;
 `;
 
-const LikeModi = styled(Like)`
-  display: inline-block;
-  text-indent: -9999px;
-  vertical-align: middle;
-  font-size: 20px;
-`;
+const LikeModi = styled(Like)``;
 
 ///////ANCHOR Second
 const InfoAdress = styled.div`
@@ -125,6 +120,11 @@ const Info = styled.div`
   grid-template-columns: 70px auto;
   margin-left: 0;
 `;
+
+const Location = styled.img`
+  width: 30px;
+`;
+
 const InfoTitle = styled.span`
   color: #4F4F4F;
 `;
@@ -173,11 +173,11 @@ const TagContainer = styled.div`
 //////
 
 const SlideContainer = styled.div`
-  display:flex;
+  display: flex;
   margin: 9rem 0 0 0;
-  flex-direction:column;
-  align-items:center;
-  object-fit:scale-down;
+  flex-direction: column;
+  align-items: center;
+  object-fit: scale-down;
 `;
 
 const SlideMaincontainer = styled.div`
@@ -199,7 +199,7 @@ const Image = styled.img`
   width: 600px;
   height: 400px;
   object-fit: cover;
-  margin-right:10px;
+  margin-right: 10px;
   border-radius: 8px;
   box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
     0 8px 16px -8px hsla(0, 0%, 0%, 0.3);
@@ -217,16 +217,16 @@ const ThumbSlickSlide = styled.div`
   :focus {
     outline: none;
   }
-  `;
+`;
 
 const ThumbnailImg = styled.img`
-    width: 150px;
-    height: 150px;
-    background-image: ${({ src }) => (!!src ? `url(${src})` : 'none')};
-    border-radius: 4px;
-    box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
-      0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
-  `;
+  width: 150px;
+  height: 150px;
+  background-image: ${({ src }) => (!!src ? `url(${src})` : 'none')};
+  border-radius: 4px;
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
+    0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+`;
 
 const ContentHeader = (props) => {
   const current = props.cardArr.filter(
@@ -243,9 +243,9 @@ const ContentHeader = (props) => {
     cafePhoneNumber,
     cafeDetail,
     cafeTable,
-    Americano
+    Americano,
   } = current[0];
-  console.log('=========== detail :', current[0][cafeDetail])
+  console.log('=========== detail :', current[0][cafeDetail]);
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
@@ -292,11 +292,7 @@ const ContentHeader = (props) => {
               <Title>
                 {cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}
               </Title>
-              <ActionButtonWrap>
-                <LikeWrap>
-                  <LikeModi />
-                </LikeWrap>
-              </ActionButtonWrap>
+              <div></div>
             </TittleWrap>
           </Header>
           <InfoAdress>
@@ -311,9 +307,7 @@ const ContentHeader = (props) => {
           </InfoAdress>
           <Info>
             <InfoTitle>연락처</InfoTitle>
-            <InfoContent>
-              {cafePhoneNumber ? cafePhoneNumber : ""}
-            </InfoContent>
+            <InfoContent>{cafePhoneNumber ? cafePhoneNumber : ''}</InfoContent>
           </Info>
           <Info>
             <InfoTitle>안녕</InfoTitle>
@@ -322,6 +316,7 @@ const ContentHeader = (props) => {
             </InfoContent>
           </Info>
           <SvgContainer>
+            <div></div>
             <SvgOneContainer>
               <Table />
               <SvgInfo>좌석</SvgInfo>
@@ -337,7 +332,9 @@ const ContentHeader = (props) => {
               <SvgInfo>영업시간</SvgInfo>
               <H4>{cafeDetail ? cafeDetail : "없어"} </H4>
             </SvgLastContainer>
+            <div></div>
           </SvgContainer>
+
           <TagContainer className="tagBox">
             {cafeTag
               ? cafeTag.map((el) => {
@@ -352,6 +349,7 @@ const ContentHeader = (props) => {
               })
               : ''}
           </TagContainer>
+
           <div></div>
         </DescribeContainer>
         <SlideContainer>

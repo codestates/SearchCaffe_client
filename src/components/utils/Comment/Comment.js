@@ -17,6 +17,7 @@ const CommentStyle = styled.div`
   min-width: 400px;
   max-width: 800px;
   width: 50%;
+  min-width: 700px;
   height: auto;
   padding-top: 50px;
   transition: 0.2s;
@@ -152,7 +153,7 @@ const EnlargeImg = styled.img`
 `;
 const Divide = styled.div`
   padding-top: 5px;
-  border-bottom: 1px solid #888888;
+  border-bottom: 1px solid #cccccc;
   margin: auto auto auto auto;
   width: 93%;
 `;
@@ -185,19 +186,14 @@ const Detail3 = styled.div`
   border-bottom: 1px solid #e9ecef;
 `;
 
-const Comment = ({
-  userComment,
-  currentCafe,
-  user,
-  currentCafeComment,
-}) => {
+const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
   const [beforeModify, setBeforeModify] = useState();
   const [userProfileImg, setUserProfileImg] = useState(defaultUser);
-
+  console.log(userComment);
   useEffect(() => {
     setImages(userComment.userImg);
     dbService
@@ -283,8 +279,8 @@ const Comment = ({
             </Detail3>
           </>
         ) : (
-            ''
-          )}
+          ''
+        )}
         <ScopeContainer>
           <Scope
             isScope={true}
@@ -293,32 +289,30 @@ const Comment = ({
           ></Scope>
         </ScopeContainer>
         <span>
-          {userComment.username === user?.displayName ? (
+          {(userComment.username === user?.displayName) |
+          (userComment.userEmail === user?.email) ? (
             <ModifyButton onClick={modifyComment}>수정</ModifyButton>
           ) : (
-              ''
-            )}
+            ''
+          )}
         </span>
         <span>
-          {userComment.username === user?.displayName ? (
+          {(userComment.username === user?.displayName) |
+          (userComment.userEmail === user?.email) ? (
             <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
           ) : (
-              ''
-            )}
+            ''
+          )}
         </span>
       </UserAndScope>
+
       <TagWrapper>
         {userComment.userTag
           ? userComment.userTag.map((tag) => {
-            return (
-              <Tag
-                key={tag}
-                tagName={tag}
-                isSmall={true}
-                color="white"
-              ></Tag>
-            );
-          })
+              return (
+                <Tag key={tag} tagName={tag} isSmall={true} color="white"></Tag>
+              );
+            })
           : ''}
       </TagWrapper>
       {userComment.userComment ? (
@@ -326,34 +320,34 @@ const Comment = ({
           <span>{userComment.userComment}</span>
         </CommentInput>
       ) : (
-          ''
-        )}
+        ''
+      )}
 
       <CommentImages>
         {userComment.userImg
           ? userComment.userImg.map((img, index) => {
-            return (
-              <Uploaded key={index}>
-                <UploadedImgCover>
-                  <EnlargeImg
-                    data-index={index}
-                    onClick={(e) => {
-                      handleImageEnlarge(e.target.dataset.index);
-                    }}
-                    src={enlargeImg}
-                  ></EnlargeImg>
-                </UploadedImgCover>
-                <UploadedImg src={img}></UploadedImg>
-              </Uploaded>
-            );
-          })
+              return (
+                <Uploaded key={index}>
+                  <UploadedImgCover>
+                    <EnlargeImg
+                      data-index={index}
+                      onClick={(e) => {
+                        handleImageEnlarge(e.target.dataset.index);
+                      }}
+                      src={enlargeImg}
+                    ></EnlargeImg>
+                  </UploadedImgCover>
+                  <UploadedImg src={img}></UploadedImg>
+                </Uploaded>
+              );
+            })
           : ''}
       </CommentImages>
       {imageModal ? (
         <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
       ) : (
-          ''
-        )}
+        ''
+      )}
       <Divide></Divide>
     </CommentStyle>
   );

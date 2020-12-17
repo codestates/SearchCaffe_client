@@ -2,7 +2,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { dbService } from '../firebase/mainbase';
 import NearbyCafe from '../components/NearbyCafe/NearbyCafe';
 import { connect } from 'react-redux';
-// import { actionCreators } from '../reducer/store';
+import { actionCreators } from '../reducer/store';
 
 import ContentHeader from '../components/ContentHeader/index';
 // import ContentDetail from '../components/ContentDetail/index';
@@ -10,32 +10,30 @@ import ContentComment from '../components/ContentComment/index';
 import { img } from './main.jpeg';
 import { cafeComment } from '../cafeInfos';
 
-const GlobalStyle = createGlobalStyle`
-body {
-  margin: 0 auto;
-}
+const ContentStyle = styled.div`
+  position: relative;
+  top: 80px;
+  margin-bottom: 300px;
 `;
 
 const ContentWrapper = styled.div`
 `
 
 const Inner = styled.div`
-box-sizing: border-box;
-`
-const NearbyCafeWrap = styled(NearbyCafe)`
-  width: 400px;
-`
+  box-sizing: border-box;
+`;
+
 const MiddleWrapper = styled.div`
-display: flex;
-justify-content:center;
-flex-direction:row;
-margin: 0 auto;
-`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin: 0 auto;
+`;
 
 const Content = (props) => {
   return (
-    <>
-      <GlobalStyle />
+    <ContentStyle>
+      {/* <GlobalStyle /> */}
       <ContentWrapper>
         <Inner>
           <ContentHeader></ContentHeader>
@@ -43,11 +41,9 @@ const Content = (props) => {
       </ContentWrapper>
       <MiddleWrapper>
         <ContentComment></ContentComment>
-        <NearbyCafeWrap
-          cafeInfo={props.currentCafe}
-        ></NearbyCafeWrap>
+        <NearbyCafe cafeInfo={props.currentCafe}></NearbyCafe>
       </MiddleWrapper>
-    </>
+    </ContentStyle>
   );
 };
 function mapStateToProps(state, ownProps) {

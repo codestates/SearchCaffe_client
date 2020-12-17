@@ -11,6 +11,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Nav></Nav>
       <Switch>
         <Route exact path="/">

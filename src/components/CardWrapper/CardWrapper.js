@@ -230,16 +230,19 @@ const CardWrapper = ({ state, cardList }) => {
     ) {
       return (
         <Fade>
-          <NoSearchResultContainer>
+          <>
             <NoSearchResultTitle>
               검색 결과가 없어요.
               <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런
               카페는 어떠신가요?
             </NoSearchResultTitle>
             <CardWrapperStyle>
-              <Recommendation recommendation={isGoodForTask}></Recommendation>
+              <Recommendation
+                isMain={true}
+                recommendation={isGoodForTask}
+              ></Recommendation>
             </CardWrapperStyle>
-          </NoSearchResultContainer>
+          </>
         </Fade>
       );
     }
@@ -256,7 +259,10 @@ const CardWrapper = ({ state, cardList }) => {
       </Fade>
       <Fade>
         <CardWrapperStyle>
-          <Recommendation isMain={true} recommendation={isCozyCafe}></Recommendation>
+          <Recommendation
+            isMain={true}
+            recommendation={isCozyCafe}
+          ></Recommendation>
         </CardWrapperStyle>
       </Fade>
       <Fade>
@@ -268,7 +274,10 @@ const CardWrapper = ({ state, cardList }) => {
       </Fade>
       <Fade>
         <CardWrapperStyle>
-          <Recommendation recommendation={isGoodForTask}></Recommendation>
+          <Recommendation
+            isMain={true}
+            recommendation={isGoodForTask}
+          ></Recommendation>
         </CardWrapperStyle>
       </Fade>
       {nearbyCafe.length !== 0 ? (
@@ -280,7 +289,10 @@ const CardWrapper = ({ state, cardList }) => {
               <WrapperLineLeft />
             </WrapperTitle>
             <CardWrapperStyle>
-              <Recommendation recommendation={nearbyCafe}></Recommendation>
+              <Recommendation
+                isMain={true}
+                recommendation={nearbyCafe}
+              ></Recommendation>
             </CardWrapperStyle>
           </>
         </Fade>

@@ -215,6 +215,7 @@ const CommentWrite = ({
   beforeModify,
   userMyCommentHandler,
 }) => {
+  console.log('user??????', user);
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [submitComment, setSubmitComment] = useState('');
@@ -224,7 +225,7 @@ const CommentWrite = ({
   const [limitImgError, setLimitImgError] = useState(false);
   const [limitCommentError, setLimitCommentError] = useState(false);
   const [modifyObj, setModifyObj] = useState({});
-
+  const [fillAllContent, setFillAllContent] = useState(false);
   useEffect(() => {
     if (beforeModify) {
       setModifyObj(beforeModify);
@@ -234,6 +235,14 @@ const CommentWrite = ({
       setSubmitComment(beforeModify.userComment);
     }
   }, []);
+  useEffect(() => {
+    if ((scope !== -1) & (submitComment.length !== 0)) {
+      setFillAllContent(true);
+    } else {
+      setFillAllContent(false);
+    }
+  }, [scope, submitComment]);
+
   useMemo(() => {
     if (submitComment.length > 300) {
       setSubmitComment(submitComment.slice(0, 300));
@@ -249,15 +258,13 @@ const CommentWrite = ({
     const data = await dbService
       .collection('CafeInformation')
       .where('id', '==', cafeId)
-      .update({});
-
-    // .update({
-    //   userComment:
-    //     submitComment.length === 0 ? beforeModify.userComment : submitComment,
-    //   userImg: images,
-    //   userStar: scope ? scope : beforeModify.userStar,
-    //   userTag: selectedTags,
-    // });
+      .update({
+        userComment:
+          submitComment.length === 0 ? beforeModify.userComment : submitComment,
+        userImg: images,
+        userStar: scope ? scope : beforeModify.userStar,
+        userTag: selectedTags,
+      });
   };
   const submitCommentWrite = async () => {
     updateUserMyComment();
@@ -300,6 +307,7 @@ const CommentWrite = ({
         userImg: images,
         userStar: scope,
         username: user.displayName,
+        userEmail: user.email,
         userTag: selectedTags,
       });
     // 처음 올릴떄 처리
@@ -368,6 +376,7 @@ const CommentWrite = ({
       let tempMyComment = user.comment ? user.comment : [];
       tempMyComment.push(currentCafe.cafeName);
       userMyCommentHandler(tempMyComment);
+      console.log('userMycommentHandler ??', tempMyComment);
       dbService.collection('users').doc(user.uid).update({
         comment: tempMyComment,
       });
@@ -521,9 +530,19 @@ const CommentWrite = ({
       <Limit error={limitImgError}>{images.length}/3</Limit>
       <ButtonWrapper>
         <span
-          onClick={beforeModify ? submitModifyCommentWrite : submitCommentWrite}
+          onClick={
+            !fillAllContent
+              ? ''
+              : beforeModify
+              ? submitModifyCommentWrite
+              : submitCommentWrite
+          }
         >
-          <Button name="작성하기"></Button>
+          <Button
+            color={!fillAllContent ? '#dfdfdf' : undefined}
+            hoverColor={!fillAllContent ? 'dfdfdf' : undefined}
+            name="작성하기"
+          ></Button>
         </span>
         <span onClick={handleModal}>
           <Button hoverColor="#4f4f4f" color="#afafaf" name="취소"></Button>
