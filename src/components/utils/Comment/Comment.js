@@ -10,6 +10,7 @@ import { actionCreators } from '../../../reducer/store';
 import { useEffect, useState } from 'react';
 import { dbService, storageService } from '../../../firebase/mainbase';
 import defaultUser from './defaultUser.png';
+
 const CommentStyle = styled.div`
   display: block;
   margin: 0 auto 10px auto;
@@ -184,12 +185,7 @@ const Detail3 = styled.div`
   border-bottom: 1px solid #e9ecef;
 `;
 
-const Comment = ({
-  userComment,
-  currentCafe,
-  user,
-  currentCafeComment,
-}) => {
+const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
@@ -305,26 +301,13 @@ const Comment = ({
             ''
           )}
         </span>
-      </UserAndScope>useEffect(() => {
-//   for (let i = 0; i < cafes.length; i++) {
-//     cafes[i].id = i;
-//     dbService
-//       .collection('CafeInformation')
-//       .doc(cafes[i].cafeName)
-//       .set(cafes[i]);
-//   }
-// }, []);
+      </UserAndScope>
 
       <TagWrapper>
         {userComment.userTag
           ? userComment.userTag.map((tag) => {
               return (
-                <Tag
-                  key={tag}
-                  tagName={tag}
-                  isSmall={true}
-                  color="#efefef"
-                ></Tag>
+                <Tag key={tag} tagName={tag} isSmall={true} color="white"></Tag>
               );
             })
           : ''}

@@ -123,8 +123,9 @@ const LinkContent = styled(Link)`
 const Card = (props) => {
   const addCurrentCafe = async () => {
     let currnetCafeObj = { ...props };
-    await props.currentCafe(currnetCafeObj);
     let cafeCommentArr = [];
+    currnetCafeObj['cafeid'] = props.cafeid;
+    await props.currentCafe(currnetCafeObj);
     try {
       const data = await dbService.collection('CafeComment').get();
       data.forEach((doc) => {

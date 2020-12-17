@@ -10,6 +10,8 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 const LogOut = styled.span`
   margin-left: 30px;
+  cursor: pointer;
+
 `;
 
 const Nav = ({ state, userHandler }) => {
@@ -76,10 +78,10 @@ const Nav = ({ state, userHandler }) => {
               <LogOut onClick={handleLogOut}>로그아웃</LogOut>
             </span>
           ) : (
-            <span className="login-btn" onClick={openSignin}>
-              로그인
-            </span>
-          )}
+              <span className="login-btn" onClick={openSignin}>
+                로그인
+              </span>
+            )}
         </div>
       </div>
     </>

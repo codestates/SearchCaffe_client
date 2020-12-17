@@ -9,12 +9,13 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import locationImg from './location.png';
 import Like from '../utils/Like/Like';
 import React, { useState, useEffect } from 'react';
 import defaultImg from '../utils/Card/dummyImg/defaultCafe.jpeg';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
+import { $CombinedState } from 'redux';
 
 const MainImgCover = styled.div`
   width: 100%;
@@ -33,39 +34,52 @@ const MainImage = styled.div`
 `;
 
 /////////////////////////////////////
-const Detail = styled.section`
-  position: relative;
+const Detail = styled.div`
+  /* position: relative;
   top: 80px;
-  width: 1200px;
+  width: 800px;
   margin: 0px auto auto auto;
 
-  background-color: white;
+  background-color: red;
+  display: flex; */
+
   display: flex;
+  justify-content: space-evenly;
+  /* padding: 20px auto auto 20px; */
+  width: 1424px;
+  height: 800px;
+  background: #fafafa;
+  flex: 1;
+  padding: 20px 20px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+  margin: 0 auto;
 `;
+
 const DescribeContainer = styled.div`
   display: grid;
-  grid-template-rows: 1fr 0.5fr 1fr 1fr 1fr 1fr;
-  width: 40%;
-  min-width: 500px;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  justify-content: flex-start;
+  align-items: center;
+  width: 30%;
+  min-width: 400px;
 `;
 
 //////ANCHOR  First
-const Header = styled.header`
-  margin: auto;
-`;
+const Header = styled.header``;
 
 const TittleWrap = styled.div`
   display: flex;
   flex-direction: row;
-  font-size: 2rem;
+  font-size: 3rem;
+  font-weight: bold;
+  justify-content: space-around;
   /* -webkit-flex-direction: row;
   -wedkit-box-direction: normal;
   --webkit-box-orient: horizontal; */
 `;
 const Title = styled.span`
   position: relative;
-  right: 30%;
-  top: 20px;
+  top: 10px;
   /* padding-right: 50px;
   max-width: 75%;
   font-size: 1.2rem;
@@ -79,13 +93,13 @@ const Title = styled.span`
 // `;
 
 const ActionButtonWrap = styled.div`
-  display: flex;
-  display: --webkit-flex;
+  margin: auto;
+  /* display: flex;
   flex-direction: row;
   -webkit-flex-direction: row;
   -wedkit-box-direction: normal;
   --webkit-box-orient: horizontal;
-  margin-left: auto;
+  margin: 0; */
 `;
 
 const LikeWrap = styled.div`
@@ -94,26 +108,49 @@ const LikeWrap = styled.div`
   display: inline-block;
 `;
 
-const LikeModi = styled(Like)`
-  display: inline-block;
-
-  font-size: 20px;
-`;
+const LikeModi = styled(Like)``;
 
 ///////ANCHOR Second
 const Info = styled.div`
   margin: auto;
 `;
-const AddressTitle = styled.span`
+
+const Location = styled.img`
+  width: 30px;
+`;
+
+const InfoTitle = styled.span`
   margin-right: 30px;
 `;
-const AddressContent = styled.span``;
+const InfoContent = styled.span``;
 
 /// ANCHOR Three
 const SvgContainer = styled.div`
   margin: auto;
   display: grid;
-  grid-template-columns: 1fr 2fr 0.1fr 2fr 0.1fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
+`;
+
+const SvgOneContainer = styled.div`
+  display: flex;
+  padding: 0 1.2rem 0 1.2rem;
+  border-right: 2px solid black;
+  flex-direction: column;
+  align-items: center;
+`;
+const SvgLastContainer = styled.div`
+  display: flex;
+  padding: 0 0 0 1.2rem;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const H4 = styled.h4`
+  font-size: 18px;
+  margin: 1rem 0 0 0;
+`;
+const SvgInfo = styled.span`
+  font-size: 12px;
 `;
 
 const TagContainer = styled.div`
@@ -136,46 +173,17 @@ const MainImg = styled.img`
 `;
 
 const SlideContainer = styled.div`
-  margin-left: 50%;
-  width: 100%;
+  display: flex;
+  margin: 9rem 0 0 0;
+  flex-direction: column;
+  align-items: center;
+  object-fit: scale-down;
 `;
 
 const SlideMaincontainer = styled.div`
-  display: block;
+  width: 700px;
   position: relative;
-  overflow: hidden;
   background-size: cover;
-  background-position: 50% 50%;
-`;
-
-const StyledSlider = styled(Slider)``;
-
-const Image = styled.img`
-  width: 300px;
-  height: 400px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
-    0 8px 16px -8px hsla(0, 0%, 0%, 0.3);
-`;
-
-const Thumbnailcontainer = styled.div`
-  margin-top: 15px;
-  height: 75px;
-  text-align: center;
-  width: 50%;
-`;
-
-const ThumbnailImg = styled.img`
-  width: 100px;
-  height: 100px;
-  margin-right: 16px;
-  background-image: ${({ src }) => (!!src ? `url(${src})` : 'none')};
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
-    0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
 `;
 
 const SlickSlide = styled.div`
@@ -185,6 +193,39 @@ const SlickSlide = styled.div`
   :focus {
     outline: none;
   }
+`;
+
+const Image = styled.img`
+  width: 600px;
+  height: 500px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 8px;
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
+    0 8px 16px -8px hsla(0, 0%, 0%, 0.3);
+`;
+
+const Thumbnailcontainer = styled.div`
+  margin-top: 10px;
+  height: 75px;
+  width: 510px;
+`;
+
+const ThumbSlickSlide = styled.div`
+  position: relative;
+  margin: auto;
+  :focus {
+    outline: none;
+  }
+`;
+
+const ThumbnailImg = styled.img`
+  width: 150px;
+  height: 150px;
+  background-image: ${({ src }) => (!!src ? `url(${src})` : 'none')};
+  border-radius: 4px;
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
+    0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
 `;
 
 const ContentHeader = (props) => {
@@ -198,9 +239,12 @@ const ContentHeader = (props) => {
     cafeName,
     cafeAddress,
     cafeImg,
-    cafeStar,
+    cafePhoneNumber,
+    cafeDetail,
+    cafeTable,
+    Americano,
   } = current[0];
-
+  console.log('=========== detail :', current[0][cafeDetail]);
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
@@ -226,7 +270,6 @@ const ContentHeader = (props) => {
     slidesToScroll: 1,
     asNavFor: '.slider-for',
     dots: true,
-    centerMode: true,
     swipeToSlide: true,
     focusOnSelect: true,
     centerPadding: '10px',
@@ -257,28 +300,30 @@ const ContentHeader = (props) => {
             </TittleWrap>
           </Header>
           <Info>
-            <AddressTitle>주소</AddressTitle>
-
-            <AddressContent>
+            <Location src={locationImg}></Location>
+            <InfoContent>
               {cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}
-            </AddressContent>
+            </InfoContent>
+            <InfoTitle>연락처</InfoTitle>
+            <InfoContent>{cafePhoneNumber ? cafePhoneNumber : ''}</InfoContent>
           </Info>
           <SvgContainer>
             <div></div>
-            <div>
+            <SvgOneContainer>
               <Table />
-              <div>Table: n개</div>
-            </div>
-            <Line />
-            <div>
+              <H4>{cafeTable ? cafeTable : '없어'}</H4>
+              <SvgInfo>좌석</SvgInfo>
+            </SvgOneContainer>
+            <SvgOneContainer>
               <Cup />
-              <div>Americano: 3000</div>
-            </div>
-            <Line />
-            <div>
+              <H4>{Americano ? Americano : '없어'}</H4>
+              <SvgInfo>아메리카노</SvgInfo>
+            </SvgOneContainer>
+            <SvgLastContainer>
               <Time />
-              <div>00:00~24:00</div>
-            </div>
+              <H4>{cafeDetail ? cafeDetail : '없어'} </H4>
+              <SvgInfo>영업시간</SvgInfo>
+            </SvgLastContainer>
             <div></div>
           </SvgContainer>
           <TagContainer className="tagBox">
@@ -299,7 +344,7 @@ const ContentHeader = (props) => {
         </DescribeContainer>
         <SlideContainer>
           <SlideMaincontainer>
-            <StyledSlider
+            <Slider
               {...settingsMain}
               asNavFor={nav2}
               ref={(slider) => setSlider1(slider)}
@@ -315,11 +360,10 @@ const ContentHeader = (props) => {
               ) : (
                 <div>'사진이 없습니다.'</div>
               )}
-            </StyledSlider>{' '}
-            {...card}
+            </Slider>
           </SlideMaincontainer>
           <Thumbnailcontainer>
-            <StyledSlider
+            <Slider
               {...settingsThumbs}
               asNavFor={nav1}
               ref={(slider) => setSlider2(slider)}
@@ -327,15 +371,15 @@ const ContentHeader = (props) => {
               {cafeImg ? (
                 cafeImg.map((el) => {
                   return (
-                    <SlickSlide>
+                    <ThumbSlickSlide>
                       <ThumbnailImg src={el} />
-                    </SlickSlide>
+                    </ThumbSlickSlide>
                   );
                 })
               ) : (
                 <div>'사진이 없습니다.'</div>
               )}
-            </StyledSlider>
+            </Slider>
           </Thumbnailcontainer>
         </SlideContainer>
       </Detail>
