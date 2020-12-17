@@ -15,7 +15,8 @@ import React, { useState, useEffect } from 'react';
 import defaultImg from '../utils/Card/dummyImg/defaultCafe.jpeg';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
-import Like from '../utils/Like/Like';
+
+
 const MainImgCover = styled.div`
   width: 100%;
   height: 600px;
@@ -172,7 +173,6 @@ const SlideMaincontainer = styled.div`
 const StyledSlider = styled(Slider)`
 `;
 
-const StyledSlider = styled(Slider)``;
 
 const Image = styled.img`
   width: 300px;
@@ -249,9 +249,6 @@ const ContentHeader = (props) => {
   };
 
   // const cardArr = props.cardArr ? props.cardArr : cafes;
-  const current = props.cardArr.filter(
-    (el) => el.id === props.currentCafe.cafeid
-  );
 
   //console.log('==================current>> :', current);
 
