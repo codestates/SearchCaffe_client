@@ -28,7 +28,7 @@ const ButtonStyle = styled.div`
   }
 `;
 const ButtonIcon = styled.img`
-  width: ${(props) => (props.imgSize ? '0.85rem' : '20px')};
+  width: ${(props) => (props.imgSize ? props.imgSize : '20px')};
   position: relative;
   right: 6px;
   top: 1px;
