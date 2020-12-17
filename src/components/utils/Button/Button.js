@@ -3,7 +3,8 @@ import styled from 'styled-components';
 const ButtonStyle = styled.div`
   position: relative;
   border-radius: 30px;
-  margin-left: ${(props) => (props.margin ? props.margin : '25px')};
+  margin-left: ${(props) => (props.marginLeft ? props.marginLeft : '25px')};
+
   border: none;
   background-color: ${(props) => (props.color ? props.color : '#8a706a')};
   outline: none;

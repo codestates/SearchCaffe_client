@@ -307,6 +307,7 @@ const CommentWrite = ({
         userImg: images,
         userStar: scope,
         username: user.displayName,
+        userEmail: user.email,
         userTag: selectedTags,
       });
     // 처음 올릴떄 처리

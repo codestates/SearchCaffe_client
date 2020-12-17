@@ -15,10 +15,12 @@ import { cafeComment } from './cafeInfos';
 
 import NearbyCafe from './components/NearbyCafe/NearbyCafe';
 import { cafes } from './cafeInfos';
+import ScrollToTop from './ScrollToTop';
 
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Nav></Nav>
       <Switch>
         <Route exact path="/">

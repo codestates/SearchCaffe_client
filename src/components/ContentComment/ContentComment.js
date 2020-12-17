@@ -12,7 +12,7 @@ import { dbService } from '../../firebase/mainbase';
 import SignIn from '../Signin/SignIn';
 import SignUp from '../SignUp/SignUp';
 import Like from '../utils/Like/Like';
-
+import Fade from 'react-reveal/Fade';
 const Detail3 = styled.div`
   width: 1000px;
   height: auto;
@@ -42,6 +42,7 @@ const ButtonStyle = styled.span`
   position: relative;
   display: inline-block;
   left: 70%;
+  margin-bottom: 80px;
 `;
 const ButtonStyleReview = styled(ButtonStyle)`
   top: 2.5px;
@@ -78,6 +79,11 @@ const WhenNoReviewContent = styled.div`
   font-size: 1.1rem;
   margin: 10px 0 20px 0;
 `;
+const CommentWraper = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  min-height: 50px;
+`;
 
 const ContentComment = ({
   comment,
@@ -91,12 +97,7 @@ const ContentComment = ({
   const [showSignin, setShowSignin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(!!user);
-  const [reversedComment, setReversedComment] = useState([]);
-  useEffect(() => {
-    if (comment) {
-      setReversedComment(comment.reverse());
-    }
-  }, [comment]);
+
   useEffect(() => {
     console.log('work!');
     if (user) {
@@ -163,33 +164,39 @@ const ContentComment = ({
             fontColor="#333333"
             hoverFontColor="#8a705a"
             noBorder={true}
-            margin="1px"
+            marginLeft="5px"
             imgSize="50px"
             fontSize="16px"
             flexDirection="column"
           ></Button>
         </ButtonStyleReview>
       </div>
-
-      {commentModal ? (
-        <>
-          <BackGroundCover>
-            <CommentWrite handleModal={handleModal}></CommentWrite>
-          </BackGroundCover>
-        </>
-      ) : (
-        ''
-      )}
-      {!comment | (comment?.length === 0) ? (
-        <WhenNoReview>
-          <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
-          <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
-        </WhenNoReview>
-      ) : (
-        reversedComment.map((userComment, index) => {
-          return <Comment key={index} userComment={userComment}></Comment>;
-        })
-      )}
+      <CommentWraper>
+        {commentModal ? (
+          <>
+            <BackGroundCover>
+              <CommentWrite handleModal={handleModal}></CommentWrite>
+            </BackGroundCover>
+          </>
+        ) : (
+          ''
+        )}
+        {!comment | (comment?.length === 0) ? (
+          <WhenNoReview>
+            <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
+            <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
+          </WhenNoReview>
+        ) : (
+          comment.map((userComment, index) => {
+            return (
+              <Fade top collpase>
+                <Comment key={index} userComment={userComment}></Comment>
+              </Fade>
+            );
+          })
+          // .reverse()
+        )}
+      </CommentWraper>
     </Detail3>
   );
 };
