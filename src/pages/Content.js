@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { dbService } from '../firebase/mainbase';
-
+import NearbyCafe from '../components/NearbyCafe/NearbyCafe';
 // import { connect } from 'react-redux';
 // import { actionCreators } from '../reducer/store';
 
@@ -32,20 +32,22 @@ box-sizing: border-box;
 `
 
 const Content = (props) => {
-
   return (
     <>
       <GlobalStyle />
-      <ContentWrapper>
-        <Inner>
-          <ContentHeader></ContentHeader>
-          {/* <ContentDetail></ContentDetail> */}
-          {/* <ContentComment></ContentComment> */}
-        </Inner>
-      </ContentWrapper>
+      <ContentHeader></ContentHeader>
+      <ContentDetail></ContentDetail>
+      <ContentComment></ContentComment>
+      <NearbyCafe
+        cafeInfo={{
+          cafeName: '블루보틀 역삼',
+          region_1depth: '서울',
+          region_2depth: '강남구',
+          region_3depth: '역삼동',
+        }}
+      ></NearbyCafe>
     </>
   );
 };
-
 
 export default Content;

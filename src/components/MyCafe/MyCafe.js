@@ -7,19 +7,21 @@ import Card from '../utils/Card/index';
 import CardSkeleton from '../utils/Card/CardSkeleton';
 const MyCafeStyle = styled.div`
   width: 90%;
-  height: 1100px;
-  margin: auto;
+  height: auto;
+  margin: auto auto 300px auto;
 `;
 
 const CafeCardStyle = styled.div`
   margin: auto;
   position: relative;
-  max-width: 1500px;
+  width: 1200px;
   width: 70%;
   height: auto;
   min-height: 300px;
   background-color: #fafafa;
   border-radius: 30px;
+  overflow-x: scroll;
+  white-space: nowrap;
 `;
 const Title = styled.div`
   width: 65%;
@@ -83,10 +85,10 @@ const MyCafe = ({ state }) => {
     <MyCafeStyle>
       <Title>찜한 카페</Title>
       <CafeCardStyle>
-        {commentList.length === 0 ? (
-          <WhenNoHeartCafe>아직 찜한 카페가 없습니다.</WhenNoHeartCafe>
+        {heartList.length === 0 ? (
+          <WhenNoCommentCafe>아직 찜한 카페가 없습니다.</WhenNoCommentCafe>
         ) : (
-          commentList.map((card, index) => {
+          heartList.map((card, index) => {
             return (
               <Card
                 inMypage={true}
@@ -102,12 +104,10 @@ const MyCafe = ({ state }) => {
       </CafeCardStyle>
       <Title>리뷰 작성한 카페</Title>
       <CafeCardStyle>
-        {heartList.length === 0 ? (
-          <WhenNoCommentCafe>
-            아직 리뷰를 작성한 카페가 없습니다.
-          </WhenNoCommentCafe>
+        {commentList.length === 0 ? (
+          <WhenNoHeartCafe>아직 리뷰를 작성한 카페가 없습니다.</WhenNoHeartCafe>
         ) : (
-          heartList.map((card, index) => {
+          commentList.map((card, index) => {
             return (
               <Card
                 inMypage={true}

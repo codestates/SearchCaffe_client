@@ -11,6 +11,7 @@ const CHANGEUSERPROFILE = 'CHANGEUSERPROFILE';
 const CHANGEDISPLAYNAME = 'CHANGEDISPLAYNAME';
 const CHANGEUSERCOMMENT = 'CHANGEUSERCOMMENT';
 const CHANGEUSERHEART = 'CHANGEUSERCHEART';
+
 const tagNameArray = (tagName) => {
   return {
     type: TAGARRAY,
@@ -161,6 +162,7 @@ const reducer = (state = [], action) => {
       if (!state.user.heart) {
         state.user.heart = [];
       }
+
       return {
         ...state,
         user: {

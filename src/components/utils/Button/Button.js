@@ -8,23 +8,33 @@ const ButtonStyle = styled.div`
   outline: none;
   width: ${(props) =>
     props.name ? 80 + props.name.length * 5 + 'px' : '80px'};
+<<<<<<< HEAD
   height: ${props => props.hight ? props.higth : "40px"};
   font-size: ${props => props.fontSize ? props.fontSize : "12px"} ;
+=======
+  height: 40px;
+  font-size: ${(props) => (props.fontSize ? props.fontSize : '12px')};
+>>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
   color: ${(props) => (props.fontColor ? props.fontColor : '#ffffff')};
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: 0.2s;
-
   border: ${(props) => (props.noBorder ? '' : '0.5px solid #7f7f7f')};
   :hover {
     transition: 0.2s;
     background-color: ${(props) =>
     props.hoverColor ? props.hoverColor : '#5a403a'};
     color: ${(props) =>
+<<<<<<< HEAD
     props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
     font-size: ${(props) => (props.hoverFontSize ? '1.3rem' : '')};
+=======
+      props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
+    font-size: ${(props) =>
+      props.hoverFontSize ? props.hoverFontSize : '0.85rem'};
+>>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
   }
 `;
 const ButtonIcon = styled.img`

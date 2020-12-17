@@ -2,11 +2,9 @@ import { ReactComponent as Table } from './Table.svg';
 import { ReactComponent as Cup } from './Cup.svg';
 import { ReactComponent as Time } from './Time.svg';
 
-
 import { tagName } from '../../cafeInfos';
 import Tag from '../utils/Tag/index';
 import styled from 'styled-components';
-
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -14,10 +12,10 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import Like from '../utils/Like/Like'
 import React, { useState, useEffect } from 'react';
-
+import defaultImg from '../utils/Card/dummyImg/defaultCafe.jpeg';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../reducer/store'
-
+import { actionCreators } from '../../reducer/store';
+import Like from '../utils/Like/Like';
 const MainImgCover = styled.div`
   width: 100%;
   height: 600px;
@@ -174,12 +172,15 @@ const SlideMaincontainer = styled.div`
 const StyledSlider = styled(Slider)`
 `;
 
+const StyledSlider = styled(Slider)``;
+
 const Image = styled.img`
   width: 300px;
   height: 400px;
   object-fit:cover;
   border-radius: 8px;
-  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3),
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
+    0 8px 16px -8px hsla(0, 0%, 0%, 0.3);
 `;
 
 const Thumbnailcontainer = styled.div`
@@ -197,20 +198,18 @@ const ThumbnailImg = styled.img`
   display: flex;
   align-items: center;
   border-radius: 4px;
-  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3),
-    0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
-
-`
+  box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
+    0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+`;
 
 const SlickSlide = styled.div`
   text-align: center;
   position: relative;
-  margin : auto;
+  margin: auto;
   :focus {
     outline: none;
-  } 
-`
-
+  }
+`;
 
 const ContentHeader = (props) => {
 
@@ -224,10 +223,8 @@ const ContentHeader = (props) => {
   const [slider2, setSlider2] = useState(null);
 
   useEffect(() => {
-
     setNav1(slider1);
     setNav2(slider2);
-
   });
 
   const settingsMain = {
@@ -237,7 +234,7 @@ const ContentHeader = (props) => {
     arrows: false,
     fade: true,
     autoplay: true,
-    asNavFor: '.slider-nav'
+    asNavFor: '.slider-nav',
   };
 
   const settingsThumbs = {
@@ -248,9 +245,13 @@ const ContentHeader = (props) => {
     centerMode: true,
     swipeToSlide: true,
     focusOnSelect: true,
-    centerPadding: '10px'
+    centerPadding: '10px',
   };
 
+  // const cardArr = props.cardArr ? props.cardArr : cafes;
+  const current = props.cardArr.filter(
+    (el) => el.id === props.currentCafe.cafeid
+  );
 
   //console.log('==================current>> :', current);
 

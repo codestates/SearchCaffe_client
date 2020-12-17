@@ -48,6 +48,7 @@ const WrapperTitle = styled.div`
 const CardWrapperStyle = styled.div`
   display: flex;
   flex-direction: row;
+
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
@@ -120,8 +121,7 @@ const CardWrapper = ({ state, cardList }) => {
   let goodForTask = [];
 
   const getData = async () => {
-    let cafe = await getNearbyCafe();
-    setNearbyCafe(cafe);
+    return await getNearbyCafe();
   };
   // NOTE '전체 카드목록' + '메인화면 카드' 설정 및 'cards' 설정
   useEffect(() => {
@@ -138,11 +138,11 @@ const CardWrapper = ({ state, cardList }) => {
         cardList(cafes);
         setCards(cafes);
       })
-      .finally(function () {
-        console.log('From Firebase ========>', cardListArr);
+      .finally(async function () {
         cardList(cardListArr);
         setCards(cardListArr);
-        getData();
+        let cafe = await getNearbyCafe();
+        setNearbyCafe(cafe);
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
@@ -175,7 +175,14 @@ const CardWrapper = ({ state, cardList }) => {
     if (tags !== '') {
       let results = state.cardArr;
       let tags = state.tagArr ? state.tagArr : [];
+      if (tags.includes('가까운')) {
+        results = nearbyCafe;
+        console.log(results);
+        console.log(tags);
+      }
+
       for (let tag of tags) {
+        if (tag === '가까운') continue;
         results = results.filter((card) => {
           if (!card.cafeTag) {
             card.cafeTag = [];
@@ -183,7 +190,7 @@ const CardWrapper = ({ state, cardList }) => {
           return card.cafeTag.indexOf(tag) !== -1;
         });
       }
-
+      console.log(results);
       setCards(results);
     }
 
@@ -216,9 +223,8 @@ const CardWrapper = ({ state, cardList }) => {
   // NOTE 검색 결과 없음'
   if (cards) {
     if (
-      (tags && tags !== '') &
-      (state && state.keyword !== '') &
-      (cards && cards.length === 0)
+      ((tags !== '') | (state?.keyword?.length !== '')) &
+      (cards?.length === 0)
     ) {
       return (
         <NoSearchResultContainer>
@@ -228,7 +234,10 @@ const CardWrapper = ({ state, cardList }) => {
             어떠신가요?
           </NoSearchResultTitle>
           <CardWrapperStyle>
-            <Recommendation recommendation={isGoodForTask}></Recommendation>
+            <Recommendation
+              isMain={true}
+              recommendation={isGoodForTask}
+            ></Recommendation>
           </CardWrapperStyle>
         </NoSearchResultContainer>
       );
@@ -243,7 +252,10 @@ const CardWrapper = ({ state, cardList }) => {
         <WrapperLineLeft />
       </WrapperTitle>
       <CardWrapperStyle>
-        <Recommendation recommendation={isCozyCafe}></Recommendation>
+        <Recommendation
+          isMain={true}
+          recommendation={isCozyCafe}
+        ></Recommendation>
       </CardWrapperStyle>
       <WrapperTitle>
         <WrapperLineRight />
@@ -251,7 +263,10 @@ const CardWrapper = ({ state, cardList }) => {
         <WrapperLineLeft />
       </WrapperTitle>
       <CardWrapperStyle>
-        <Recommendation recommendation={isGoodForTask}></Recommendation>
+        <Recommendation
+          isMain={true}
+          recommendation={isGoodForTask}
+        ></Recommendation>
       </CardWrapperStyle>
       {nearbyCafe.length !== 0 ? (
         <>
@@ -261,7 +276,10 @@ const CardWrapper = ({ state, cardList }) => {
             <WrapperLineLeft />
           </WrapperTitle>
           <CardWrapperStyle>
-            <Recommendation recommendation={nearbyCafe}></Recommendation>
+            <Recommendation
+              isMain={true}
+              recommendation={nearbyCafe}
+            ></Recommendation>
           </CardWrapperStyle>
         </>
       ) : (

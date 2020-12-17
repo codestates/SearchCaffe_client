@@ -9,36 +9,83 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import { useEffect, useState } from 'react';
 import { dbService, storageService } from '../../../firebase/mainbase';
+import defaultUser from './defaultUser.png';
 const CommentStyle = styled.div`
   display: block;
-  margin: auto;
+  margin: 0 auto 10px auto;
   min-width: 400px;
   max-width: 800px;
   width: 50%;
   height: auto;
   padding-top: 50px;
+  transition: 0.2s;
+  :hover {
+    background-color: #efefef;
+    transition: 0.2s;
+  }
 `;
-const UserAndScope = styled.h3`
+const UserAndScope = styled.div`
   display: inline;
   padding-left: 5%;
 
   display: relative;
 `;
 
+const UserProfile = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 15px;
+  position: relative;
+  top: 10px;
+`;
+
 const DeleteButton = styled.button`
-  display: inline;
+  display: inline-block;
   text-align: center;
   text-decoration: none;
-  display: relative;
+  position: relative;
+  border: none;
+  background-color: inherit;
+  color: #555555;
+  transition: 0.2s;
+  cursor: pointer;
+  :hover {
+    color: #222222;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
+  :focus {
+    color: #222222;
+    outline: 0;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
 `;
 
 const ModifyButton = styled.button`
-  display: inline;
-  margin-left: 40%;
-  margin-right: 5px;
+  display: inline-block;
+  margin-left: 30%;
+  margin-right: 7px;
   text-align: center;
   text-decoration: none;
-  display: relative;
+  position: relative;
+  border: none;
+  background-color: inherit;
+  color: #555555;
+  transition: 0.2s;
+  cursor: pointer;
+  :hover {
+    color: #222222;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
+  :focus {
+    color: #222222;
+    outline: 0;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
 `;
 
 const UserName = styled.span``;
@@ -49,13 +96,13 @@ const ScopeContainer = styled.span`
 `;
 const TagWrapper = styled.div`
   margin-top: 13px;
-  padding-left: 2%;
+  padding-left: 8%;
 `;
 const CommentInput = styled.div`
-  margin-top: 30px;
-  margin-left: 5%;
+  margin-top: 10px;
+  margin-left: 8%;
   padding-left: 2%;
-  width: 85%;
+  width: 80%;
   height: auto;
   min-height: 50px;
 
@@ -63,7 +110,7 @@ const CommentInput = styled.div`
 `;
 const CommentImages = styled.div`
   margin-top: 13px;
-  margin-left: 5%;
+  margin-left: 7%;
 `;
 
 const UploadedImgCover = styled.span`
@@ -71,8 +118,8 @@ const UploadedImgCover = styled.span`
   position: absolute;
   width: 102px;
   height: 102px;
-  margin-top: 11px;
-  margin-left: 10px;
+  margin-top: 1px;
+  margin-left: 11px;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0.2s linear, opacity 0.2s linear;
@@ -81,20 +128,20 @@ const Uploaded = styled.span`
   display: inline-block;
   width: 122px;
   height: 122px;
-  margin: 10px 10px 15px 10px;
+  margin: 0px 10px 0px 10px;
   &:hover ${UploadedImgCover} {
     visibility: visible;
     opacity: 1;
   }
 `;
-const UploadedImg = styled.span`
+const UploadedImg = styled.img`
   border: 1px solid #d1d1d1;
   display: inline-block;
   width: 100px;
   height: 100px;
-  margin: 10px 20px 10px 10px;
-  background-image: ${(props) => 'url(' + props.img + ')'};
-  background-size: 100%;
+  margin: 0px 10px 0px 10px;
+  /* background-image: ${(props) => 'url(' + props.img + ')'};
+  background-size: 100%; */
 `;
 const EnlargeImg = styled.img`
   width: 17px;
@@ -103,9 +150,9 @@ const EnlargeImg = styled.img`
   margin-left: 10px;
 `;
 const Divide = styled.div`
-  padding-top: 20px;
-  border-bottom: 1px solid black;
-  margin: auto;
+  padding-top: 5px;
+  border-bottom: 1px solid #888888;
+  margin: auto auto auto auto;
   width: 93%;
 `;
 
@@ -137,16 +184,31 @@ const Detail3 = styled.div`
   border-bottom: 1px solid #e9ecef;
 `;
 
-const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
+const Comment = ({
+  userComment,
+  currentCafe,
+  user,
+  currentCafeComment,
+}) => {
   const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
   const [beforeModify, setBeforeModify] = useState();
+  const [userProfileImg, setUserProfileImg] = useState(defaultUser);
+
   useEffect(() => {
     setImages(userComment.userImg);
+    dbService
+      .collection('users')
+      .where('displayName', '==', userComment.username)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          setUserProfileImg(doc.data().photoURL);
+        });
+      });
   }, []);
-  console.log(userComment);
   const handleModal = () => {
     setCommentModal((pres) => !pres);
   };
@@ -184,6 +246,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
     }
     setCommentModal(false);
   };
+
   const modifyComment = async () => {
     try {
       const data = await dbService
@@ -202,6 +265,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   return (
     <CommentStyle>
       <UserAndScope>
+        <UserProfile src={userProfileImg}></UserProfile>
         <UserName>
           {userComment.username ? userComment.username : '게스트'}
         </UserName>
@@ -227,17 +291,21 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
             scope={userComment.userStar ? userComment.userStar : -1}
           ></Scope>
         </ScopeContainer>
+        <span>
+          {userComment.username === user?.displayName ? (
+            <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+          ) : (
+            ''
+          )}
+        </span>
+        <span>
+          {userComment.username === user?.displayName ? (
+            <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+          ) : (
+            ''
+          )}
+        </span>
       </UserAndScope>
-      {userComment.username === user?.displayName ? (
-        <ModifyButton onClick={modifyComment}>수정</ModifyButton>
-      ) : (
-        ''
-      )}
-      {userComment.username === user?.displayName ? (
-        <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
-      ) : (
-        ''
-      )}
       <TagWrapper>
         {userComment.userTag
           ? userComment.userTag.map((tag) => {
@@ -246,14 +314,16 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
                   key={tag}
                   tagName={tag}
                   isSmall={true}
-                  color="#ffffff"
+                  color="#efefef"
                 ></Tag>
               );
             })
           : ''}
       </TagWrapper>
       {userComment.userComment ? (
-        <CommentInput>{userComment.userComment}</CommentInput>
+        <CommentInput>
+          <span>{userComment.userComment}</span>
+        </CommentInput>
       ) : (
         ''
       )}
@@ -272,7 +342,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
                       src={enlargeImg}
                     ></EnlargeImg>
                   </UploadedImgCover>
-                  <UploadedImg img={img}></UploadedImg>
+                  <UploadedImg src={img}></UploadedImg>
                 </Uploaded>
               );
             })
