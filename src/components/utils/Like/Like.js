@@ -8,10 +8,6 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import styled from 'styled-components';
 import { dbService } from '../../../firebase/mainbase';
-<<<<<<< HEAD
-
-=======
->>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
 const ButtonStyle = styled.span`
   margin-top: 20px;
   position: relative;
@@ -55,10 +51,6 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
       ? likeImg
       : likedImg
   );
-<<<<<<< HEAD
-=======
-
->>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
   const openSignin = () => {
     setShowSignin(true);
   };
@@ -73,11 +65,7 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
   };
   return (
     <span>
-<<<<<<< HEAD
-      <ButtonStyle onClick={handleLike} >
-=======
       <ButtonStyle onClick={handleLike}>
->>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
         <div>
           <span>
             <span>
@@ -94,10 +82,6 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
             </span>
           </span>
         </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
         <Button
           name="찜하기"
           icon={like}
@@ -106,45 +90,24 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
           fontColor="#333333"
           hoverFontColor="#8a705a"
           noBorder={true}
-<<<<<<< HEAD
           imgSize="32px"
           margin="1px"
-          fontSize='20px'
+          fontSize="20px"
           hoverFontSize={true}
-=======
-          imgSize="30px"
-          margin="1px"
->>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
         >
           리뷰 작성
         </Button>
       </ButtonStyle>
-<<<<<<< HEAD
-    </span >
-  );
-};
-=======
     </span>
   );
 };
-
->>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
 function mapStateToProps(state, ownProps) {
   console.log(state);
   return { ...state, ownProps };
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
 function mapDispatchToProps(dispatch) {
   return {
     handleUserHeart: (cafe) => dispatch(actionCreators.changeUserHeart(cafe)),
   };
 }
-<<<<<<< HEAD
 export default connect(mapStateToProps, mapDispatchToProps)(Like);
-=======
-
-export default connect(mapStateToProps, mapDispatchToProps)(Like);
->>>>>>> 6dc69fa605bdc5fa674c5b862bcfaa339a6397d4
