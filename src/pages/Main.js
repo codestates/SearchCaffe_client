@@ -1,6 +1,7 @@
 import SearchWrapper from '../components/SearchWrapper/index';
 import CardWrapper from '../components/CardWrapper/index';
 import SearchImg from '../components/utils/SearchBar/Search.png';
+import Fade from 'react-reveal/Fade';
 
 import mainImg from './main.jpeg';
 import Tag from '../components/utils/Tag/index';
@@ -104,26 +105,28 @@ const Main = (props) => {
   ];
   return (
     <MainStyle>
-      <MainImgCover>
-        <div></div>
-        <MainTitle>Cafe Search With</MainTitle>
-        <MainTags>
-          {mainTags.map((tag) => (
-            <Tag isSmall={true} tagName={tag} key={tag}></Tag>
-          ))}
-        </MainTags>
-        <MainDiv>
-          <Divide />
-          <OrSpan>OR</OrSpan>
-          <Divide />
-        </MainDiv>
-        <MainSearchBar>
-          <SearchbarImage src={SearchImg} />
-          <span></span>
-          <SearchBarButton>찾기</SearchBarButton>
-        </MainSearchBar>
-        <div></div>
-      </MainImgCover>
+      <Fade duration={2000}>
+        <MainImgCover>
+          <div></div>
+          <MainTitle>Cafe Search With</MainTitle>
+          <MainTags>
+            {mainTags.map((tag) => (
+              <Tag isSmall={true} tagName={tag} key={tag}></Tag>
+            ))}
+          </MainTags>
+          <MainDiv>
+            <Divide />
+            <OrSpan>OR</OrSpan>
+            <Divide />
+          </MainDiv>
+          <MainSearchBar>
+            <SearchbarImage src={SearchImg} />
+            <span></span>
+            <SearchBarButton>찾기</SearchBarButton>
+          </MainSearchBar>
+          <div></div>
+        </MainImgCover>
+      </Fade>
       <MainImg />
       <SearchWrapper></SearchWrapper>
       <CardWrapper></CardWrapper>

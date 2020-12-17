@@ -18,8 +18,8 @@ const Detail3 = styled.div`
   height: 100%;
   min-height: 400px;
   margin: 3rem 0 0 0;
-  max-width: 1200px; 
-  background: #FAFAFA;
+  max-width: 1200px;
+  background: #fafafa;
   padding-top: 48px;
   padding-left: 32px;
   padding-right: 32px;
@@ -173,18 +173,18 @@ const ContentComment = ({
           </BackGroundCover>
         </>
       ) : (
-          ''
-        )}
+        ''
+      )}
       {!comment | (comment?.length === 0) ? (
         <WhenNoReview>
           <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
           <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
         </WhenNoReview>
       ) : (
-          comment.map((userComment, index) => {
-            return <Comment key={index} userComment={userComment}></Comment>;
-          })
-        )}
+        comment.map((userComment, index) => {
+          return <Comment key={index} userComment={userComment}></Comment>;
+        })
+      )}
     </Detail3>
   );
 };
