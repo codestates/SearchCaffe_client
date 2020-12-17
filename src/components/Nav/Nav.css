@@ -1,8 +1,15 @@
 .header {
   background-color: #392d2a;
-  height: 50px;
+  height: 4.7%;
+  min-height: 30px;
+  max-height: 100px;
   display: flex;
+  position: fixed;
   align-items: center;
+  z-index: 1;
+  width: 100%;
+  font-size: 0.9rem;
+  opacity: 0.95;
 }
 .logo {
   flex-grow: 1;
@@ -14,7 +21,7 @@
   z-index: 1;
 }
 
-.login-btn {
+.login-btn  {
   cursor: pointer;
 }
 

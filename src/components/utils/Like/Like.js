@@ -51,7 +51,6 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
       ? likeImg
       : likedImg
   );
-
   const openSignin = () => {
     setShowSignin(true);
   };
@@ -83,7 +82,6 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
             </span>
           </span>
         </div>
-
         <Button
           name="찜하기"
           icon={like}
@@ -92,8 +90,10 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
           fontColor="#333333"
           hoverFontColor="#8a705a"
           noBorder={true}
-          imgSize="18px"
+          imgSize="32px"
           margin="1px"
+          fontSize="20px"
+          hoverFontSize={true}
         >
           리뷰 작성
         </Button>
@@ -101,16 +101,13 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
     </span>
   );
 };
-
 function mapStateToProps(state, ownProps) {
   console.log(state);
   return { ...state, ownProps };
 }
-
 function mapDispatchToProps(dispatch) {
   return {
     handleUserHeart: (cafe) => dispatch(actionCreators.changeUserHeart(cafe)),
   };
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(Like);

@@ -12,17 +12,14 @@ import { dbService } from '../../firebase/mainbase';
 import SignIn from '../Signin/SignIn';
 import SignUp from '../SignUp/SignUp';
 import Like from '../utils/Like/Like';
+
 const Detail3 = styled.div`
-  width: 90%;
+  width: 1000px;
   height: 100%;
   min-height: 400px;
-  margin: auto;
-  max-width: 1500px;
-  position: relative;
-  background: #ffffff;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
-  margin-bottom: 150px;
-  margin-top: 5rem;
+  margin: 3rem 0 0 0;
+  max-width: 1200px;
+  background: #fafafa;
   padding-top: 48px;
   padding-left: 32px;
   padding-right: 32px;
@@ -36,7 +33,7 @@ const BackGroundCover = styled.div`
   margin: auto;
   width: 100%;
   height: 100%;
-  background-color: rgba(220, 220, 220, 0.94);
+  /* background-color: rgba(220, 220, 220, 0.94); */
   z-index: 1;
 `;
 
@@ -88,7 +85,6 @@ const ContentComment = ({
   user,
   currentCafe,
   handleUserMyComment,
-  refreshCommentArr,
 }) => {
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
@@ -96,19 +92,20 @@ const ContentComment = ({
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(!!user);
 
-  console.log('userCommentUpdate?', user);
-  console.log('contentComment work', comment);
   useEffect(() => {
+    console.log('work!');
     if (user) {
       let filtered = comment?.filter(
         (com) => com.username === user.displayName
       );
       let userCommentArray = user.comment ? user.comment : [];
+      console.log(filtered);
       if (
         (filtered?.length === 0) &
         (userCommentArray.indexOf(currentCafe.cafeName) !== -1)
       ) {
         let tempComment = user.comment ? user.comment : [];
+        console.log('removing....');
         tempComment.splice(user.comment.indexOf(currentCafe.cafeName), 1);
         handleUserMyComment(tempComment);
         dbService.collection('users').doc(user.uid).update({
@@ -183,22 +180,10 @@ const ContentComment = ({
           <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>
           <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
         </WhenNoReview>
-      ) : comment ? (
+      ) : (
         comment.map((userComment, index) => {
           return <Comment key={index} userComment={userComment}></Comment>;
         })
-      ) : refreshCommentArr ? (
-        refreshCommentArr.map((userComment, index) => {
-          return (
-            <Comment
-              key={index}
-              userComment={userComment}
-              refreshUser={user}
-            ></Comment>
-          );
-        })
-      ) : (
-        ''
       )}
     </Detail3>
   );

@@ -60,6 +60,10 @@ const CardStyle = styled.span`
   }
 `;
 
+const CardStyleInMain = styled(CardStyle)`
+  height: 470px;
+`;
+
 const CardImg = styled.img`
   width: 345px;
   max-height: 400px;
@@ -69,6 +73,11 @@ const CardImg = styled.img`
   border-bottom: 1px solid #dfdfdf;
   padding-bottom: 13px;
   margin-bottom: 5px;
+`;
+
+const CardImgInMain = styled(CardImg)`
+  height: 250px;
+  object-fit: cover;
 `;
 
 const CardName = styled.div`
@@ -115,8 +124,7 @@ const LinkContent = styled(Link)`
 
 const Card = (props) => {
   const addCurrentCafe = async () => {
-    console.log(props);
-    let currnetCafeObj = {};
+    let currnetCafeObj = { ...props };
     let cafeCommentArr = [];
     currnetCafeObj['cafeid'] = props.cafeid;
     currnetCafeObj['cafeTag'] = props.cafeTag;
@@ -124,7 +132,7 @@ const Card = (props) => {
     currnetCafeObj['cafeAddress'] = props.cafeAddress;
     currnetCafeObj['cafeImage'] = props.cafeImage;
     currnetCafeObj['cafeStar'] = props.cafeStar;
-    currnetCafeObj['cafeDetail'] = props.cafeDetail;
+    currnetCafeObj['cafeDetCardImgail'] = props.cafeDetail;
     currnetCafeObj['cafePhoneNumber'] = props.cafePhoneNumber;
     await props.currentCafe(currnetCafeObj);
     try {
@@ -141,6 +149,42 @@ const Card = (props) => {
   };
   if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
+  }
+
+  if (props.isMain) {
+    return (
+      <CardStyleInMain
+        inMypage={props.inMypage}
+        cafeid={props.cafeid}
+        tag={props.cafeTag}
+        onClick={addCurrentCafe}
+      >
+        <LinkContent to={`/content/${props.cafeid}`}>
+          <CardImgInMain
+            inMypage={props.inMypage}
+            src={props.cafeImage || defaultImg}
+          />
+          <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
+          <CardAddress>
+            <CardLocationImg src={LocationImg}></CardLocationImg>
+            <CardAddressDetail>
+              {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
+            </CardAddressDetail>
+          </CardAddress>
+          <ScopeContain>
+            <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
+          </ScopeContain>
+
+          <CardTags>
+            {props.cafeTag
+              ? props.cafeTag.map((tag) => (
+                <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+              ))
+              : ''}
+          </CardTags>
+        </LinkContent>
+      </CardStyleInMain>
+    );
   }
 
   return (

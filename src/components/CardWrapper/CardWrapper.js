@@ -49,6 +49,7 @@ const WrapperTitle = styled.div`
 const CardWrapperStyle = styled.div`
   display: flex;
   flex-direction: row;
+
   width: 95%;
   max-width: 1130px;
   margin: 20px auto;
@@ -78,7 +79,7 @@ const NoSearchResultContainer = styled.div`
   margin: auto;
   width: 60%;
   height: auto;
-  position: relative; v
+  position: relative;
   top: 50px;
 `;
 const NoSearchResultTitle = styled.div`

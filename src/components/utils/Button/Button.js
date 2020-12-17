@@ -8,8 +8,8 @@ const ButtonStyle = styled.div`
   outline: none;
   width: ${(props) =>
     props.name ? 80 + props.name.length * 5 + 'px' : '80px'};
-  height: 40px;
-  font-size: ${(props) => (props.hoverFontSize ? props.hoverFontSize : '12px')};
+  height: ${props => props.hight ? props.higth : "40px"};
+  font-size: ${props => props.fontSize ? props.fontSize : "12px"} ;
   color: ${(props) => (props.fontColor ? props.fontColor : '#ffffff')};
   display: flex;
   align-items: center;
@@ -20,15 +20,14 @@ const ButtonStyle = styled.div`
   :hover {
     transition: 0.2s;
     background-color: ${(props) =>
-      props.hoverColor ? props.hoverColor : '#5a403a'};
+    props.hoverColor ? props.hoverColor : '#5a403a'};
     color: ${(props) =>
-      props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
-    font-size: ${(props) =>
-      props.hoverFontSize ? props.hoverFontSize : '0.85rem'};
+    props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
+    font-size: ${(props) => (props.hoverFontSize ? '1.3rem' : '')};
   }
 `;
 const ButtonIcon = styled.img`
-  width: ${(props) => (props.imgSize ? '0.85rem' : '20px')};
+  width: ${(props) => (props.imgSize ? props.imgSize : '20px')};
   position: relative;
   right: 6px;
   top: 1px;
