@@ -17,22 +17,6 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import { $CombinedState } from 'redux';
 
-const MainImgCover = styled.div`
-  width: 100%;
-  height: 600px;
-  background-color: #160a0a9f;
-  position: absolute;
-`;
-
-const MainImage = styled.div`
-  background-position: center;
-  background-size: 100% auto;
-  display: inline-block;
-  text-align: center;
-  width: 100%;
-  height: 600px;
-`;
-
 /////////////////////////////////////
 const Detail = styled.div`
   display: grid;
@@ -48,8 +32,8 @@ const Detail = styled.div`
 
 const DescribeContainer = styled.div`
   display: grid;
-  grid-gap: 0.6rem;
-  grid-template-rows: 120px 1fr auto auto auto 1.3fr auto 120px;
+  grid-gap: 0.3rem;
+  grid-template-rows: 120px 1fr auto auto auto auto 1.3fr auto 120px;
   align-items: center;
   width: 30%;
   min-width: 400px;
@@ -76,19 +60,14 @@ const Title = styled.span`
 const ActionButtonWrap = styled.div`
   position: relative;
   bottom: 7px;
-  right: 90px;
-  margin-left: auto;
+  right: 20px;
   flex-direction: row;
   justify-items: center;
 `;
 
-const LikeWrap = styled.div`
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
+const LikeCss = styled(Like)`
+  align-items: start;
 `;
-
-const LikeModi = styled(Like)``;
 
 ///////ANCHOR Second
 const InfoAdress = styled.div`
@@ -262,7 +241,7 @@ const ContentHeader = (props) => {
     cafeTable,
     Americano,
   } = current[0];
-  console.log('=========== detail :', current[0][cafeDetail]);
+
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
@@ -308,14 +287,11 @@ const ContentHeader = (props) => {
               <Title cafeName={cafeName}>
                 {cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}
               </Title>
-              <div></div>
             </TittleWrap>
-            <ActionButtonWrap>
-              <LikeWrap>
-                <Like />
-              </LikeWrap>
-            </ActionButtonWrap>
           </Header>
+          <ActionButtonWrap>
+            <Like />
+          </ActionButtonWrap>
           <InfoAdress>
             <InfoTitle>주소</InfoTitle>
             <InfoAddressContent>

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const ButtonStyle = styled.div`
   position: relative;
+  left: ${props => props.left ? props.left : '0'};
   border-radius: 30px;
   margin-left: ${(props) => (props.marginLeft ? props.marginLeft : '25px')};
 
@@ -24,9 +25,9 @@ const ButtonStyle = styled.div`
   :hover {
     transition: 0.2s;
     background-color: ${(props) =>
-      props.hoverColor ? props.hoverColor : '#5a403a'};
+    props.hoverColor ? props.hoverColor : '#5a403a'};
     color: ${(props) =>
-      props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
+    props.hoverFontColor ? props.hoverFontColor : '#ffffff'};
     font-size: ${(props) => (props.hoverFontSize ? '1.3rem' : '')};
   }
 `;

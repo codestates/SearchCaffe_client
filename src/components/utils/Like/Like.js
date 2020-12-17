@@ -9,11 +9,7 @@ import { actionCreators } from '../../../reducer/store';
 import styled from 'styled-components';
 import { dbService } from '../../../firebase/mainbase';
 
-const ButtonStyle = styled.span`
-  position: relative;
-  display: inline-block;
-  left: 60%;
-`;
+const ButtonStyle = styled.span``;
 
 const Like = ({ user, currentCafe, handleUserHeart }) => {
   const handleLike = async () => {
