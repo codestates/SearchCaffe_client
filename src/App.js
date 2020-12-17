@@ -12,7 +12,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { cafeComment } from './cafeInfos';
-
 import NearbyCafe from './components/NearbyCafe/NearbyCafe';
 import { cafes } from './cafeInfos';
 import ScrollToTop from './ScrollToTop';
