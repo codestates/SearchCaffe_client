@@ -14,6 +14,7 @@ import {
 } from 'react-transition-group';
 import Recommendation from './Recommendation';
 import getNearbyCafe from '../../getNearbyCafe';
+import Fade from 'react-reveal/Fade';
 
 const CardWrapperCover = styled.div`
   margin-bottom: 150px;
@@ -112,7 +113,7 @@ const CardWrapper = ({ state, cardList }) => {
   const [cards, setCards] = useState(cafes);
   const [isCozyCafe, setCozyCafe] = useState(Skeleton);
   const [isGoodForTask, setGoodForTask] = useState(Skeleton);
-  const [nearbyCafe, setNearbyCafe] = useState(Skeleton);
+  const [nearbyCafe, setNearbyCafe] = useState('');
   const [currentKeyword, setCurrentKeyword] = useState('');
 
   let cardListArr = [];
@@ -137,11 +138,10 @@ const CardWrapper = ({ state, cardList }) => {
         cardList(cafes);
         setCards(cafes);
       })
-      .finally(async function() {
+      .finally(async function () {
         cardList(cardListArr);
         setCards(cardListArr);
-        let cafe = await getNearbyCafe();
-        setNearbyCafe(cafe);
+
         cozyCafe = cardListArr.filter((card) =>
           !card.cafeTag
             ? (card.cafeTag = [])
@@ -165,6 +165,8 @@ const CardWrapper = ({ state, cardList }) => {
 
         setCozyCafe(cozyCafe);
         setGoodForTask(goodForTask);
+        let cafe = await getNearbyCafe();
+        setNearbyCafe(cafe);
       });
   }, []);
 
@@ -226,49 +228,61 @@ const CardWrapper = ({ state, cardList }) => {
       (cards?.length === 0)
     ) {
       return (
-        <NoSearchResultContainer>
-          <NoSearchResultTitle>
-            검색 결과가 없어요.
-            <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런 카페는
-            어떠신가요?
-          </NoSearchResultTitle>
-          <CardWrapperStyle>
-            <Recommendation recommendation={isGoodForTask}></Recommendation>
-          </CardWrapperStyle>
-        </NoSearchResultContainer>
+        <Fade>
+          <NoSearchResultContainer>
+            <NoSearchResultTitle>
+              검색 결과가 없어요.
+              <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런
+              카페는 어떠신가요?
+            </NoSearchResultTitle>
+            <CardWrapperStyle>
+              <Recommendation recommendation={isGoodForTask}></Recommendation>
+            </CardWrapperStyle>
+          </NoSearchResultContainer>
+        </Fade>
       );
     }
   }
   // NOTE 메인화면
   return (!tags | (tags === '')) & (!state.keyword | (state.keyword === '')) ? (
     <CardWrapperCover>
-      <WrapperTitle>
-        <WrapperLineRight />
-        <span>분위기 좋은 카페</span>
-        <WrapperLineLeft />
-      </WrapperTitle>
-      <CardWrapperStyle>
-        <Recommendation recommendation={isCozyCafe}></Recommendation>
-      </CardWrapperStyle>
-      <WrapperTitle>
-        <WrapperLineRight />
-        <span>작업하기 좋은 카페</span>
-        <WrapperLineLeft />
-      </WrapperTitle>
-      <CardWrapperStyle>
-        <Recommendation recommendation={isGoodForTask}></Recommendation>
-      </CardWrapperStyle>
+      <Fade>
+        <WrapperTitle>
+          <WrapperLineRight />
+          <span>분위기 좋은 카페</span>
+          <WrapperLineLeft />
+        </WrapperTitle>
+      </Fade>
+      <Fade>
+        <CardWrapperStyle>
+          <Recommendation recommendation={isCozyCafe}></Recommendation>
+        </CardWrapperStyle>
+      </Fade>
+      <Fade>
+        <WrapperTitle>
+          <WrapperLineRight />
+          <span>작업하기 좋은 카페</span>
+          <WrapperLineLeft />
+        </WrapperTitle>
+      </Fade>
+      <Fade>
+        <CardWrapperStyle>
+          <Recommendation recommendation={isGoodForTask}></Recommendation>
+        </CardWrapperStyle>
+      </Fade>
       {nearbyCafe.length !== 0 ? (
-        <>
-          <WrapperTitle>
-            <WrapperLineRight />
-            <span>내 주변 카페</span>
-            <WrapperLineLeft />
-          </WrapperTitle>
-          <CardWrapperStyle>
-            <Recommendation recommendation={nearbyCafe}></Recommendation>
-          </CardWrapperStyle>
-        </>
+        <Fade>
+          <>
+            <WrapperTitle>
+              <WrapperLineRight />
+              <span>내 주변 카페</span>
+              <WrapperLineLeft />
+            </WrapperTitle>
+            <CardWrapperStyle>
+              <Recommendation recommendation={nearbyCafe}></Recommendation>
+            </CardWrapperStyle>
+          </>
+        </Fade>
       ) : (
         ''
       )}
@@ -276,11 +290,13 @@ const CardWrapper = ({ state, cardList }) => {
   ) : (
     // NOTE 검색결과(키워드 또는 태그 => 아직은 둘 중 하나만 가능)
     <CardWrapperCover>
-      <WrapperTitle>
-        <WrapperLineRight />
-        <span>검색 결과</span>
-        <WrapperLineLeft />
-      </WrapperTitle>
+      <Fade>
+        <WrapperTitle>
+          <WrapperLineRight />
+          <span>검색 결과</span>
+          <WrapperLineLeft />
+        </WrapperTitle>
+      </Fade>
       <CSSTransition
         in={true}
         timeout={300}
@@ -288,11 +304,13 @@ const CardWrapper = ({ state, cardList }) => {
         mountOnEnter
         unmountOnExit
       >
-        <CardWrapperStyle>
-          <TransitionGroup component={null}>
-            <Recommendation recommendation={cards}></Recommendation>
-          </TransitionGroup>
-        </CardWrapperStyle>
+        <Fade>
+          <CardWrapperStyle>
+            <TransitionGroup component={null}>
+              <Recommendation recommendation={cards}></Recommendation>
+            </TransitionGroup>
+          </CardWrapperStyle>
+        </Fade>
       </CSSTransition>
     </CardWrapperCover>
   );

@@ -8,6 +8,8 @@ import { actionCreators } from '../../../reducer/store';
 import { dbService } from '../../../firebase/mainbase';
 import { Link } from 'react-router-dom';
 import CardSkeleton from '../Card/CardSkeleton';
+import Fade from 'react-reveal/Fade';
+
 // props
 // cafeImage:? 카페 대표 이미지
 // cafeName:string - 카페 이름
@@ -142,37 +144,39 @@ const Card = (props) => {
   }
 
   return (
-    <CardStyle
-      inMypage={props.inMypage}
-      cafeid={props.cafeid}
-      tag={props.cafeTag}
-      onClick={addCurrentCafe}
-    >
-      <LinkContent to={`/content/${props.cafeid}`}>
-        <CardImg
-          inMypage={props.inMypage}
-          src={props.cafeImage || defaultImg}
-        />
-        <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
-        <CardAddress>
-          <CardLocationImg src={LocationImg}></CardLocationImg>
-          <CardAddressDetail>
-            {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
-          </CardAddressDetail>
-        </CardAddress>
-        <ScopeContain>
-          <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
-        </ScopeContain>
+    <Fade>
+      <CardStyle
+        inMypage={props.inMypage}
+        cafeid={props.cafeid}
+        tag={props.cafeTag}
+        onClick={addCurrentCafe}
+      >
+        <LinkContent to={`/content/${props.cafeid}`}>
+          <CardImg
+            inMypage={props.inMypage}
+            src={props.cafeImage || defaultImg}
+          />
+          <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
+          <CardAddress>
+            <CardLocationImg src={LocationImg}></CardLocationImg>
+            <CardAddressDetail>
+              {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
+            </CardAddressDetail>
+          </CardAddress>
+          <ScopeContain>
+            <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
+          </ScopeContain>
 
-        <CardTags>
-          {props.cafeTag
-            ? props.cafeTag.map((tag) => (
-              <Tag key={tag} isSmall={true} tagName={tag}></Tag>
-            ))
-            : ''}
-        </CardTags>
-      </LinkContent>
-    </CardStyle>
+          <CardTags>
+            {props.cafeTag
+              ? props.cafeTag.map((tag) => (
+                  <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+                ))
+              : ''}
+          </CardTags>
+        </LinkContent>
+      </CardStyle>
+    </Fade>
   );
 };
 
