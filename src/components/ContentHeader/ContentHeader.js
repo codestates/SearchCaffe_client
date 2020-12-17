@@ -44,9 +44,9 @@ const Detail = styled.section`
 `;
 const DescribeContainer = styled.div`
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-  width: 30%;
-  min-width: 400px;
+  grid-template-rows: 1fr 0.5fr 1fr 1fr 1fr 1fr;
+  width: 40%;
+  min-width: 500px;
 `;
 
 //////ANCHOR  First
@@ -63,6 +63,9 @@ const TittleWrap = styled.div`
   --webkit-box-orient: horizontal; */
 `;
 const Title = styled.span`
+  position: relative;
+  right: 30%;
+  top: 20px;
   /* padding-right: 50px;
   max-width: 75%;
   font-size: 1.2rem;
@@ -87,16 +90,13 @@ const ActionButtonWrap = styled.div`
 
 const LikeWrap = styled.div`
   position: relative;
-  padding-top: -10px;
   cursor: pointer;
   display: inline-block;
-  text-align: center;
 `;
 
 const LikeModi = styled(Like)`
   display: inline-block;
-  text-indent: -9999px;
-  vertical-align: middle;
+
   font-size: 20px;
 `;
 
@@ -112,7 +112,8 @@ const AddressContent = styled.span``;
 /// ANCHOR Three
 const SvgContainer = styled.div`
   margin: auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 2fr 0.1fr 2fr 0.1fr 2fr 1fr;
 `;
 
 const TagContainer = styled.div`
@@ -247,6 +248,7 @@ const ContentHeader = (props) => {
               <Title>
                 {cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}
               </Title>
+              <div></div>
               <ActionButtonWrap>
                 <LikeWrap>
                   <LikeModi />
@@ -262,17 +264,22 @@ const ContentHeader = (props) => {
             </AddressContent>
           </Info>
           <SvgContainer>
+            <div></div>
             <div>
               <Table />
+              <div>Table: n개</div>
             </div>
             <Line />
             <div>
               <Cup />
+              <div>Americano: 3000</div>
             </div>
             <Line />
             <div>
               <Time />
+              <div>00:00~24:00</div>
             </div>
+            <div></div>
           </SvgContainer>
           <TagContainer className="tagBox">
             {cafeTag
@@ -308,7 +315,8 @@ const ContentHeader = (props) => {
               ) : (
                 <div>'사진이 없습니다.'</div>
               )}
-            </StyledSlider>
+            </StyledSlider>{' '}
+            {...card}
           </SlideMaincontainer>
           <Thumbnailcontainer>
             <StyledSlider

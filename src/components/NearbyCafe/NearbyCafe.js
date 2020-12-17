@@ -17,23 +17,30 @@ const LinkContent = styled(Link)`
 `;
 
 const NearbyCafe = (props) => {
+  console.log('Nearbyyyyyyyyyy', props);
   const [nearbyCafe, setNearbyCafe] = useState([]);
   const onClick = async (e) => {
     let currentCafe = nearbyCafe.filter(
       (cafe) => cafe.id === Number(e.target.id)
     );
 
-    let currentCafeObj = {};
+    let currentCafeObj = { ...currentCafe };
     currentCafe = currentCafe[0];
     currentCafeObj['cafeid'] = currentCafe.id;
-    currentCafeObj['cafeTag'] = currentCafe.cafeTag;
-    currentCafeObj['cafeName'] = currentCafe.cafeName;
-    currentCafeObj['cafeAddress'] = currentCafe.cafeAddress;
-    currentCafeObj['cafeImage'] = currentCafe.cafeImg;
-    currentCafeObj['cafeStar'] = currentCafe.cafeStar;
-    currentCafeObj['cafeDetail'] = currentCafe.cafeDetail;
-    currentCafeObj['cafePhoneNumber'] = currentCafe.cafePhoneNumber;
     await props.cafe(currentCafeObj);
+
+    let cafeCommentArr = [];
+    try {
+      const data = await dbService.collection('CafeComment').get();
+      data.forEach((doc) => {
+        if (props.cafeid === doc.data().cafeId) {
+          cafeCommentArr.push(doc.data());
+        }
+      });
+    } catch (error) {
+      console.log('error' + error);
+    }
+    await props.currentCafeComment(cafeCommentArr);
   };
   useEffect(() => {
     dbService
@@ -84,6 +91,8 @@ function mapDispatchToProps(dispatch) {
   return {
     cafe: (currentCafe) =>
       dispatch(actionCreators.currentCafeClick(currentCafe)),
+    currentCafeComment: (comment) =>
+      dispatch(actionCreators.currentCafeComment(comment)),
   };
 }
 

@@ -184,7 +184,7 @@ const ContentComment = ({
           <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
         </WhenNoReview>
       ) : (
-        comment.map((userComment, index) => {
+        comment.reverse().map((userComment, index) => {
           return <Comment key={index} userComment={userComment}></Comment>;
         })
       )}

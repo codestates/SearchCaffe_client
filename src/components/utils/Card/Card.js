@@ -122,18 +122,9 @@ const LinkContent = styled(Link)`
 
 const Card = (props) => {
   const addCurrentCafe = async () => {
-    console.log(props);
-    let currnetCafeObj = {};
-    let cafeCommentArr = [];
-    currnetCafeObj['cafeid'] = props.cafeid;
-    currnetCafeObj['cafeTag'] = props.cafeTag;
-    currnetCafeObj['cafeName'] = props.cafeName;
-    currnetCafeObj['cafeAddress'] = props.cafeAddress;
-    currnetCafeObj['cafeImage'] = props.cafeImage;
-    currnetCafeObj['cafeStar'] = props.cafeStar;
-    currnetCafeObj['cafeDetCardImgail'] = props.cafeDetail;
-    currnetCafeObj['cafePhoneNumber'] = props.cafePhoneNumber;
+    let currnetCafeObj = { ...props };
     await props.currentCafe(currnetCafeObj);
+    let cafeCommentArr = [];
     try {
       const data = await dbService.collection('CafeComment').get();
       data.forEach((doc) => {

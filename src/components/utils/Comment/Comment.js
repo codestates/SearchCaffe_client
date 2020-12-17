@@ -305,7 +305,16 @@ const Comment = ({
             ''
           )}
         </span>
-      </UserAndScope>
+      </UserAndScope>useEffect(() => {
+//   for (let i = 0; i < cafes.length; i++) {
+//     cafes[i].id = i;
+//     dbService
+//       .collection('CafeInformation')
+//       .doc(cafes[i].cafeName)
+//       .set(cafes[i]);
+//   }
+// }, []);
+
       <TagWrapper>
         {userComment.userTag
           ? userComment.userTag.map((tag) => {
