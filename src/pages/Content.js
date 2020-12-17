@@ -17,13 +17,6 @@ body {
 `;
 
 const ContentWrapper = styled.div`
-  /* width: calc(100% - 400px);
-  height:800px;
-  background: blue;
-  flex:1;
-  padding: 0 20px;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
-  margin: 0 auto; */
 `
 
 const Inner = styled.div`
@@ -40,7 +33,6 @@ margin: 0 auto;
 `
 
 const Content = (props) => {
-  console.log('======================Content props :', props.currentCafe)
   return (
     <>
       <GlobalStyle />
