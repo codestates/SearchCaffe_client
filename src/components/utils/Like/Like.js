@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import styled from 'styled-components';
 import { dbService } from '../../../firebase/mainbase';
-
 const ButtonStyle = styled.span`
   margin-top: 20px;
   position: relative;
@@ -91,8 +90,10 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
           fontColor="#333333"
           hoverFontColor="#8a705a"
           noBorder={true}
-          imgSize="30px"
+          imgSize="32px"
           margin="1px"
+          fontSize="20px"
+          hoverFontSize={true}
         >
           리뷰 작성
         </Button>
@@ -100,7 +101,6 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
     </span>
   );
 };
-
 function mapStateToProps(state, ownProps) {
   console.log(state);
   return { ...state, ownProps };
@@ -110,5 +110,4 @@ function mapDispatchToProps(dispatch) {
     handleUserHeart: (cafe) => dispatch(actionCreators.changeUserHeart(cafe)),
   };
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(Like);
