@@ -258,15 +258,13 @@ const CommentWrite = ({
     const data = await dbService
       .collection('CafeInformation')
       .where('id', '==', cafeId)
-      .update({});
-
-    // .update({
-    //   userComment:
-    //     submitComment.length === 0 ? beforeModify.userComment : submitComment,
-    //   userImg: images,
-    //   userStar: scope ? scope : beforeModify.userStar,
-    //   userTag: selectedTags,
-    // });
+      .update({
+        userComment:
+          submitComment.length === 0 ? beforeModify.userComment : submitComment,
+        userImg: images,
+        userStar: scope ? scope : beforeModify.userStar,
+        userTag: selectedTags,
+      });
   };
   const submitCommentWrite = async () => {
     updateUserMyComment();

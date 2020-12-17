@@ -50,14 +50,15 @@ const Detail = styled.div`
   height: 800px;
   background: #fafafa;
   flex: 1;
+
   padding: 20px 20px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
-  margin: 0 auto;
+  margin: auto auto auto auto;
 `;
 
 const DescribeContainer = styled.div`
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   justify-content: flex-start;
   align-items: center;
   width: 30%;
@@ -286,19 +287,16 @@ const ContentHeader = (props) => {
       <Detail>
         <DescribeContainer>
           <div></div>
+
           <Header>
             <TittleWrap>
               <Title>
                 {cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}
               </Title>
               <div></div>
-              <ActionButtonWrap>
-                <LikeWrap>
-                  <LikeModi />
-                </LikeWrap>
-              </ActionButtonWrap>
             </TittleWrap>
           </Header>
+
           <Info>
             <Location src={locationImg}></Location>
             <InfoContent>
@@ -307,6 +305,11 @@ const ContentHeader = (props) => {
             <InfoTitle>연락처</InfoTitle>
             <InfoContent>{cafePhoneNumber ? cafePhoneNumber : ''}</InfoContent>
           </Info>
+          <ActionButtonWrap>
+            <LikeWrap>
+              <LikeModi />
+            </LikeWrap>
+          </ActionButtonWrap>
           <SvgContainer>
             <div></div>
             <SvgOneContainer>
@@ -326,6 +329,7 @@ const ContentHeader = (props) => {
             </SvgLastContainer>
             <div></div>
           </SvgContainer>
+
           <TagContainer className="tagBox">
             {cafeTag
               ? cafeTag.map((el) => {
@@ -340,6 +344,7 @@ const ContentHeader = (props) => {
                 })
               : ''}
           </TagContainer>
+
           <div></div>
         </DescribeContainer>
         <SlideContainer>

@@ -10,36 +10,43 @@ import ContentComment from '../components/ContentComment/index';
 import { img } from './main.jpeg';
 import { cafeComment } from '../cafeInfos';
 
-const GlobalStyle = createGlobalStyle`
-body {
-  margin: 0 auto;
-}
+const ContentStyle = styled.div`
+  position: relative;
+  top: 80px;
+  margin-bottom: 300px;
 `;
 
-const ContentWrapper = styled.div`
-  width: calc(100% - 400px);
-  background: white;
-  flex: 1;
-  float: left;
-  padding: 0 20px;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
-  margin: 0 auto;
-`;
-
+// const GlobalStyle = createGlobalStyle`
+// body {
+//   margin: 0 auto;
+// }
+// `;
+const ContentWrapper = styled.div``;
 const Inner = styled.div`
   box-sizing: border-box;
 `;
 
-const Content = (props) => {
-  console.log('propsfdks;lf0', props);
-  return (
-    <>
-      <GlobalStyle />
-      <ContentHeader></ContentHeader>
+const MiddleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin: 0 auto;
+`;
 
-      <ContentComment></ContentComment>
-      <NearbyCafe cafeInfo={props.currentCafe}></NearbyCafe>
-    </>
+const Content = (props) => {
+  return (
+    <ContentStyle>
+      {/* <GlobalStyle /> */}
+      <ContentWrapper>
+        <Inner>
+          <ContentHeader></ContentHeader>
+        </Inner>
+      </ContentWrapper>
+      <MiddleWrapper>
+        <ContentComment></ContentComment>
+        <NearbyCafe cafeInfo={props.currentCafe}></NearbyCafe>
+      </MiddleWrapper>
+    </ContentStyle>
   );
 };
 function mapStateToProps(state, ownProps) {

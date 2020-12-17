@@ -15,7 +15,7 @@ import Like from '../utils/Like/Like';
 
 const Detail3 = styled.div`
   width: 1000px;
-  height: 100%;
+  height: auto;
   min-height: 400px;
   margin: 3rem 0 0 0;
   max-width: 1200px;
@@ -33,7 +33,7 @@ const BackGroundCover = styled.div`
   margin: auto;
   width: 100%;
   height: 100%;
-  /* background-color: rgba(220, 220, 220, 0.94); */
+  background-color: rgba(220, 220, 220, 0.94);
   z-index: 1;
 `;
 
@@ -41,7 +41,7 @@ const ButtonStyle = styled.span`
   margin-top: 20px;
   position: relative;
   display: inline-block;
-  left: 60%;
+  left: 70%;
 `;
 const ButtonStyleReview = styled(ButtonStyle)`
   top: 2.5px;
@@ -91,7 +91,12 @@ const ContentComment = ({
   const [showSignin, setShowSignin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(!!user);
-
+  const [reversedComment, setReversedComment] = useState([]);
+  useEffect(() => {
+    if (comment) {
+      setReversedComment(comment.reverse());
+    }
+  }, [comment]);
   useEffect(() => {
     console.log('work!');
     if (user) {
@@ -159,11 +164,11 @@ const ContentComment = ({
             hoverFontColor="#8a705a"
             noBorder={true}
             margin="1px"
-          >
-            리뷰 작성
-          </Button>
+            imgSize="50px"
+            fontSize="16px"
+            flexDirection="column"
+          ></Button>
         </ButtonStyleReview>
-        <Like></Like>
       </div>
 
       {commentModal ? (
@@ -181,7 +186,7 @@ const ContentComment = ({
           <WhenNoReviewContent>첫번째 리뷰를 달아주세요</WhenNoReviewContent>
         </WhenNoReview>
       ) : (
-        comment.reverse().map((userComment, index) => {
+        reversedComment.map((userComment, index) => {
           return <Comment key={index} userComment={userComment}></Comment>;
         })
       )}

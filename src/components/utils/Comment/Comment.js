@@ -17,6 +17,7 @@ const CommentStyle = styled.div`
   min-width: 400px;
   max-width: 800px;
   width: 50%;
+  min-width: 700px;
   height: auto;
   padding-top: 50px;
   transition: 0.2s;
@@ -152,7 +153,7 @@ const EnlargeImg = styled.img`
 `;
 const Divide = styled.div`
   padding-top: 5px;
-  border-bottom: 1px solid #888888;
+  border-bottom: 1px solid #cccccc;
   margin: auto auto auto auto;
   width: 93%;
 `;
