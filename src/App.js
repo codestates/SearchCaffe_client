@@ -18,16 +18,6 @@ import { cafes } from './cafeInfos';
 import ScrollToTop from './ScrollToTop';
 
 const App = () => {
-  useEffect(() => {
-    for (let i = 0; i < cafes.length; i++) {
-      cafes[i].id = i;
-      dbService
-        .collection('CafeInformation')
-        .doc(cafes[i].cafeName)
-        .set(cafes[i], { merge: true });
-    }
-  }, []);
-
   return (
     <BrowserRouter>
       <ScrollToTop />

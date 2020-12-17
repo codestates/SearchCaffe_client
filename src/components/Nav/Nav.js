@@ -74,7 +74,7 @@ const Nav = ({ state, userHandler }) => {
         <div className="login">
           {isLogin ? (
             <span className="mypage-btn">
-              <Link to="mypage">마이페이지</Link>
+              <Link to="/mypage">마이페이지</Link>
               <LogOut onClick={handleLogOut}>로그아웃</LogOut>
             </span>
           ) : (

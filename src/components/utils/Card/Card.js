@@ -122,18 +122,15 @@ const LinkContent = styled(Link)`
   }
 `;
 
+const FadeStyle = styled(Fade)`
+  display: inline-block;
+`;
+
 const Card = (props) => {
   const addCurrentCafe = async () => {
     let currnetCafeObj = { ...props };
     let cafeCommentArr = [];
     currnetCafeObj['cafeid'] = props.cafeid;
-    currnetCafeObj['cafeTag'] = props.cafeTag;
-    currnetCafeObj['cafeName'] = props.cafeName;
-    currnetCafeObj['cafeAddress'] = props.cafeAddress;
-    currnetCafeObj['cafeImage'] = props.cafeImage;
-    currnetCafeObj['cafeStar'] = props.cafeStar;
-    currnetCafeObj['cafeDetCardImgail'] = props.cafeDetail;
-    currnetCafeObj['cafePhoneNumber'] = props.cafePhoneNumber;
     await props.currentCafe(currnetCafeObj);
     try {
       const data = await dbService.collection('CafeComment').get();
@@ -178,8 +175,8 @@ const Card = (props) => {
           <CardTags>
             {props.cafeTag
               ? props.cafeTag.map((tag) => (
-                <Tag key={tag} isSmall={true} tagName={tag}></Tag>
-              ))
+                  <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+                ))
               : ''}
           </CardTags>
         </LinkContent>
@@ -188,13 +185,13 @@ const Card = (props) => {
   }
 
   return (
-    <Fade>
-      <CardStyle
-        inMypage={props.inMypage}
-        cafeid={props.cafeid}
-        tag={props.cafeTag}
-        onClick={addCurrentCafe}
-      >
+    <CardStyle
+      inMypage={props.inMypage}
+      cafeid={props.cafeid}
+      tag={props.cafeTag}
+      onClick={addCurrentCafe}
+    >
+      <Fade>
         <LinkContent to={`/content/${props.cafeid}`}>
           <CardImg
             inMypage={props.inMypage}
@@ -219,8 +216,8 @@ const Card = (props) => {
               : ''}
           </CardTags>
         </LinkContent>
-      </CardStyle>
-    </Fade>
+      </Fade>
+    </CardStyle>
   );
 };
 
