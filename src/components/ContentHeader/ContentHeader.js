@@ -17,21 +17,6 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import { $CombinedState } from 'redux';
 
-const MainImgCover = styled.div`
-  width: 100%;
-  height: 600px;
-  background-color: #160a0a9f;
-  position: absolute;
-`;
-
-const MainImage = styled.div`
-  background-position: center;
-  background-size: 100% auto;
-  display: inline-block;
-  text-align: center;
-  width: 100%;
-  height: 600px;
-`;
 
 /////////////////////////////////////
 const Detail = styled.div`
@@ -51,8 +36,8 @@ const Detail = styled.div`
 
 const DescribeContainer = styled.div`
   display: grid;
-  grid-gap: 0.6rem;
-  grid-template-rows:  120px 1fr auto auto auto 1.3fr auto 120px;
+  grid-gap: 0.3rem;
+  grid-template-rows:  120px 1fr auto auto auto auto 1.3fr auto 120px;
   align-items:center;
   width: 30%;
   min-width: 400px;
@@ -67,27 +52,16 @@ const Header = styled.header`
 const TittleWrap = styled.div`
   display: flex;
   flex-direction: row;
-  font-size: 2.5rem;
   font-weight:bold;
 `;
 const Title = styled.span`
-  margin: 0 0 1.6rem 0;
+  margin: 0;
+  font-size: ${props => props.cafeName ? 3 - props.cafeName.length * 0.11 + 'rem' : '2rem'};
 `;
 
-const ActionButtonWrap = styled.div`
-  position:relative;
-  margin-left:auto;
-  flex-direction: row;
-  justify-items:center;
+const LikeCss = styled(Like)`
+align-items:start;
 `;
-
-const LikeWrap = styled.div`
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
-`;
-
-const LikeModi = styled(Like)``;
 
 ///////ANCHOR Second
 const InfoAdress = styled.div`
@@ -245,7 +219,7 @@ const ContentHeader = (props) => {
     cafeTable,
     Americano,
   } = current[0];
-  console.log('=========== detail :', current[0][cafeDetail]);
+
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
@@ -289,12 +263,12 @@ const ContentHeader = (props) => {
           <div />
           <Header>
             <TittleWrap>
-              <Title>
+              <Title cafeName={cafeName}>
                 {cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}
               </Title>
-              <div></div>
             </TittleWrap>
           </Header>
+          <LikeCss />
           <InfoAdress>
             <InfoTitle>주소</InfoTitle>
             <InfoAddressContent>
@@ -310,7 +284,7 @@ const ContentHeader = (props) => {
             <InfoContent>{cafePhoneNumber ? cafePhoneNumber : ''}</InfoContent>
           </Info>
           <Info>
-            <InfoTitle>안녕</InfoTitle>
+            <InfoTitle>휴일</InfoTitle>
             <InfoContent>
               나는 텍스트야
             </InfoContent>
