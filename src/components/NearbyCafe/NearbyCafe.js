@@ -23,16 +23,9 @@ const NearbyCafe = (props) => {
       (cafe) => cafe.id === Number(e.target.id)
     );
 
-    let currentCafeObj = {};
+    let currentCafeObj = { ...props.currentCafe };
     currentCafe = currentCafe[0];
     currentCafeObj['cafeid'] = currentCafe.id;
-    currentCafeObj['cafeTag'] = currentCafe.cafeTag;
-    currentCafeObj['cafeName'] = currentCafe.cafeName;
-    currentCafeObj['cafeAddress'] = currentCafe.cafeAddress;
-    currentCafeObj['cafeImage'] = currentCafe.cafeImg;
-    currentCafeObj['cafeStar'] = currentCafe.cafeStar;
-    currentCafeObj['cafeDetail'] = currentCafe.cafeDetail;
-    currentCafeObj['cafePhoneNumber'] = currentCafe.cafePhoneNumber;
     await props.cafe(currentCafeObj);
   };
   useEffect(() => {

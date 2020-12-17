@@ -12,6 +12,7 @@ const Recommendation = ({ recommendation, isMain }) => {
           .map((card, index) => {
             return (
               <Card
+                {...card}
                 isMain={isMain}
                 key={index}
                 cafeid={card.id}
@@ -34,6 +35,7 @@ const Recommendation = ({ recommendation, isMain }) => {
           )
           .map((card, index) => (
             <Card
+              {...card}
               isMain={isMain}
               key={index}
               cafeid={card.id}
@@ -52,6 +54,7 @@ const Recommendation = ({ recommendation, isMain }) => {
           .slice(parseInt((recommendation.length * 2) / 3))
           .map((card, index) => (
             <Card
+              {...card}
               isMain={isMain}
               key={index}
               cafeid={card.id}

@@ -10,6 +10,7 @@ import { actionCreators } from '../../../reducer/store';
 import { useEffect, useState } from 'react';
 import { dbService, storageService } from '../../../firebase/mainbase';
 import defaultUser from './defaultUser.png';
+
 const CommentStyle = styled.div`
   display: block;
   margin: 0 auto 10px auto;
@@ -282,8 +283,8 @@ const Comment = ({
             </Detail3>
           </>
         ) : (
-          ''
-        )}
+            ''
+          )}
         <ScopeContainer>
           <Scope
             isScope={true}
@@ -295,29 +296,29 @@ const Comment = ({
           {userComment.username === user?.displayName ? (
             <ModifyButton onClick={modifyComment}>수정</ModifyButton>
           ) : (
-            ''
-          )}
+              ''
+            )}
         </span>
         <span>
           {userComment.username === user?.displayName ? (
             <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
           ) : (
-            ''
-          )}
+              ''
+            )}
         </span>
       </UserAndScope>
       <TagWrapper>
         {userComment.userTag
           ? userComment.userTag.map((tag) => {
-              return (
-                <Tag
-                  key={tag}
-                  tagName={tag}
-                  isSmall={true}
-                  color="#efefef"
-                ></Tag>
-              );
-            })
+            return (
+              <Tag
+                key={tag}
+                tagName={tag}
+                isSmall={true}
+                color="white"
+              ></Tag>
+            );
+          })
           : ''}
       </TagWrapper>
       {userComment.userComment ? (
@@ -325,34 +326,34 @@ const Comment = ({
           <span>{userComment.userComment}</span>
         </CommentInput>
       ) : (
-        ''
-      )}
+          ''
+        )}
 
       <CommentImages>
         {userComment.userImg
           ? userComment.userImg.map((img, index) => {
-              return (
-                <Uploaded key={index}>
-                  <UploadedImgCover>
-                    <EnlargeImg
-                      data-index={index}
-                      onClick={(e) => {
-                        handleImageEnlarge(e.target.dataset.index);
-                      }}
-                      src={enlargeImg}
-                    ></EnlargeImg>
-                  </UploadedImgCover>
-                  <UploadedImg src={img}></UploadedImg>
-                </Uploaded>
-              );
-            })
+            return (
+              <Uploaded key={index}>
+                <UploadedImgCover>
+                  <EnlargeImg
+                    data-index={index}
+                    onClick={(e) => {
+                      handleImageEnlarge(e.target.dataset.index);
+                    }}
+                    src={enlargeImg}
+                  ></EnlargeImg>
+                </UploadedImgCover>
+                <UploadedImg src={img}></UploadedImg>
+              </Uploaded>
+            );
+          })
           : ''}
       </CommentImages>
       {imageModal ? (
         <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
       ) : (
-        ''
-      )}
+          ''
+        )}
       <Divide></Divide>
     </CommentStyle>
   );
