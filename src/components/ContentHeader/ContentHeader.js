@@ -23,7 +23,7 @@ const Detail = styled.div`
   grid-template-columns: 3fr 10fr 2fr 10fr 1fr;
   /* padding: 20px auto auto 20px; */
   width: 1424px;
-  height: 800px;
+  height: 700px;
   background: #fafafa;
   padding: 20px 20px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
@@ -153,7 +153,7 @@ const TagContainer = styled.div`
 
 const SlideContainer = styled.div`
   display: flex;
-  margin: 9rem 0 0 0;
+  margin: 4rem 0 0 0;
   flex-direction: column;
   align-items: center;
   object-fit: scale-down;
