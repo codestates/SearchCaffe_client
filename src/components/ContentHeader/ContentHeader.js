@@ -9,7 +9,8 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { cafes } from '../../cafeInfos';
+
+import Like from '../utils/Like/Like'
 import React, { useState, useEffect } from 'react';
 import defaultImg from '../utils/Card/dummyImg/defaultCafe.jpeg';
 import { connect } from 'react-redux';
@@ -31,50 +32,105 @@ const MainImage = styled.div`
   height: 600px;
 `;
 
-const Detail = styled.div`
-  width: 90%;
-  height: 100%;
-  background: white;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
-  margin: auto;
+/////////////////////////////////////
+const Detail = styled.section`
+width:1000px;
+margin:0 auto;
+margin-top:20px;
 
-  display: flex;
-  flex-direction: row;
-
-  padding-top: 48px;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 24px;
-
-  margin-top: 2rem;
-
-  h1 {
-    margin: 0;
-    font-size: 40px;
-    color: #343a40;
-  }
-
-  .adress {
-    margin-top: 4px;
-    color: #929191;
-    font-size: 15px;
-  }
-
-  .describe {
-    margin-top: 30px;
-    font-size: 18px;
-  }
-
-  .block {
-    width: 200px;
-    height: 200px;
-    background: green;
-  }
-
-  .tagBox {
-    margin-top: 1rem;
-  }
+display:flex;
 `;
+
+const Header = styled.header`
+position:relative;
+padding-bottom: 10px;
+min-height:74px;
+`
+
+const TittleWrap = styled.div`
+display:flex;
+display:--webkit-flex;
+flex-direction:row;
+-webkit-flex-direction:row;
+-wedkit-box-direction:normal;
+--webkit-box-orient:horizontal;
+`
+const Tittle = styled.span`
+padding-right: 50px;
+max-width: 75%;
+font-size:1.2rem;
+line-height:46px;
+`
+
+const Name = styled.h1`
+display:inline-block;
+max-width:100%;
+word-break:break-all;
+`
+
+const ActionButtonWrap = styled.div`
+display:flex;
+display:--webkit-flex;
+flex-direction:row;
+-webkit-flex-direction:row;
+-wedkit-box-direction:normal;
+--webkit-box-orient:horizontal;
+margin-left:auto;
+`
+
+const LikeWrap = styled.div`
+position:relative;
+padding-top:-10px;
+cursor: pointer;
+display:inline-block;
+text-align:center;
+`
+
+const LikeModi = styled(Like)`
+display: inline-block;
+text-indent: -9999px;
+vertical-align: middle;
+font-size: 20px;
+`
+
+const Info = styled.table`
+border-collapse: collapse;
+border-spacing:0;
+
+`
+
+const Tbody = styled.tbody`
+display:table-row-group;
+vertical-align:middle;
+border-color:inherit;
+`
+
+const Tr = styled.tr`
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+
+`
+const Th = styled.th`
+  width: 110px;
+  font-size: .9rem;
+  color: rgba(79,79,79,0.6);
+  line-height: 1.7;
+  text-align: left;
+  vertical-align: top;
+  padding-right: 10px;
+  padding-bottom: 5px;
+`
+
+const Td = styled.td`
+  font-size: .9rem;
+  color: #4f4f4f;
+  line-height: 1.7;
+  text-align: left;
+  vertical-align: middle;
+  padding-bottom: 5px;
+`
+
 const Line = styled.div`
   border: 1px solid #000000;
   width: 5rem;
@@ -101,20 +157,27 @@ const DescribeContainer = styled.div`
 `;
 
 const SlideContainer = styled.div`
-  margin-left: 35%;
+margin-left: 50%;
+width:100%;
 `;
 
 const SlideMaincontainer = styled.div`
-  width: 760px;
-  height: 12rem;
-  margin: auto;
+  display:block;
+  position:relative;
+  overflow:hidden;
+  background-size:cover;
+  background-position: 50% 50%;
+`
+
+const StyledSlider = styled(Slider)`
 `;
 
 const StyledSlider = styled(Slider)``;
 
 const Image = styled.img`
-  max-width: 70%;
-  height: auto;
+  width: 300px;
+  height: 400px;
+  object-fit:cover;
   border-radius: 8px;
   box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
     0 8px 16px -8px hsla(0, 0%, 0%, 0.3);
@@ -124,8 +187,8 @@ const Thumbnailcontainer = styled.div`
   margin-top: 15px;
   height: 75px;
   text-align: center;
-  width: 70%;
-`;
+  width: 50%;
+`
 
 const ThumbnailImg = styled.img`
   width: 100px;
@@ -133,7 +196,7 @@ const ThumbnailImg = styled.img`
   margin-right: 16px;
   background-image: ${({ src }) => (!!src ? `url(${src})` : 'none')};
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   border-radius: 4px;
   box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
     0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
@@ -149,6 +212,11 @@ const SlickSlide = styled.div`
 `;
 
 const ContentHeader = (props) => {
+
+  const current = (props.cardArr).filter(el => el.id === props.currentCafe.cafeid);
+
+  const { cafeid, cafeTag, cafeName, cafeAddress, cafeImg, cafeStar } = current[0];
+
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
@@ -185,34 +253,34 @@ const ContentHeader = (props) => {
     (el) => el.id === props.currentCafe.cafeid
   );
 
-  const {
-    cafeid,
-    cafeTag,
-    cafeName,
-    cafeAddress,
-    cafeImg,
-    cafeStar,
-  } = current[0];
   //console.log('==================current>> :', current);
 
   return (
     <>
-      <MainImgCover />
-      <MainImage
-        style={
-          cafeImg
-            ? { backgroundImage: `url(${cafeImg[0]})` }
-            : { backgroundImage: `url(${defaultImg})` }
-        }
-      />
+      {/* <MainImgCover />
+      <MainImage style={{ backgroundImage: `url(${cafeImg[0]})` }} /> */}
       <Detail>
         <DescribeContainer>
-          <Like></Like>
-          <h1>{cafeName ? cafeName : '해당 정보를 불러오는 중입니다.'}</h1>
-          <div className="adress">
-            {cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}
-          </div>
-          <div className="describe"></div>
+          <Header>
+            <TittleWrap>
+              <Tittle>
+                <Name>{cafeName ? cafeName : "해당 정보를 불러오는 중입니다."}</Name>
+              </Tittle>
+              <ActionButtonWrap>
+                <LikeWrap>
+                  <LikeModi />
+                </LikeWrap>
+              </ActionButtonWrap>
+            </TittleWrap>
+          </Header>
+          <Info>
+            <Tbody>
+              <Tr>
+                <Th >주소</Th>
+                <Td>{cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}</Td>
+              </Tr>
+            </Tbody>
+          </Info>
           <SvgContainer>
             <Table />
             <Line />
@@ -221,50 +289,38 @@ const ContentHeader = (props) => {
             <Time />
           </SvgContainer>
           <div className="tagBox">
-            {cafeTag.map((el) => {
+            {cafeTag ? cafeTag.map((el) => {
               return (
                 <Tag
                   isButton={true}
                   color="#ffffff"
                   isSmall={true}
-                  tagName={el}
-                />
-              );
-            })}
+                  tagName={el} />
+              )
+            }) : <div>태그가 존자하지 않습니다</div>}
           </div>
         </DescribeContainer>
-
         <SlideContainer>
           <SlideMaincontainer>
-            <StyledSlider
-              {...settingsMain}
-              asNavFor={nav2}
-              ref={(slider) => setSlider1(slider)}
-            >
-              {cafeImg.map((el) => {
+            <StyledSlider {...settingsMain} asNavFor={nav2} ref={slider => (setSlider1(slider))}>
+              {cafeImg ? cafeImg.map(el => {
                 return (
                   <SlickSlide>
                     <Image src={el} />
                   </SlickSlide>
-                );
-              })}
+                )
+              }) : <div>'사진이 없습니다.'</div>}
             </StyledSlider>
           </SlideMaincontainer>
           <Thumbnailcontainer>
-            <StyledSlider
-              {...settingsThumbs}
-              asNavFor={nav1}
-              ref={(slider) => setSlider2(slider)}
-            >
-              {cafeImg
-                ? cafeImg.map((el) => {
-                    return (
-                      <SlickSlide>
-                        <ThumbnailImg src={el} />
-                      </SlickSlide>
-                    );
-                  })
-                : ''}
+            <StyledSlider {...settingsThumbs} asNavFor={nav1} ref={slider => (setSlider2(slider))}>
+              {cafeImg ? cafeImg.map(el => {
+                return (
+                  <SlickSlide>
+                    <ThumbnailImg src={el} />
+                  </SlickSlide>
+                )
+              }) : <div>'사진이 없습니다.'</div>}
             </StyledSlider>
           </Thumbnailcontainer>
         </SlideContainer>
