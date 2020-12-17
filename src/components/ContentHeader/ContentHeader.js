@@ -59,14 +59,14 @@ const Detail = styled.div`
 const DescribeContainer = styled.div`
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-  align-items: start;
+  justify-content: flex-start;
+  align-items:center;
   width: 30%;
   min-width: 400px;
 `;
 
 //////ANCHOR  First
 const Header = styled.header`
-  margin: auto;
 `;
 
 const TittleWrap = styled.div`
@@ -92,13 +92,12 @@ const Title = styled.span`
 // `;
 
 const ActionButtonWrap = styled.div`
-  display: flex;
   display: --webkit-flex;
   flex-direction: row;
   -webkit-flex-direction: row;
   -wedkit-box-direction: normal;
   --webkit-box-orient: horizontal;
-  margin-left: auto;
+  margin:0;
 `;
 
 const LikeWrap = styled.div`
@@ -132,17 +131,29 @@ const SvgContainer = styled.div`
   justify-content:cener;
   align-items:center;
 `;
+
+
 const SvgOneContainer = styled.div`
 display:flex;
-padding: 0  10px 0 10px;
+padding: 0  1.2rem 0 1.2rem;
 border-right : 2px solid black;
 flex-direction:column;
 align-items:center;
-
 `
-const H4 = styled.span`
-font-size: 15px;
+const SvgLastContainer = styled.div`
+display:flex;
+padding: 0  0 0 1.2rem;
+flex-direction:column;
+align-items:center;
+`
+
+
+const H4 = styled.h4`
+font-size: 18px;
 margin: 1rem 0 0 0 ;
+`
+const SvgInfo = styled.span`
+font-size: 12px;
 `
 
 const TagContainer = styled.div`
@@ -173,7 +184,7 @@ const SlideContainer = styled.div`
 `;
 
 const SlideMaincontainer = styled.div`
-  width:500px;
+  width: 700px;
   position: relative;
   background-size: cover;
 `;
@@ -188,7 +199,7 @@ const SlickSlide = styled.div`
 `;
 
 const Image = styled.img`
-  width: 400px;
+  width: 600px;
   height: 500px;
   object-fit: cover;
   margin-right:10px;
@@ -200,7 +211,7 @@ const Image = styled.img`
 const Thumbnailcontainer = styled.div`
   margin-top: 10px;
   height: 75px;
-  width: 350px;
+  width: 510px;
 `;
 
 const ThumbSlickSlide = styled.div`
@@ -212,8 +223,8 @@ const ThumbSlickSlide = styled.div`
   `;
 
 const ThumbnailImg = styled.img`
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     background-image: ${({ src }) => (!!src ? `url(${src})` : 'none')};
     border-radius: 4px;
     box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
@@ -232,7 +243,9 @@ const ContentHeader = (props) => {
     cafeAddress,
     cafeImg,
     cafePhoneNumber,
-    cafeDetail
+    cafeDetail,
+    cafeTable,
+    Americano
   } = current[0];
   console.log('=========== detail :', current[0][cafeDetail])
   const [nav1, setNav1] = useState(null);
@@ -251,7 +264,7 @@ const ContentHeader = (props) => {
     slidesToScroll: 1,
     arrows: false,
     fade: true,
-    //autoplay: true,
+    autoplay: true,
     asNavFor: '.slider-nav',
   };
 
@@ -301,16 +314,19 @@ const ContentHeader = (props) => {
           <SvgContainer>
             <SvgOneContainer>
               <Table />
-              <H4>{cafeDetail ? cafeDetail : "없어"} </H4>
+              <H4>{cafeTable ? cafeTable : "없어"}</H4>
+              <SvgInfo>좌석</SvgInfo>
             </SvgOneContainer>
             <SvgOneContainer>
               <Cup />
-              <H4>{cafeDetail ? cafeDetail : "없어"} </H4>
+              <H4>{Americano ? Americano : "없어"}</H4>
+              <SvgInfo>아메리카노</SvgInfo>
             </SvgOneContainer>
-            <SvgOneContainer>
+            <SvgLastContainer>
               <Time />
               <H4>{cafeDetail ? cafeDetail : "없어"} </H4>
-            </SvgOneContainer>
+              <SvgInfo>영업시간</SvgInfo>
+            </SvgLastContainer>
           </SvgContainer>
           <TagContainer className="tagBox">
             {cafeTag

@@ -1,7 +1,7 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { dbService } from '../firebase/mainbase';
 import NearbyCafe from '../components/NearbyCafe/NearbyCafe';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 // import { actionCreators } from '../reducer/store';
 
 import ContentHeader from '../components/ContentHeader/index';
@@ -40,6 +40,7 @@ margin: 0 auto;
 `
 
 const Content = (props) => {
+  console.log('======================Content props :', props.currentCafe)
   return (
     <>
       <GlobalStyle />
@@ -51,16 +52,14 @@ const Content = (props) => {
       <MiddleWrapper>
         <ContentComment></ContentComment>
         <NearbyCafeWrap
-          cafeInfo={{
-            cafeName: '블루보틀 역삼',
-            region_1depth: '서울',
-            region_2depth: '강남구',
-            region_3depth: '역삼동',
-          }}
+          cafeInfo={props.currentCafe}
         ></NearbyCafeWrap>
       </MiddleWrapper>
     </>
   );
 };
+function mapStateToProps(state, ownProps) {
+  return { ...state };
+}
 
-export default Content;
+export default connect(mapStateToProps, null)(Content);

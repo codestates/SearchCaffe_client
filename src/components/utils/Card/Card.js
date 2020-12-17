@@ -122,8 +122,7 @@ const LinkContent = styled(Link)`
 
 const Card = (props) => {
   const addCurrentCafe = async () => {
-    console.log(props);
-    let currnetCafeObj = {};
+    let currnetCafeObj = { ...props };
     let cafeCommentArr = [];
     currnetCafeObj['cafeid'] = props.cafeid;
     currnetCafeObj['cafeTag'] = props.cafeTag;
@@ -177,8 +176,8 @@ const Card = (props) => {
           <CardTags>
             {props.cafeTag
               ? props.cafeTag.map((tag) => (
-                  <Tag key={tag} isSmall={true} tagName={tag}></Tag>
-                ))
+                <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+              ))
               : ''}
           </CardTags>
         </LinkContent>
@@ -212,8 +211,8 @@ const Card = (props) => {
         <CardTags>
           {props.cafeTag
             ? props.cafeTag.map((tag) => (
-                <Tag key={tag} isSmall={true} tagName={tag}></Tag>
-              ))
+              <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+            ))
             : ''}
         </CardTags>
       </LinkContent>
