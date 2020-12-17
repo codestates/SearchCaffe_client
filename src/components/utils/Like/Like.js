@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import styled from 'styled-components';
 import { dbService } from '../../../firebase/mainbase';
+
 const ButtonStyle = styled.span`
-  margin-top: 20px;
   position: relative;
   display: inline-block;
   left: 60%;
@@ -64,41 +64,37 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
     setShowSignup(false);
   };
   return (
-    <span>
-      <ButtonStyle onClick={handleLike}>
-        <div>
+    <ButtonStyle onClick={handleLike}>
+      <div>
+        <span>
           <span>
-            <span>
-              <SignIn
-                show={showSignin}
-                handleClose={closeSignin}
-                handleOpen={openSignup}
-              />
-              <SignUp
-                show={showSignup}
-                handleClose={closeSignup}
-                handleOpen={openSignin}
-              />{' '}
-            </span>
+            <SignIn
+              show={showSignin}
+              handleClose={closeSignin}
+              handleOpen={openSignup}
+            />
+            <SignUp
+              show={showSignup}
+              handleClose={closeSignup}
+              handleOpen={openSignin}
+            />{' '}
           </span>
-        </div>
-        <Button
-          name="찜하기"
-          icon={like}
-          color="inherit"
-          hoverColor="inherit"
-          fontColor="#333333"
-          hoverFontColor="#8a705a"
-          noBorder={true}
-          imgSize="32px"
-          margin="1px"
-          fontSize="20px"
-          hoverFontSize={true}
-        >
-          리뷰 작성
-        </Button>
-      </ButtonStyle>
-    </span>
+        </span>
+      </div>
+      <Button
+        name="찜하기"
+        icon={like}
+        color="inherit"
+        hoverColor="inherit"
+        fontColor="#9A9A9A"
+        hoverFontColor="#8a705a"
+        noBorder={true}
+        imgSize="27px"
+        margin="1px"
+        fontSize="19px"
+        hoverFontSize={true}
+      ></Button>
+    </ButtonStyle>
   );
 };
 function mapStateToProps(state, ownProps) {
