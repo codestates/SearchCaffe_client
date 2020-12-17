@@ -13,20 +13,36 @@ import { cafeComment } from '../cafeInfos';
 const GlobalStyle = createGlobalStyle`
 body {
   background: #e9ecef;
-  margin: auto;
+  margin: 0 auto;
 }
 `;
 
+const ContentWrapper = styled.div`
+  width: calc(100% - 400px);
+  background: white;
+  flex:1;
+  float:left;
+  padding: 0 20px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+  margin: 0 auto;
+`
 
+const Inner = styled.div`
+box-sizing: border-box;
+`
 
 const Content = (props) => {
 
   return (
     <>
       <GlobalStyle />
-      <ContentHeader></ContentHeader>
-      <ContentDetail></ContentDetail>
-      <ContentComment></ContentComment>
+      <ContentWrapper>
+        <Inner>
+          <ContentHeader></ContentHeader>
+          {/* <ContentDetail></ContentDetail> */}
+          {/* <ContentComment></ContentComment> */}
+        </Inner>
+      </ContentWrapper>
     </>
   );
 };

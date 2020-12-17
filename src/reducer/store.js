@@ -146,7 +146,7 @@ const reducer = (state = [], action) => {
         ...state,
         user: {
           ...state.user,
-          comment: [...state.user.comment, action.comment],
+          comment: action.comment,
         },
       };
     case CHANGEDISPLAYNAME:
@@ -165,7 +165,7 @@ const reducer = (state = [], action) => {
         ...state,
         user: {
           ...state.user,
-          heart: [...state.user.heart, action.heart],
+          heart: action.heart,
         },
       };
     default:
