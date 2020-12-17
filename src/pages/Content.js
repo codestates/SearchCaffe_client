@@ -16,12 +16,9 @@ const ContentStyle = styled.div`
   margin-bottom: 300px;
 `;
 
-// const GlobalStyle = createGlobalStyle`
-// body {
-//   margin: 0 auto;
-// }
-// `;
-const ContentWrapper = styled.div``;
+const ContentWrapper = styled.div`
+`
+
 const Inner = styled.div`
   box-sizing: border-box;
 `;

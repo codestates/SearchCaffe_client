@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 import styled from 'styled-components';
 import { dbService } from '../../../firebase/mainbase';
+
 const ButtonStyle = styled.span`
-  margin-top: 20px;
   position: relative;
   display: inline-block;
   left: 60%;
@@ -87,7 +87,7 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
           icon={like}
           color="inherit"
           hoverColor="inherit"
-          fontColor="#333333"
+          fontColor="#9A9A9A"
           hoverFontColor="#8a705a"
           noBorder={true}
           imgSize="32px"
@@ -95,7 +95,6 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
           fontSize="20px"
           hoverFontSize={true}
         >
-          리뷰 작성
         </Button>
       </ButtonStyle>
     </span>

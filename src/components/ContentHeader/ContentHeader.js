@@ -35,15 +35,7 @@ const MainImage = styled.div`
 
 /////////////////////////////////////
 const Detail = styled.div`
-  /* position: relative;
-  top: 80px;
-  width: 800px;
-  margin: 0px auto auto auto;
-
-  background-color: red;
-  display: flex; */
-
-  display: flex;
+  display:flex;
   justify-content: space-evenly;
   /* padding: 20px auto auto 20px; */
   width: 1424px;
@@ -53,54 +45,40 @@ const Detail = styled.div`
 
   padding: 20px 20px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
-  margin: auto auto auto auto;
-`;
+  margin: 0 auto;
+
+`
 
 const DescribeContainer = styled.div`
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  justify-content: flex-start;
-  align-items: center;
+  grid-gap: 0.6rem;
+  grid-template-rows:  120px 1fr auto auto auto 1.3fr auto 120px;
+  align-items:center;
   width: 30%;
   min-width: 400px;
 `;
 
 //////ANCHOR  First
-const Header = styled.header``;
+const Header = styled.header`
+  justify-items:end;
+  align-self: self-end;
+`;
 
 const TittleWrap = styled.div`
   display: flex;
   flex-direction: row;
-  font-size: 3rem;
-  font-weight: bold;
-  justify-content: space-around;
-  /* -webkit-flex-direction: row;
-  -wedkit-box-direction: normal;
-  --webkit-box-orient: horizontal; */
+  font-size: 2.5rem;
+  font-weight:bold;
 `;
 const Title = styled.span`
-  position: relative;
-  top: 10px;
-  /* padding-right: 50px;
-  max-width: 75%;
-  font-size: 1.2rem;
-  line-height: 46px; */
+  margin: 0 0 1.6rem 0;
 `;
 
-// const Name = styled.h1`
-//   display: inline-block;
-//   max-width: 100%;
-//   word-break: break-all;
-// `;
-
 const ActionButtonWrap = styled.div`
-  margin: auto;
-  /* display: flex;
+  position:relative;
+  margin-left:auto;
   flex-direction: row;
-  -webkit-flex-direction: row;
-  -wedkit-box-direction: normal;
-  --webkit-box-orient: horizontal;
-  margin: 0; */
+  justify-items:center;
 `;
 
 const LikeWrap = styled.div`
@@ -112,8 +90,35 @@ const LikeWrap = styled.div`
 const LikeModi = styled(Like)``;
 
 ///////ANCHOR Second
+const InfoAdress = styled.div`
+  display: grid;
+  grid-template-columns: 70px 1.8rem auto;
+  grid-template-rows: auto auto;
+  margin-left: 0;
+`
+
+const InfoAddressContent = styled.span`
+  color:#272727;
+  grid-column: 2 / 4;
+`
+const AdressIcon = styled.span`
+  position:relative;
+  top:0.31rem;
+  border-radius: 2px;
+  border: solid 1px #5C5C5C;
+  padding: 0 0.1rem ;
+  margin-right: 2px;
+  font-size: 0.6rem;
+  text-align:center;
+  color: #7f7f7f;
+  grid-column: -3 / -2;
+  height:0.9rem;
+`
+
 const Info = styled.div`
-  margin: auto;
+  display: grid;
+  grid-template-columns: 70px auto;
+  margin-left: 0;
 `;
 
 const Location = styled.img`
@@ -121,57 +126,51 @@ const Location = styled.img`
 `;
 
 const InfoTitle = styled.span`
-  margin-right: 30px;
+  color: #4F4F4F;
 `;
-const InfoContent = styled.span``;
+const InfoContent = styled.span`
+  color:#272727;  
+`;
 
 /// ANCHOR Three
 const SvgContainer = styled.div`
-  margin: auto;
-  display: grid;
-  grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
+  margin: 0;
+  position:relative;
+  left: -1.5rem;
+  display: flex;
+  justify-content:cener;
+  align-items:center;
 `;
 
 const SvgOneContainer = styled.div`
-  display: flex;
-  padding: 0 1.2rem 0 1.2rem;
-  border-right: 2px solid black;
-  flex-direction: column;
-  align-items: center;
-`;
+display:flex;
+padding: 0  1.4rem 0 1.4rem;
+border-right : 2px solid black;
+flex-direction:column;
+align-items:center;
+`
 const SvgLastContainer = styled.div`
-  display: flex;
-  padding: 0 0 0 1.2rem;
-  flex-direction: column;
-  align-items: center;
-`;
+display:flex;
+padding: 0  0 0 1.4rem;
+flex-direction:column;
+align-items:center;
+`
 
 const H4 = styled.h4`
-  font-size: 18px;
-  margin: 1rem 0 0 0;
-`;
+font-size: 18px;
+margin: 0 0 0 0 ;
+`
 const SvgInfo = styled.span`
-  font-size: 12px;
-`;
+margin: 1rem 0 0 0;
+font-size: 15px;
+
+`
 
 const TagContainer = styled.div`
-  margin: auto;
+  margin-left: 0;
 `;
 
 //////
-
-const Line = styled.div`
-  margin: auto;
-  border-bottom: 1px solid #000000;
-  width: 5rem;
-  transform: rotate(90deg);
-`;
-
-const MainImg = styled.img`
-  float: right;
-  width: 30%;
-  height: 30%;
-`;
 
 const SlideContainer = styled.div`
   display: flex;
@@ -198,7 +197,7 @@ const SlickSlide = styled.div`
 
 const Image = styled.img`
   width: 600px;
-  height: 500px;
+  height: 400px;
   object-fit: cover;
   margin-right: 10px;
   border-radius: 8px;
@@ -207,7 +206,7 @@ const Image = styled.img`
 `;
 
 const Thumbnailcontainer = styled.div`
-  margin-top: 10px;
+  margin-top: 2rem;;
   height: 75px;
   width: 510px;
 `;
@@ -239,6 +238,7 @@ const ContentHeader = (props) => {
     cafeTag,
     cafeName,
     cafeAddress,
+    addressname,
     cafeImg,
     cafePhoneNumber,
     cafeDetail,
@@ -286,8 +286,7 @@ const ContentHeader = (props) => {
       <MainImage style={{ backgroundImage: `url(${cafeImg[0]})` }} /> */}
       <Detail>
         <DescribeContainer>
-          <div></div>
-
+          <div />
           <Header>
             <TittleWrap>
               <Title>
@@ -296,36 +295,42 @@ const ContentHeader = (props) => {
               <div></div>
             </TittleWrap>
           </Header>
-
-          <Info>
-            <Location src={locationImg}></Location>
+          <InfoAdress>
+            <InfoTitle>주소</InfoTitle>
+            <InfoAddressContent>
+              {addressname ? addressname : '해당 정보를 불러오는 중입니다.'}
+            </InfoAddressContent>
+            <AdressIcon>지번</AdressIcon>
             <InfoContent>
               {cafeAddress ? cafeAddress : '해당 정보를 불러오는 중입니다.'}
             </InfoContent>
+          </InfoAdress>
+          <Info>
             <InfoTitle>연락처</InfoTitle>
             <InfoContent>{cafePhoneNumber ? cafePhoneNumber : ''}</InfoContent>
           </Info>
-          <ActionButtonWrap>
-            <LikeWrap>
-              <LikeModi />
-            </LikeWrap>
-          </ActionButtonWrap>
+          <Info>
+            <InfoTitle>안녕</InfoTitle>
+            <InfoContent>
+              나는 텍스트야
+            </InfoContent>
+          </Info>
           <SvgContainer>
             <div></div>
             <SvgOneContainer>
               <Table />
-              <H4>{cafeTable ? cafeTable : '없어'}</H4>
               <SvgInfo>좌석</SvgInfo>
+              <H4>{cafeTable ? cafeTable : "없어"}</H4>
             </SvgOneContainer>
             <SvgOneContainer>
               <Cup />
-              <H4>{Americano ? Americano : '없어'}</H4>
               <SvgInfo>아메리카노</SvgInfo>
+              <H4>{Americano ? Americano : "없어"}</H4>
             </SvgOneContainer>
             <SvgLastContainer>
               <Time />
-              <H4>{cafeDetail ? cafeDetail : '없어'} </H4>
               <SvgInfo>영업시간</SvgInfo>
+              <H4>{cafeDetail ? cafeDetail : "없어"} </H4>
             </SvgLastContainer>
             <div></div>
           </SvgContainer>
@@ -333,15 +338,15 @@ const ContentHeader = (props) => {
           <TagContainer className="tagBox">
             {cafeTag
               ? cafeTag.map((el) => {
-                  return (
-                    <Tag
-                      isButton={true}
-                      color="#ffffff"
-                      isSmall={true}
-                      tagName={el}
-                    />
-                  );
-                })
+                return (
+                  <Tag
+                    isButton={true}
+                    color="#ffffff"
+                    isSmall={true}
+                    tagName={el}
+                  />
+                );
+              })
               : ''}
           </TagContainer>
 
@@ -363,8 +368,8 @@ const ContentHeader = (props) => {
                   );
                 })
               ) : (
-                <div>'사진이 없습니다.'</div>
-              )}
+                  <div>'사진이 없습니다.'</div>
+                )}
             </Slider>
           </SlideMaincontainer>
           <Thumbnailcontainer>
@@ -382,8 +387,8 @@ const ContentHeader = (props) => {
                   );
                 })
               ) : (
-                <div>'사진이 없습니다.'</div>
-              )}
+                  <div>'사진이 없습니다.'</div>
+                )}
             </Slider>
           </Thumbnailcontainer>
         </SlideContainer>

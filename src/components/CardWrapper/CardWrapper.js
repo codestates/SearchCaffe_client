@@ -77,7 +77,7 @@ const CardWrapperStyle = styled.div`
 
 const NoSearchResultContainer = styled.div`
   margin: auto;
-  width: 60%;
+  /* width: 60%; */
   height: auto;
   position: relative;
   top: 50px;
@@ -156,13 +156,13 @@ const CardWrapper = ({ state, cardList }) => {
         cozyCafe.length > 6
           ? (cozyCafe = cozyCafe.slice(0, 6))
           : cozyCafe.length > 3
-          ? cozyCafe.slice(0, 3)
-          : (cozyCafe = []);
+            ? cozyCafe.slice(0, 3)
+            : (cozyCafe = []);
         goodForTask.length > 6
           ? (goodForTask = goodForTask.slice(0, 6))
           : goodForTask.length > 3
-          ? goodForTask.slice(0, 3)
-          : (goodForTask = []);
+            ? goodForTask.slice(0, 3)
+            : (goodForTask = []);
 
         setCozyCafe(cozyCafe);
         setGoodForTask(goodForTask);
@@ -297,36 +297,36 @@ const CardWrapper = ({ state, cardList }) => {
           </>
         </Fade>
       ) : (
-        ''
-      )}
+          ''
+        )}
     </CardWrapperCover>
   ) : (
-    // NOTE 검색결과(키워드 또는 태그 => 아직은 둘 중 하나만 가능)
-    <CardWrapperCover>
-      <Fade>
-        <WrapperTitle>
-          <WrapperLineRight />
-          <span>검색 결과</span>
-          <WrapperLineLeft />
-        </WrapperTitle>
-      </Fade>
-      <CSSTransition
-        in={true}
-        timeout={300}
-        classNames="appearingCard"
-        mountOnEnter
-        unmountOnExit
-      >
+      // NOTE 검색결과(키워드 또는 태그 => 아직은 둘 중 하나만 가능)
+      <CardWrapperCover>
         <Fade>
-          <CardWrapperStyle>
-            <TransitionGroup component={null}>
-              <Recommendation recommendation={cards}></Recommendation>
-            </TransitionGroup>
-          </CardWrapperStyle>
+          <WrapperTitle>
+            <WrapperLineRight />
+            <span>검색 결과</span>
+            <WrapperLineLeft />
+          </WrapperTitle>
         </Fade>
-      </CSSTransition>
-    </CardWrapperCover>
-  );
+        <CSSTransition
+          in={true}
+          timeout={300}
+          classNames="appearingCard"
+          mountOnEnter
+          unmountOnExit
+        >
+          <Fade>
+            <CardWrapperStyle>
+              <TransitionGroup component={null}>
+                <Recommendation recommendation={cards}></Recommendation>
+              </TransitionGroup>
+            </CardWrapperStyle>
+          </Fade>
+        </CSSTransition>
+      </CardWrapperCover>
+    );
 };
 function mapStateToProps(state, ownProps) {
   return { state };
