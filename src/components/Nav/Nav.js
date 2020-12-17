@@ -7,11 +7,15 @@ import { authService, dbService } from '../../firebase/mainbase';
 import { Link } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
 import { useHistory } from 'react-router-dom';
+import logo from './logo.png';
 import styled from 'styled-components';
 const LogOut = styled.span`
   margin-left: 30px;
   cursor: pointer;
+`;
 
+const LogoImg = styled.img`
+  width: 80px;
 `;
 
 const Nav = ({ state, userHandler }) => {
@@ -69,7 +73,9 @@ const Nav = ({ state, userHandler }) => {
       />
       <div className="header">
         <span className="logo">
-          <Link to="/">LOGO</Link>
+          <Link to="/">
+            <LogoImg src={logo}></LogoImg>
+          </Link>
         </span>
         <div className="login">
           {isLogin ? (
@@ -78,10 +84,10 @@ const Nav = ({ state, userHandler }) => {
               <LogOut onClick={handleLogOut}>로그아웃</LogOut>
             </span>
           ) : (
-              <span className="login-btn" onClick={openSignin}>
-                로그인
-              </span>
-            )}
+            <span className="login-btn" onClick={openSignin}>
+              로그인
+            </span>
+          )}
         </div>
       </div>
     </>

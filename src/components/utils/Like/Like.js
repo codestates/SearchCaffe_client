@@ -9,8 +9,7 @@ import { actionCreators } from '../../../reducer/store';
 import styled from 'styled-components';
 import { dbService } from '../../../firebase/mainbase';
 
-const ButtonStyle = styled.span`
-`;
+const ButtonStyle = styled.span``;
 
 const Like = ({ user, currentCafe, handleUserHeart }) => {
   const handleLike = async () => {
@@ -86,13 +85,11 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
         fontColor="#9A9A9A"
         hoverFontColor="#8a705a"
         noBorder={true}
-        imgSize="20px"
-        marginLeft='0'
-        fontSize="18px"
+        imgSize="27px"
+        margin="1px"
+        fontSize="19px"
         hoverFontSize={true}
-        left='-0.3rem'
-      >
-      </Button>
+      ></Button>
     </ButtonStyle>
   );
 };
