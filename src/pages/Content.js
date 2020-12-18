@@ -12,12 +12,11 @@ import { cafeComment } from '../cafeInfos';
 
 const ContentStyle = styled.div`
   position: relative;
-  top: 80px;
+  top: 120px;
   margin-bottom: 300px;
 `;
 
-const ContentWrapper = styled.div`
-`
+const ContentWrapper = styled.div``;
 
 const Inner = styled.div`
   box-sizing: border-box;

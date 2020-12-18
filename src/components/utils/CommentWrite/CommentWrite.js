@@ -143,7 +143,7 @@ const UploadedImgCover = styled.span`
   width: 102px;
   height: 102px;
   margin-top: 11px;
-  margin-left: 11px;
+  margin-left: 1px;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0.2s linear, opacity 0.2s linear;
@@ -165,7 +165,7 @@ const UploadedImg = styled.img`
   display: inline-block;
   width: 100px;
   height: 100px;
-  margin: 10px 10px 15px 10px;
+  margin: 10px 0px 10px 0px;
 `;
 const Limit = styled.div`
   position: relative;
@@ -190,7 +190,7 @@ const Uploaded = styled.span`
   display: inline-block;
   width: 122px;
   height: 122px;
-  margin: 10px 10px 0px 10px;
+  margin: 10px 2px 0px 2px;
   &:hover ${UploadedImgCover} {
     visibility: visible;
     opacity: 1;
@@ -281,7 +281,10 @@ const CommentWrite = ({
   const refreshCommentData = async () => {
     try {
       let cafeCommentArr = [];
-      const data = await dbService.collection('CafeComment').get();
+      const data = await dbService
+        .collection('CafeComment')
+        .orderBy('commentId', 'asc')
+        .get();
       data.forEach((commentData) => {
         if (currentCafe.cafeid === commentData.data().cafeId) {
           cafeCommentArr.push(commentData.data());

@@ -196,15 +196,27 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   console.log(userComment);
   useEffect(() => {
     setImages(userComment.userImg);
-    dbService
-      .collection('users')
-      .where('displayName', '==', userComment.username)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          setUserProfileImg(doc.data().photoURL);
+    if (userComment.userEmail) {
+      dbService
+        .collection('users')
+        .where('email', '==', userComment.userEmail)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            setUserProfileImg(doc.data().photoURL);
+          });
         });
-      });
+    } else {
+      dbService
+        .collection('users')
+        .where('displayName', '==', userComment.username)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            setUserProfileImg(doc.data().photoURL);
+          });
+        });
+    }
   }, []);
   const handleModal = () => {
     setCommentModal((pres) => !pres);
