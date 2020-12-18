@@ -207,8 +207,10 @@ const ContentHeader = (props) => {
     (el) => el.id === props.currentCafe.cafeid
   );
 
+  console.log('===========휴일 : ', current)
+
   const {
-    cafeid,
+    holiday,
     cafeTag,
     cafeName,
     cafeAddress,
@@ -281,12 +283,14 @@ const ContentHeader = (props) => {
           </InfoAdress>
           <Info>
             <InfoTitle>연락처</InfoTitle>
-            <InfoContent>{cafePhoneNumber ? cafePhoneNumber : ''}</InfoContent>
+            <InfoContent>
+              {cafePhoneNumber ? cafePhoneNumber : ''}
+            </InfoContent>
           </Info>
           <Info>
             <InfoTitle>휴일</InfoTitle>
             <InfoContent>
-              나는 텍스트야
+              {holiday ? holiday : ''}
             </InfoContent>
           </Info>
           <SvgContainer>

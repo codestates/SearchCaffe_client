@@ -12,6 +12,7 @@ const CHANGEDISPLAYNAME = 'CHANGEDISPLAYNAME';
 const CHANGEUSERCOMMENT = 'CHANGEUSERCOMMENT';
 const CHANGEUSERHEART = 'CHANGEUSERCHEART';
 
+
 const tagNameArray = (tagName) => {
   return {
     type: TAGARRAY,
@@ -174,6 +175,7 @@ const reducer = (state = [], action) => {
       return state;
   }
 };
+
 
 const store = createStore(reducer);
 
