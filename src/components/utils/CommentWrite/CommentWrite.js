@@ -281,7 +281,10 @@ const CommentWrite = ({
   const refreshCommentData = async () => {
     try {
       let cafeCommentArr = [];
-      const data = await dbService.collection('CafeComment').get();
+      const data = await dbService
+        .collection('CafeComment')
+        .orderBy('commentId', 'asc')
+        .get();
       data.forEach((commentData) => {
         if (currentCafe.cafeid === commentData.data().cafeId) {
           cafeCommentArr.push(commentData.data());
