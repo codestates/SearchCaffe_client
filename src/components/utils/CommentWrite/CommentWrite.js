@@ -215,7 +215,7 @@ const CommentWrite = ({
   beforeModify,
   userMyCommentHandler,
 }) => {
-  console.log('user??????', user);
+  console.log('user??????', currentCafe);
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [submitComment, setSubmitComment] = useState('');

@@ -25,6 +25,7 @@ const Detail3 = styled.div`
   padding-right: 32px;
   padding-bottom: 24px;
   border-bottom: 1px solid #e9ecef;
+  z-index: 1;
 `;
 const BackGroundCover = styled.div`
   position: fixed;
@@ -92,6 +93,7 @@ const ContentComment = ({
   currentCafe,
   handleUserMyComment,
 }) => {
+  console.log('contentCommentsfsdf', currentCafe);
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
   const [showSignin, setShowSignin] = useState(false);
@@ -100,7 +102,7 @@ const ContentComment = ({
 
   useEffect(() => {
     console.log('work!');
-    if (user) {
+    if (user & currentCafe) {
       let filtered = comment?.filter(
         (com) => com.username === user.displayName
       );
@@ -139,6 +141,15 @@ const ContentComment = ({
   };
   return (
     <Detail3>
+      {commentModal ? (
+        <>
+          <BackGroundCover>
+            <CommentWrite handleModal={handleModal}></CommentWrite>
+          </BackGroundCover>
+        </>
+      ) : (
+        ''
+      )}
       <SignIn
         show={showSignin}
         handleClose={closeSignin}
@@ -172,15 +183,6 @@ const ContentComment = ({
         </ButtonStyleReview>
       </div>
       <CommentWraper>
-        {commentModal ? (
-          <>
-            <BackGroundCover>
-              <CommentWrite handleModal={handleModal}></CommentWrite>
-            </BackGroundCover>
-          </>
-        ) : (
-          ''
-        )}
         {!comment | (comment?.length === 0) ? (
           <WhenNoReview>
             <WhenNoReviewTitle>아직 작성된 리뷰가 없어요</WhenNoReviewTitle>

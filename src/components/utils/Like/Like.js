@@ -13,7 +13,8 @@ const ButtonStyle = styled.span``;
 
 const Like = ({ user, currentCafe, handleUserHeart }) => {
   const handleLike = async () => {
-    if (user) {
+    if (!!user & !!currentCafe) {
+      console.log('wowowo');
       if (like === likeImg) {
         setLike(likedImg);
         let tempHeart = [];
@@ -35,7 +36,7 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
         handleUserHeart(tempHeart);
       }
       return;
-    } else {
+    } else if (!user) {
       openSignin();
     }
   };
@@ -43,7 +44,10 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(!!user);
   const [like, setLike] = useState(
-    !user | !user?.heart | (user?.heart?.indexOf(currentCafe.cafeName) === -1)
+    !currentCafe |
+      !user |
+      !user?.heart |
+      (user?.heart?.indexOf(currentCafe?.cafeName) === -1)
       ? likeImg
       : likedImg
   );
@@ -60,37 +64,38 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
     setShowSignup(false);
   };
   return (
-    <ButtonStyle onClick={handleLike}>
-      <div>
-        <span>
+    <>
+      <SignIn
+        show={showSignin}
+        handleClose={closeSignin}
+        handleOpen={openSignup}
+      />
+      <SignUp
+        show={showSignup}
+        handleClose={closeSignup}
+        handleOpen={openSignin}
+      />{' '}
+      <ButtonStyle onClick={handleLike}>
+        <div>
           <span>
-            <SignIn
-              show={showSignin}
-              handleClose={closeSignin}
-              handleOpen={openSignup}
-            />
-            <SignUp
-              show={showSignup}
-              handleClose={closeSignup}
-              handleOpen={openSignin}
-            />{' '}
+            <span></span>
           </span>
-        </span>
-      </div>
-      <Button
-        name="찜하기"
-        icon={like}
-        color="inherit"
-        hoverColor="inherit"
-        fontColor="#9A9A9A"
-        hoverFontColor="#8a705a"
-        noBorder={true}
-        imgSize="27px"
-        margin="1px"
-        fontSize="19px"
-        hoverFontSize={true}
-      ></Button>
-    </ButtonStyle>
+        </div>
+        <Button
+          name="찜하기"
+          icon={like}
+          color="inherit"
+          hoverColor="inherit"
+          fontColor="#9A9A9A"
+          hoverFontColor="#8a705a"
+          noBorder={true}
+          imgSize="27px"
+          margin="1px"
+          fontSize="19px"
+          hoverFontSize={true}
+        ></Button>
+      </ButtonStyle>
+    </>
   );
 };
 function mapStateToProps(state, ownProps) {

@@ -91,12 +91,11 @@ const MyCafe = ({ state }) => {
           heartList.map((card, index) => {
             return (
               <Card
+                {...card}
                 inMypage={true}
                 key={index}
                 cafeid={card.id}
-                cafeName={card.cafeName}
-                cafeAddress={card.cafeAddress}
-                cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                cafeImage={card.cafeImg ? card.cafeImg : ''}
               ></Card>
             );
           })
@@ -110,12 +109,11 @@ const MyCafe = ({ state }) => {
           commentList.map((card, index) => {
             return (
               <Card
+                {...card}
                 inMypage={true}
                 key={index}
                 cafeid={card.id}
-                cafeName={card.cafeName}
-                cafeAddress={card.cafeAddress}
-                cafeImage={card.cafeImg ? card.cafeImg[0] : ''}
+                cafeImage={card.cafeImg ? card.cafeImg : ''}
               ></Card>
             );
           })

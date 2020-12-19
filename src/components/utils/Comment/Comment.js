@@ -193,7 +193,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   const [currentImg, setCurrentImg] = useState('');
   const [beforeModify, setBeforeModify] = useState();
   const [userProfileImg, setUserProfileImg] = useState(defaultUser);
-  console.log(userComment);
+
   useEffect(() => {
     setImages(userComment.userImg);
     if (userComment.userEmail) {
@@ -301,16 +301,22 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
           ></Scope>
         </ScopeContainer>
         <span>
-          {(userComment.username === user?.displayName) |
-          (userComment.userEmail === user?.email) ? (
+          {!user ? (
+            ''
+          ) : userComment.username === user.displayName ? (
+            <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+          ) : userComment.userEmail === user?.email ? (
             <ModifyButton onClick={modifyComment}>수정</ModifyButton>
           ) : (
             ''
           )}
         </span>
         <span>
-          {(userComment.username === user?.displayName) |
-          (userComment.userEmail === user?.email) ? (
+          {!user ? (
+            ''
+          ) : userComment.username === user.displayName ? (
+            <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+          ) : userComment.userEmail === user.email ? (
             <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
           ) : (
             ''

@@ -14,6 +14,7 @@ import { cafes } from './cafeInfos';
 import ScrollToTop from './ScrollToTop';
 
 const App = () => {
+  console.log('wororo');
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -22,8 +23,8 @@ const App = () => {
         <Route exact path="/">
           <Main></Main>
         </Route>
-        <Route path="/content">
-          <Content></Content>
+        <Route path="/content" component={Content}>
+          <Route path="/content/:id" component={Content}></Route>
         </Route>
         <Route path="/mypage">
           <Mypage></Mypage>

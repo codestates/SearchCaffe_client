@@ -10,8 +10,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import locationImg from './location.png';
-
-import React, { useState, useEffect } from 'react';
+import { cafes } from '../../cafeInfos';
+import React, { useState, useEffect, useMemo } from 'react';
 import defaultImg from '../utils/Card/dummyImg/defaultCafe.jpeg';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
@@ -38,13 +38,11 @@ const DescribeContainer = styled.div`
   width: 30%;
   min-width: 400px;
 `;
-
 //////ANCHOR  First
 const Header = styled.header`
   justify-items: end;
   align-self: self-end;
 `;
-
 const TittleWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -56,7 +54,6 @@ const Title = styled.span`
   font-size: ${(props) =>
     props.cafeName ? 3 - props.cafeName.length * 0.07 + 'rem' : '2rem'};
 `;
-
 const ActionButtonWrap = styled.div`
   position: relative;
   bottom: 7px;
@@ -64,11 +61,9 @@ const ActionButtonWrap = styled.div`
   flex-direction: row;
   justify-items: center;
 `;
-
 const LikeCss = styled(Like)`
   align-items: start;
 `;
-
 ///////ANCHOR Second
 const InfoAdress = styled.div`
   display: grid;
@@ -76,7 +71,6 @@ const InfoAdress = styled.div`
   grid-template-rows: auto auto;
   margin-left: 0;
 `;
-
 const InfoAddressContent = styled.span`
   color: #272727;
   grid-column: 2 / 4;
@@ -94,17 +88,14 @@ const AdressIcon = styled.span`
   grid-column: -3 / -2;
   height: 0.9rem;
 `;
-
 const Info = styled.div`
   display: grid;
   grid-template-columns: 70px auto;
   margin-left: 0;
 `;
-
 const Location = styled.img`
   width: 30px;
 `;
-
 const InfoTitle = styled.span`
   color: #4f4f4f;
 `;
@@ -225,27 +216,22 @@ const Divide = styled.div`
 `;
 
 const ContentHeader = (props) => {
-  const current = props.cardArr.filter(
-    (el) => el.id === props.currentCafe.cafeid
-  );
-
-  const {
-    cafeid,
-    cafeTag,
-    cafeName,
-    cafeAddress,
-    addressname,
-    cafeImg,
-    cafePhoneNumber,
-    cafeDetail,
-    cafeTable,
-    Americano,
-  } = current[0];
-
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
   const [slider2, setSlider2] = useState(null);
+  let cafeid = !props.currentCafe ? '' : props.currentCafe.cafeid;
+  let cafeTag = !props.currentCafe ? '' : props.currentCafe.cafeTag;
+  let cafeName = !props.currentCafe ? '' : props.currentCafe.cafeName;
+  let cafeAddress = !props.currentCafe ? '' : props.currentCafe.cafeAddress;
+  let addressname = !props.currentCafe ? '' : props.currentCafe.addressname;
+  let cafeImg = !props.currentCafe ? '' : props.currentCafe.cafeImg;
+  let cafePhoneNumber = !props.currentCafe
+    ? ''
+    : props.currentCafe.cafePhoneNumber;
+  let cafeDetail = !props.currentCafe ? '' : props.currentCafe.cafeDetail;
+  let cafeTable = !props.currentCafe ? '' : props.currentCafe.cafeTable;
+  let Americano = !props.currentCafe ? '' : props.currentCafe.Americano;
 
   useEffect(() => {
     setNav1(slider1);
