@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { dbService } from '../../firebase/mainbase';
 import Map from '../../Map';
 import { Link } from 'react-router-dom';
@@ -46,52 +46,34 @@ const LinkContent = styled(Link)`
   }
 `;
 
-const NearbyCafe = (props) => {
+const NearbyCafe = (state) => {
   const [nearbyCafe, setNearbyCafe] = useState([]);
-  const onClick = async (e) => {
-    let currentCafe = nearbyCafe.filter(
-      (cafe) => cafe.id === Number(e.target.id)
-    );
-    let currentCafeObj = { ...currentCafe };
-    currentCafe = currentCafe[0];
-    currentCafeObj['cafeid'] = currentCafe.id;
-    await props.cafe(currentCafeObj);
-    let cafeCommentArr = [];
-    try {
-      const data = await dbService.collection('CafeComment').get();
-      data.forEach((doc) => {
-        if (props.cafeid === doc.data().cafeId) {
-          cafeCommentArr.push(doc.data());
-        }
-      });
-    } catch (error) {
-      console.log('error' + error);
-    }
-    await props.currentCafeComment(cafeCommentArr);
-  };
+
   useEffect(() => {
-    dbService
-      .collection('CafeInformation')
-      .where('region_1depth', '==', props.cafeInfo.region_1depth)
-      .where('region_2depth', '==', props.cafeInfo.region_2depth)
-      .where('cafeName', '!=', props.cafeInfo.cafeName)
-      .limit(4)
-      .onSnapshot((snapshot) => {
-        let cafes = snapshot.docs.map((doc) => doc.data());
-        console.log(cafes);
-        setNearbyCafe(cafes);
-      });
-  }, []);
+    if (state.currentCafe) {
+      dbService
+        .collection('CafeInformation')
+        .where('region_1depth', '==', state.currentCafe.region_1depth)
+        .where('region_2depth', '==', state.currentCafe.region_2depth)
+        .where('cafeName', '!=', state.currentCafe.cafeName)
+        .limit(4)
+        .onSnapshot((snapshot) => {
+          let cafes = snapshot.docs.map((doc) => doc.data());
+          console.log(cafes);
+          setNearbyCafe(cafes);
+        });
+    }
+  }, [state.currentCafe]);
   return (
     <NearbyCafeStyle>
       <div className="map-container">
-        <Map cafeInfo={props.cafeInfo} />
+        <Map cafeInfo={state.currentCafe} />
       </div>
       <ul className="cafe-list">
         <h3 className="cafe-list-title">주변 카페 추천</h3>
-        {nearbyCafe.map((cafe) => (
-          <LinkContent to={`/content/${cafe.id}`}>
-            <Cover id={cafe.id} onClick={onClick}></Cover>
+        {nearbyCafe.map((cafe, index) => (
+          <LinkContent key={index} to={`/content/${cafe.id}`}>
+            <Cover id={cafe.id}></Cover>
             <CafeList className="cafe">
               <CafeImage src={cafe.cafeImg} />
 
@@ -108,7 +90,7 @@ const NearbyCafe = (props) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  return { state, ownProps };
+  return { ...state };
 }
 
 function mapDispatchToProps(dispatch) {

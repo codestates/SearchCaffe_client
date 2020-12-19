@@ -3,12 +3,13 @@ import { dbService } from '../firebase/mainbase';
 import NearbyCafe from '../components/NearbyCafe/NearbyCafe';
 import { connect } from 'react-redux';
 import { actionCreators } from '../reducer/store';
-
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import ContentHeader from '../components/ContentHeader/index';
 // import ContentDetail from '../components/ContentDetail/index';
 import ContentComment from '../components/ContentComment/index';
 import { img } from './main.jpeg';
 import { cafeComment } from '../cafeInfos';
+import { useEffect } from 'react';
 
 const ContentStyle = styled.div`
   position: relative;
@@ -29,7 +30,44 @@ const MiddleWrapper = styled.div`
   margin: 0 auto;
 `;
 
-const Content = (props) => {
+const Content = (state) => {
+  console.log(state.currentCafe);
+  let allCardList = [];
+  let cafeCommentArr = [];
+  let currentCafeData;
+  let cafeId = Number(window.location.pathname.split('/')[2]);
+  console.log(cafeId);
+  useEffect(() => {
+    addCurrentCafe(cafeId);
+  }, [cafeId]);
+
+  const addCurrentCafe = async (cafeId) => {
+    console.log(cafeId);
+    try {
+      const cafeData = await dbService.collection('CafeInformation').get();
+      cafeData.forEach((doc) => {
+        allCardList.push(doc.data());
+      });
+      await state.handleCardList(allCardList);
+      currentCafeData = allCardList.filter((card) => card.id === cafeId)[0];
+      currentCafeData.cafeid = cafeId;
+      await state.handleCurrentCafe(currentCafeData);
+    } catch (error) {
+      console.log('error' + error);
+    }
+    try {
+      const commentData = await dbService.collection('CafeComment').get();
+      commentData.forEach((doc) => {
+        if (cafeId === doc.data().cafeId) {
+          cafeCommentArr.push(doc.data());
+        }
+      });
+      await state.handleCafeComment(cafeCommentArr);
+    } catch (error) {
+      console.log('error' + error);
+    }
+  };
+
   return (
     <ContentStyle>
       {/* <GlobalStyle /> */}
@@ -40,7 +78,7 @@ const Content = (props) => {
       </ContentWrapper>
       <MiddleWrapper>
         <ContentComment></ContentComment>
-        <NearbyCafe cafeInfo={props.currentCafe}></NearbyCafe>
+        <NearbyCafe></NearbyCafe>
       </MiddleWrapper>
     </ContentStyle>
   );
@@ -48,5 +86,13 @@ const Content = (props) => {
 function mapStateToProps(state, ownProps) {
   return { ...state };
 }
-
-export default connect(mapStateToProps, null)(Content);
+function mapDispatchToProps(dispatch) {
+  return {
+    handleCurrentCafe: (currentCafe) =>
+      dispatch(actionCreators.currentCafeClick(currentCafe)),
+    handleCafeComment: (comment) =>
+      dispatch(actionCreators.currentCafeComment(comment)),
+    handleCardList: (card) => dispatch(actionCreators.addCardList(card)),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Content);

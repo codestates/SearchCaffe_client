@@ -57,6 +57,11 @@
   background-color: #4883df;
   transition: 0.3s;
 }
+.button--google:focus {
+  background-color: #4883df;
+  transition: 0.3s;
+  outline: 0;
+}
 
 .button--github {
   background-color: #516ca4;
@@ -76,6 +81,11 @@
   background-color: #314c74;
   transition: 0.3s;
 }
+.button--github:focus {
+  background-color: #314c74;
+  transition: 0.3s;
+  outline: 0;
+}
 
 .button--facebook {
   background-color: #007fff;
@@ -94,4 +104,9 @@
 .button--facebook:hover {
   background-color: #005fdf;
   transition: 0.3s;
+}
+.button--facebook:focus {
+  background-color: #005fdf;
+  transition: 0.3s;
+  outline: 0;
 }

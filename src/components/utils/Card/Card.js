@@ -127,23 +127,25 @@ const FadeStyle = styled(Fade)`
 `;
 
 const Card = (props) => {
-  const addCurrentCafe = async () => {
-    let currnetCafeObj = { ...props };
-    let cafeCommentArr = [];
-    currnetCafeObj['cafeid'] = props.cafeid;
-    await props.currentCafe(currnetCafeObj);
-    try {
-      const data = await dbService.collection('CafeComment').get();
-      data.forEach((doc) => {
-        if (props.cafeid === doc.data().cafeId) {
-          cafeCommentArr.push(doc.data());
-        }
-      });
-    } catch (error) {
-      console.log('error' + error);
-    }
-    await props.currentCafeComment(cafeCommentArr);
-  };
+  // console.log(props);
+  // const addCurrentCafe = async () => {
+  //   let currnetCafeObj = { ...props };
+  //   let cafeCommentArr = [];
+  //   currnetCafeObj['cafeid'] = props.cafeid;
+  //   await props.currentCafe(currnetCafeObj);
+  //   try {
+  //     const data = await dbService.collection('CafeComment').get();
+  //     data.forEach((doc) => {
+  //       if (props.cafeid === doc.data().cafeId) {
+  //         cafeCommentArr.push(doc.data());
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.log('error' + error);
+  //   }
+  //   await props.currentCafeComment(cafeCommentArr);
+  // };
+
   if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
   }
@@ -154,7 +156,6 @@ const Card = (props) => {
         inMypage={props.inMypage}
         cafeid={props.cafeid}
         tag={props.cafeTag}
-        onClick={addCurrentCafe}
       >
         <LinkContent to={`/content/${props.cafeid}`}>
           <CardImgInMain
@@ -189,7 +190,6 @@ const Card = (props) => {
       inMypage={props.inMypage}
       cafeid={props.cafeid}
       tag={props.cafeTag}
-      onClick={addCurrentCafe}
     >
       <Fade>
         <LinkContent to={`/content/${props.cafeid}`}>
