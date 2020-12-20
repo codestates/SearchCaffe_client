@@ -77,7 +77,6 @@ useEffect(() => {
       }
       async function placesSearchCB(data, status, pagination) {
         if (status === kakao.maps.services.Status.OK) {
-          console.log(data);
           for (let result of data) {
             let toDatabase = {
               cafeAddress: result.road_address_name,
@@ -122,7 +121,6 @@ useEffect(() => {
               .set(toDatabase);
           }
         } else {
-          console.log('don work');
         }
       }
     });

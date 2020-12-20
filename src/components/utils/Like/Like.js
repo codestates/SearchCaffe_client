@@ -14,13 +14,12 @@ const ButtonStyle = styled.span``;
 const Like = ({ user, currentCafe, handleUserHeart }) => {
   const handleLike = async () => {
     if (!!user & !!currentCafe) {
-      console.log('wowowo');
       if (like === likeImg) {
         setLike(likedImg);
         let tempHeart = [];
         user.heart ? (tempHeart = user.heart) : (tempHeart = []);
         tempHeart.push(currentCafe.cafeName);
-        console.log(tempHeart);
+
         dbService.collection('users').doc(user.uid).update({
           heart: tempHeart,
         });
@@ -29,7 +28,7 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
         setLike(likeImg);
         let tempHeart = user.heart;
         tempHeart.splice(tempHeart.indexOf(currentCafe.cafeName), 1);
-        console.log(tempHeart);
+
         dbService.collection('users').doc(user.uid).update({
           heart: tempHeart,
         });
@@ -86,12 +85,12 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
           icon={like}
           color="inherit"
           hoverColor="inherit"
-          fontColor="#9A9A9A"
+          fontColor="#8A8A8A"
           hoverFontColor="#8a705a"
           noBorder={true}
-          imgSize="27px"
-          margin="1px"
-          fontSize="19px"
+          imgSize="22px"
+          margin="10px"
+          fontSize="17px"
           hoverFontSize={true}
         ></Button>
       </ButtonStyle>
@@ -99,7 +98,6 @@ const Like = ({ user, currentCafe, handleUserHeart }) => {
   );
 };
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { ...state, ownProps };
 }
 function mapDispatchToProps(dispatch) {

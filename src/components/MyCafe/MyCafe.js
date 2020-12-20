@@ -7,6 +7,7 @@ import Card from '../utils/Card/index';
 import CardSkeleton from '../utils/Card/CardSkeleton';
 const MyCafeStyle = styled.div`
   width: 90%;
+  min-width: 400px;
   height: auto;
   margin: auto auto 300px auto;
 `;
@@ -16,6 +17,7 @@ const CafeCardStyle = styled.div`
   position: relative;
   width: 1200px;
   width: 70%;
+  min-width: 370px;
   height: auto;
   min-height: 300px;
   background-color: #fafafa;
@@ -31,6 +33,9 @@ const Title = styled.div`
   margin: auto;
   padding-top: 50px;
   padding-bottom: 30px;
+  @media (max-width: 900px) {
+    text-align: center;
+  }
 `;
 
 const WhenNoCommentCafe = styled.div`
@@ -57,8 +62,7 @@ const MyCafe = ({ state }) => {
   const [hearts, setHearts] = useState(
     !state.user ? [] : state.user.heart ? state.user.heart : []
   );
-  console.log(commentList, heartList);
-  console.log(comments, hearts);
+
   const history = useHistory();
   useEffect(() => {
     if (!state.user | !state.cardArr) {
@@ -124,7 +128,6 @@ const MyCafe = ({ state }) => {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { state };
 }
 

@@ -17,6 +17,8 @@ import tasking from './asset/tasking.png';
 import tomtom from './asset/tomtom.png';
 import twosome from './asset/twosome.png';
 import conversation from './asset/conversation.png';
+import allTime from './asset/24.png';
+import disabled from './asset/disabled.png';
 import styled from 'styled-components';
 import { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -41,7 +43,6 @@ const tagName = {
   편안한: cozy,
   '작업하기 좋은': tasking,
   '대화하기 좋은': conversation,
-  '바다가 보이는': sea,
   스타벅스: stab,
   투썸플레이스: twosome,
   이디야: ediya,
@@ -49,14 +50,16 @@ const tagName = {
   탐앤탐스: tomtom,
   커피빈: coffeebean,
   폴바셋: paul,
+  '24시간': allTime,
+  '장애 시설': disabled,
 };
 
 const TagStyle = styled.button`
   background: ${(props) =>
     props.isClicked ? '#5A403A' : props.color || '#EFEFEF'};
   color: ${(props) => (props.isClicked ? 'white' : 'black')};
-  width: ${(props) => 4.5 + 0.7 * props.tagName.length + 'rem'};
-  height: 2.3rem;
+  width: ${(props) => 3.8 + 0.7 * props.tagName.length + 'rem'};
+  height: 2rem;
   margin: 0.2rem;
   border-radius: 30px;
   border: initial;
@@ -94,8 +97,8 @@ const SmallTagImg = styled.img`
   height: 12px;
   right: 2px;
   top: 2.2px;
-  padding-right: 3px;
-  margin-right: 2px;
+  padding-right: 0px;
+  margin-right: 0px;
   position: relative;
 `;
 
@@ -110,6 +113,7 @@ const SmallTagName = styled(TagName)`
   position: relative;
   top: 1%;
 `;
+const MoreSmallTagName = styled(TagName)``;
 
 const Tag = (props) => {
   const [isClick, setClick] = useState(false);

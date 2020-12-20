@@ -9,6 +9,7 @@ const BackGroundCover = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.61);
+  z-index: 10;
 `;
 const ImageContainer = styled.div`
   position: fixed;
@@ -18,7 +19,7 @@ const ImageContainer = styled.div`
   width: 80%;
   height: 90%;
   background-color: black;
-  z-index: 2;
+  z-index: 20;
 `;
 
 const Image = styled.img`
@@ -46,7 +47,6 @@ const UnEnlargeIcon = styled.img`
 `;
 
 export const ImageModal = (props) => {
-  console.log(props.image);
   return (
     <>
       <BackGroundCover onClick={props.unEnlarge}></BackGroundCover>

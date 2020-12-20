@@ -27,10 +27,11 @@ const CommentStyle = styled.div`
   }
 `;
 const UserAndScope = styled.div`
-  display: inline;
+  display: grid;
+  grid-template-columns: 0.5fr 4.5fr 3fr 3fr 1fr 1fr;
+  align-items: center;
   padding-left: 5%;
-
-  display: relative;
+  justify-content: center;
 `;
 
 const UserProfile = styled.img`
@@ -39,14 +40,17 @@ const UserProfile = styled.img`
   border-radius: 50%;
   margin-right: 15px;
   position: relative;
-  top: 10px;
+  border: 1px solid #555555;
 `;
 
 const DeleteButton = styled.button`
-  display: inline-block;
+  /* display: inline-block;
   text-align: center;
   text-decoration: none;
-  position: relative;
+  position: absolute;
+  margin-left: 10%;
+  
+   */
   border: none;
   background-color: inherit;
   color: #555555;
@@ -64,14 +68,12 @@ const DeleteButton = styled.button`
     transition: 0.2s;
   }
 `;
-
 const ModifyButton = styled.button`
-  display: inline-block;
-  margin-left: 30%;
-  margin-right: 7px;
-  text-align: center;
+  /* display: inline-block;
+  margin-left: 14%;
   text-decoration: none;
-  position: relative;
+  position: absolute;
+  */
   border: none;
   background-color: inherit;
   color: #555555;
@@ -90,7 +92,10 @@ const ModifyButton = styled.button`
   }
 `;
 
-const UserName = styled.span``;
+const UserName = styled.span`
+  justify-items: start;
+  margin-left: 1%;
+`;
 const ScopeContainer = styled.span`
   margin-left: 30px;
   position: relative;
@@ -107,7 +112,7 @@ const CommentInput = styled.div`
   width: 80%;
   height: auto;
   min-height: 50px;
-
+  word-break: break-all;
   background-color: #ffffff;
 `;
 const CommentImages = styled.div`
@@ -186,7 +191,13 @@ const Detail3 = styled.div`
   border-bottom: 1px solid #e9ecef;
 `;
 
-const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
+const Comment = ({
+  handleImageEnlarge,
+  userComment,
+  currentCafe,
+  user,
+  currentCafeComment,
+}) => {
   const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
@@ -220,14 +231,6 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   }, []);
   const handleModal = () => {
     setCommentModal((pres) => !pres);
-  };
-
-  const handleImageEnlarge = (index) => {
-    setCurrentImg(images[index]);
-    setModal((pres) => !pres);
-  };
-  const handleUnEnlarge = () => {
-    setModal((pres) => !pres);
   };
 
   const deleteComment = async () => {
@@ -272,102 +275,104 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   };
 
   return (
-    <CommentStyle>
-      <UserAndScope>
-        <UserProfile src={userProfileImg}></UserProfile>
-        <UserName>
-          {userComment.username ? userComment.username : '게스트'}
-        </UserName>
-        {commentModal ? (
-          <>
-            <Detail3>
-              <BackGroundCover>
-                <CommentWrite
-                  onChange={commentModal}
-                  beforeModify={beforeModify}
-                  handleModal={handleModal}
-                ></CommentWrite>
-              </BackGroundCover>
-            </Detail3>
-          </>
+    <>
+      <CommentStyle>
+        <UserAndScope>
+          <UserProfile src={userProfileImg}></UserProfile>
+          <UserName>
+            {userComment.username ? userComment.username : '게스트'}
+          </UserName>
+          {commentModal ? (
+            <>
+              <Detail3>
+                <BackGroundCover>
+                  <CommentWrite
+                    onChange={commentModal}
+                    beforeModify={beforeModify}
+                    handleModal={handleModal}
+                  ></CommentWrite>
+                </BackGroundCover>
+              </Detail3>
+            </>
+          ) : (
+            ''
+          )}
+          <ScopeContainer>
+            <Scope
+              isScope={true}
+              size="20px"
+              scope={userComment.userStar ? userComment.userStar : -1}
+            ></Scope>
+          </ScopeContainer>
+          <div></div>
+          <span>
+            {!user ? (
+              ''
+            ) : userComment.username === user.displayName ? (
+              <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+            ) : userComment.userEmail === user?.email ? (
+              <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+            ) : (
+              ''
+            )}
+          </span>
+          <span>
+            {!user ? (
+              ''
+            ) : userComment.username === user.displayName ? (
+              <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+            ) : userComment.userEmail === user.email ? (
+              <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+            ) : (
+              ''
+            )}
+          </span>
+        </UserAndScope>
+
+        <TagWrapper>
+          {userComment.userTag
+            ? userComment.userTag.map((tag) => {
+                return (
+                  <Tag
+                    key={tag}
+                    tagName={tag}
+                    isSmall={true}
+                    color="white"
+                  ></Tag>
+                );
+              })
+            : ''}
+        </TagWrapper>
+        {userComment.userComment ? (
+          <CommentInput>{userComment.userComment}</CommentInput>
         ) : (
           ''
         )}
-        <ScopeContainer>
-          <Scope
-            isScope={true}
-            size="20px"
-            scope={userComment.userStar ? userComment.userStar : -1}
-          ></Scope>
-        </ScopeContainer>
-        <span>
-          {!user ? (
-            ''
-          ) : userComment.username === user.displayName ? (
-            <ModifyButton onClick={modifyComment}>수정</ModifyButton>
-          ) : userComment.userEmail === user?.email ? (
-            <ModifyButton onClick={modifyComment}>수정</ModifyButton>
-          ) : (
-            ''
-          )}
-        </span>
-        <span>
-          {!user ? (
-            ''
-          ) : userComment.username === user.displayName ? (
-            <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
-          ) : userComment.userEmail === user.email ? (
-            <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
-          ) : (
-            ''
-          )}
-        </span>
-      </UserAndScope>
 
-      <TagWrapper>
-        {userComment.userTag
-          ? userComment.userTag.map((tag) => {
-              return (
-                <Tag key={tag} tagName={tag} isSmall={true} color="white"></Tag>
-              );
-            })
-          : ''}
-      </TagWrapper>
-      {userComment.userComment ? (
-        <CommentInput>
-          <span>{userComment.userComment}</span>
-        </CommentInput>
-      ) : (
-        ''
-      )}
+        <CommentImages>
+          {userComment.userImg
+            ? userComment.userImg.map((img, index) => {
+                return (
+                  <Uploaded key={index}>
+                    <UploadedImgCover>
+                      <EnlargeImg
+                        data-index={index}
+                        onClick={(e) => {
+                          handleImageEnlarge(images[e.target.dataset.index]);
+                        }}
+                        src={enlargeImg}
+                      ></EnlargeImg>
+                    </UploadedImgCover>
+                    <UploadedImg src={img}></UploadedImg>
+                  </Uploaded>
+                );
+              })
+            : ''}
+        </CommentImages>
 
-      <CommentImages>
-        {userComment.userImg
-          ? userComment.userImg.map((img, index) => {
-              return (
-                <Uploaded key={index}>
-                  <UploadedImgCover>
-                    <EnlargeImg
-                      data-index={index}
-                      onClick={(e) => {
-                        handleImageEnlarge(e.target.dataset.index);
-                      }}
-                      src={enlargeImg}
-                    ></EnlargeImg>
-                  </UploadedImgCover>
-                  <UploadedImg src={img}></UploadedImg>
-                </Uploaded>
-              );
-            })
-          : ''}
-      </CommentImages>
-      {imageModal ? (
-        <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
-      ) : (
-        ''
-      )}
-      <Divide></Divide>
-    </CommentStyle>
+        <Divide></Divide>
+      </CommentStyle>
+    </>
   );
 };
 

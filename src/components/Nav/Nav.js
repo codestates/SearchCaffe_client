@@ -17,6 +17,9 @@ const LogOut = styled.span`
 const LogoImg = styled.img`
   width: 80px;
 `;
+const NavStyle = styled.div`
+  z-index: 4;
+`;
 
 const Nav = ({ state, userHandler }) => {
   // const [Login, setLogin] = useState(false);
@@ -32,7 +35,6 @@ const Nav = ({ state, userHandler }) => {
         const checkDB = await dbService.collection('users').doc(user.uid).get();
         const data = checkDB.data();
         userHandler({ ...data });
-        console.log('worowo');
       } else {
         setIsLogin(false);
       }
@@ -60,7 +62,7 @@ const Nav = ({ state, userHandler }) => {
     // document.body.style.overflow = 'unset'; // 스크롤 고정 해제
   };
   return (
-    <>
+    <NavStyle>
       <SignIn
         show={showSignin}
         handleClose={closeSignin}
@@ -90,7 +92,7 @@ const Nav = ({ state, userHandler }) => {
           )}
         </div>
       </div>
-    </>
+    </NavStyle>
   );
 };
 

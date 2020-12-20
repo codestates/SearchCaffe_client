@@ -36,3 +36,11 @@
   margin: auto;
   width: 80%;
 }
+
+@media (max-width: 900px) {
+  .tabs {
+    margin: auto;
+    display: flex;
+    width: 300px;
+  }
+}

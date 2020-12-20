@@ -14,10 +14,11 @@ const MainImgCover = styled.div`
   width: 100%;
   height: 700px;
   background-color: #160a0a9f;
+
   position: absolute;
   display: grid;
   grid-template-columns: ;
-  grid-template-rows: 25% 100px 40px 40px 40px 25%;
+  grid-template-rows: 5fr 2fr 1fr 1fr 1fr 5fr;
 `;
 
 const MainTitle = styled.div`
@@ -28,8 +29,9 @@ const MainTitle = styled.div`
 
 const MainTags = styled.div`
   margin: auto;
-  display: grid;
-  grid-template-columns: repeat(6, auto);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const MainDiv = styled.div`
@@ -80,10 +82,11 @@ const SearchBarButton = styled.span`
   box-shadow: 1px 1px 1px 0.1px #333333;
 `;
 
-const MainImg = styled.div`
-  background-image: url(${mainImg});
+const MainImg = styled.img`
   background-position: center;
   background-size: 100% auto;
+  object-fit: cover;
+  background-repeat: no-repeat;
   display: inline-block;
   text-align: center;
   width: 100%;
@@ -108,7 +111,7 @@ const Main = (props) => {
       <Fade duration={2000}>
         <MainImgCover>
           <div></div>
-          <MainTitle>Cafe Search With</MainTitle>
+          <MainTitle>Search Cafe With</MainTitle>
           <MainTags>
             {mainTags.map((tag) => (
               <Tag isSmall={true} tagName={tag} key={tag}></Tag>
@@ -127,7 +130,7 @@ const Main = (props) => {
           <div></div>
         </MainImgCover>
       </Fade>
-      <MainImg />
+      <MainImg src={mainImg} />
       <SearchWrapper></SearchWrapper>
       <CardWrapper></CardWrapper>
     </MainStyle>

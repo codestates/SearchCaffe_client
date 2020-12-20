@@ -215,7 +215,6 @@ const CommentWrite = ({
   beforeModify,
   userMyCommentHandler,
 }) => {
-  console.log('user??????', currentCafe);
   const [selectedTags, setTags] = useState([]);
   const [scope, setScope] = useState(-1);
   const [submitComment, setSubmitComment] = useState('');
@@ -297,9 +296,9 @@ const CommentWrite = ({
   };
 
   const settingCommentData = async () => {
-    console.log(
-      'Set Cafe Info :' + `${currentCafe.cafeid}&${comment.length + 1}`
-    );
+    // console.log(
+    //   'Set Cafe Info :' + `${currentCafe.cafeid}&${comment.length + 1}`
+    // );
     await dbService
       .collection('CafeComment')
       .doc(`${currentCafe.cafeid}&${comment.length + 1}`)
@@ -316,7 +315,7 @@ const CommentWrite = ({
     // 처음 올릴떄 처리
     if (comment.length + 1 === 1) {
       let averageStar = Math.round(scope / (comment.length + 1));
-      console.log('averageStar :' + averageStar);
+      // console.log('averageStar :' + averageStar);
       await dbService
         .collection('CafeInformation')
         .doc(`${currentCafe.cafeName}`)
@@ -335,7 +334,7 @@ const CommentWrite = ({
         }
       });
       let averageStar = Math.round(accumulateStar / length);
-      console.log('averageStar :' + averageStar);
+      // console.log('averageStar :' + averageStar);
       await dbService
         .collection('CafeInformation')
         .doc(`${currentCafe.cafeName}`)
@@ -379,7 +378,7 @@ const CommentWrite = ({
       let tempMyComment = user.comment ? user.comment : [];
       tempMyComment.push(currentCafe.cafeName);
       userMyCommentHandler(tempMyComment);
-      console.log('userMycommentHandler ??', tempMyComment);
+      // console.log('userMycommentHandler ??', tempMyComment);
       dbService.collection('users').doc(user.uid).update({
         comment: tempMyComment,
       });
@@ -416,7 +415,6 @@ const CommentWrite = ({
             .getDownloadURL()
             .then((url) => {
               setImages((preImages) => {
-                console.log(preImages);
                 return [...preImages.slice(0, preImages.length - 1), url];
               });
             });
@@ -561,7 +559,6 @@ const CommentWrite = ({
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { ...state };
 }
 

@@ -28,21 +28,22 @@ const MiddleWrapper = styled.div`
   justify-content: center;
   flex-direction: row;
   margin: 0 auto;
+  @media (max-width: 1400px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const Content = (state) => {
-  console.log(state.currentCafe);
   let allCardList = [];
   let cafeCommentArr = [];
   let currentCafeData;
   let cafeId = Number(window.location.pathname.split('/')[2]);
-  console.log(cafeId);
+
   useEffect(() => {
     addCurrentCafe(cafeId);
   }, [cafeId]);
 
   const addCurrentCafe = async (cafeId) => {
-    console.log(cafeId);
     try {
       const cafeData = await dbService.collection('CafeInformation').get();
       cafeData.forEach((doc) => {
