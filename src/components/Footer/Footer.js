@@ -5,7 +5,7 @@ import logo from '../../pages/logo.png';
 const FooterStyle = styled.div`
   width: 100%;
   height: 330px;
-  background-color: #ebebeb;
+  background-color: inherit;
   max-width: 2000px;
   margin: auto;
   margin-bottom: 30px;

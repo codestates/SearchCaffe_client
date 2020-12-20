@@ -30,6 +30,7 @@ const Profile = ({
   const [attachment, setAttachment] = useState(
     state.user ? state.user.photoURL : ''
   );
+  console.log(userInfo);
   const [photoFile, setPhotoFile] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [rePassword, setRePassword] = useState('');

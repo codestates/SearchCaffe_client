@@ -26,7 +26,9 @@ function Mypage({ state, userHandler }) {
             return (
               <div
                 key={i}
-                className="tabs-contents"
+                className={
+                  activeTab === i ? 'tabs-contents-active' : 'tabs-contents'
+                }
                 onClick={() => handleTabClick(i)}
               >
                 {tab}
