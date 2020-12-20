@@ -47,7 +47,7 @@ const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
               userData.forEach((doc) => {
                 if (doc.data().email === email) {
                   currentUserData = doc.data();
-                  console.log(currentUserData);
+
                   userHandler(currentUserData);
                 }
               });
@@ -61,7 +61,7 @@ const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
         });
     } catch (error) {
       let code = error.code;
-      console.log(code);
+
       if (code === 'auth/user-not-found') {
         setError('존재하지 않는 이메일입니다.');
       } else if (code === 'auth/invalid-email') {

@@ -1,3 +1,39 @@
+@media (max-width: 1400px) {
+  .map-container {
+    margin: auto 0px;
+    width: 40%;
+  }
+}
+@media (max-width: 1120px) {
+  .map-container {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 20px;
+  }
+  .cafe-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    bottom: 20px;
+  }
+  .cafe-link {
+    display: block;
+    width: 400px;
+  }
+  #staticMap {
+    margin: 40px 0px;
+  }
+}
+#staticMap {
+  width: 400px;
+  height: 300px;
+}
+
 .cafe-list {
   list-style: none;
   padding: 0;

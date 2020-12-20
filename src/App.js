@@ -14,7 +14,6 @@ import { cafes } from './cafeInfos';
 import ScrollToTop from './ScrollToTop';
 
 const App = () => {
-  console.log('wororo');
   return (
     <BrowserRouter>
       <ScrollToTop />

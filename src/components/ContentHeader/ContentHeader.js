@@ -1,6 +1,6 @@
-import { ReactComponent as Table } from './Table.svg';
-import { ReactComponent as Cup } from './Cup.svg';
-import { ReactComponent as Time } from './Time.svg';
+import Table from './table.svg';
+import Cup from './coffee.png';
+import Time from './clock.png';
 import blank from './blank.png';
 import { tagName } from '../../cafeInfos';
 import Tag from '../utils/Tag/index';
@@ -20,29 +20,40 @@ import { $CombinedState } from 'redux';
 /////////////////////////////////////
 const Detail = styled.div`
   display: grid;
-  grid-template-columns: 3fr 10fr 2fr 10fr 1fr;
+  grid-template-columns: 2fr 8fr 1fr 10fr 0.5fr;
   /* padding: 20px auto auto 20px; */
-  width: 1424px;
-  height: 700px;
+  width: 90%;
+  max-width: 1424px;
+  min-width: 600px;
+  height: 660px;
   background: #fafafa;
   padding: 20px 20px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
   margin: auto;
+  border-radius: 5px;
+  @media (max-width: 1400px) {
+    grid-template-columns: auto;
+    height: auto;
+  }
+`;
+
+const FakeDiv = styled.div`
+  @media (max-width: 1400px) {
+    display: none;
+  }
 `;
 
 const DescribeContainer = styled.div`
+  margin: auto;
   display: grid;
   grid-gap: 0.3rem;
-  grid-template-rows: 120px 1fr auto auto auto auto 1.3fr auto 120px;
+  grid-template-rows: auto;
   align-items: center;
-  width: 30%;
+
   min-width: 400px;
 `;
 //////ANCHOR  First
-const Header = styled.header`
-  justify-items: end;
-  align-self: self-end;
-`;
+const Header = styled.header``;
 const TittleWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -50,16 +61,15 @@ const TittleWrap = styled.div`
   font-weight: bold;
 `;
 const Title = styled.span`
-  margin: 0 0 1.6rem 0;
+  margin-bottom: 30px;
+  padding: 5px;
   font-size: ${(props) =>
     props.cafeName ? 3 - props.cafeName.length * 0.07 + 'rem' : '2rem'};
 `;
 const ActionButtonWrap = styled.div`
   position: relative;
-  bottom: 7px;
+  bottom: 35px;
   right: 20px;
-  flex-direction: row;
-  justify-items: center;
 `;
 const LikeCss = styled(Like)`
   align-items: start;
@@ -69,7 +79,7 @@ const InfoAdress = styled.div`
   display: grid;
   grid-template-columns: 70px 1.8rem auto;
   grid-template-rows: auto auto;
-  margin-left: 0;
+  padding: 5px;
 `;
 const InfoAddressContent = styled.span`
   color: #272727;
@@ -92,12 +102,14 @@ const Info = styled.div`
   display: grid;
   grid-template-columns: 70px auto;
   margin-left: 0;
+  padding: 3px;
 `;
 const Location = styled.img`
   width: 30px;
 `;
 const InfoTitle = styled.span`
   color: #4f4f4f;
+  font-weight: 600;
 `;
 const InfoContent = styled.span`
   color: #272727;
@@ -105,39 +117,51 @@ const InfoContent = styled.span`
 
 /// ANCHOR Three
 const SvgContainer = styled.div`
-  margin: 0;
   position: relative;
-  left: -1.5rem;
-  display: flex;
-  justify-content: cener;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  justify-content: center;
   align-items: center;
+  margin-top: 20px;
+  right: 30px;
+  top: 5px;
+`;
+
+const ContentFigure = styled.img`
+  height: 60px;
 `;
 
 const SvgOneContainer = styled.div`
   display: flex;
-  padding: 0 1.4rem 0 1.4rem;
-  border-right: 2px solid black;
   flex-direction: column;
+  padding: 0 1.4rem 0 1.4rem;
+  border-right: 2px solid #bfbfbf;
+  justify-content: center;
   align-items: center;
 `;
 const SvgLastContainer = styled.div`
   display: flex;
-  padding: 0 0 0 1.4rem;
+
   flex-direction: column;
   align-items: center;
 `;
 
-const H4 = styled.h4`
-  font-size: 18px;
-  margin: 0 0 0 0;
+const H4 = styled.span`
+  font-size: 16px;
+  margin: auto;
+  padding: 1px;
+  font-weight: 500;
 `;
 const SvgInfo = styled.span`
-  margin: 1rem 0 0 0;
-  font-size: 15px;
+  margin: auto;
+  font-size: 16px;
+  padding: 10px 7px;
+  font-weight: 600;
 `;
 
 const TagContainer = styled.div`
   margin-left: 0;
+  margin-top: 10px;
 `;
 
 //////
@@ -151,7 +175,8 @@ const SlideContainer = styled.div`
 `;
 
 const SlideMaincontainer = styled.div`
-  width: 700px;
+  max-width: 700px;
+  width: 90%;
   position: relative;
   background-size: cover;
 `;
@@ -166,7 +191,8 @@ const SlickSlide = styled.div`
 `;
 
 const Image = styled.img`
-  width: 550px;
+  max-width: 600px;
+  width: 100%;
   height: 400px;
   object-fit: cover;
   border-radius: 8px;
@@ -175,14 +201,16 @@ const Image = styled.img`
 `;
 
 const Thumbnailcontainer = styled.div`
-  margin-top: 2rem;
-  height: auto;
-  width: 550px;
+  margin: 30px auto auto auto;
+  height: 120px;
+  max-width: 580px;
+  width: 100%;
   position: relative;
-  right: 10px;
-  overflow-x: scroll;
-
+  overflow-y: scroll;
   white-space: nowrap;
+  /* @media (max-width: 1400px) {
+    margin-right: 12%;
+  } */
 `;
 
 const ThumbSlickSlide = styled.div`
@@ -202,6 +230,9 @@ const ThumbnailImg = styled.img`
   border-radius: 4px;
   box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
     0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+  padding-left: 10px;
+  @media (max-width: 1400px) {
+  }
 `;
 const Divide = styled.div`
   border-left: 1px solid #cccccc;
@@ -216,28 +247,41 @@ const Divide = styled.div`
 `;
 
 const ContentHeader = (props) => {
+  console.log(props);
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
   const [slider2, setSlider2] = useState(null);
+  const [cafeImg, setCafeImg] = useState(
+    !props.currentCafe ? [blank] : props.currentCafe.cafeImg
+  );
   let cafeid = !props.currentCafe ? '' : props.currentCafe.cafeid;
   let cafeTag = !props.currentCafe ? '' : props.currentCafe.cafeTag;
   let cafeName = !props.currentCafe ? '' : props.currentCafe.cafeName;
   let cafeAddress = !props.currentCafe ? '' : props.currentCafe.cafeAddress;
   let addressname = !props.currentCafe ? '' : props.currentCafe.addressname;
-  let cafeImg = !props.currentCafe ? '' : props.currentCafe.cafeImg;
   let cafePhoneNumber = !props.currentCafe
     ? ''
     : props.currentCafe.cafePhoneNumber;
   let cafeDetail = !props.currentCafe ? '' : props.currentCafe.cafeDetail;
   let cafeTable = !props.currentCafe ? '' : props.currentCafe.cafeTable;
   let Americano = !props.currentCafe ? '' : props.currentCafe.Americano;
-
+  let holiday = !props.currentCafe ? '' : props.currentCafe.holiday;
   useEffect(() => {
     setNav1(slider1);
     setNav2(slider2);
-  });
-
+  }, []);
+  useEffect(() => {
+    if (props.comment) {
+      let temp = props.currentCafe.cafeImg;
+      for (let commentObj of props.comment) {
+        if (!!commentObj.userImg) {
+          temp = temp.concat(commentObj.userImg);
+        }
+      }
+      setCafeImg(temp);
+    }
+  }, [props.comment?.length]);
   const settingsMain = {
     centerMode: true,
     slidesToShow: 1,
@@ -246,7 +290,7 @@ const ContentHeader = (props) => {
     fade: true,
     dots: true,
     autoplay: true,
-    centerPadding: '70px',
+    centerPadding: '50px',
     speed: 1000,
   };
 
@@ -256,16 +300,12 @@ const ContentHeader = (props) => {
     variableWidth: true,
   };
 
-  // const cardArr = props.cardArr ? props.cardArr : cafes;
-
-  //console.log('==================current>> :', current);
-
   return (
     <>
       {/* <MainImgCover />
       <MainImage style={{ backgroundImage: `url(${cafeImg[0]})` }} /> */}
       <Detail>
-        <div></div>
+        <FakeDiv></FakeDiv>
         <DescribeContainer>
           <div />
           <Header>
@@ -290,43 +330,36 @@ const ContentHeader = (props) => {
           </InfoAdress>
           <Info>
             <InfoTitle>연락처</InfoTitle>
-            <InfoContent>{cafePhoneNumber ? cafePhoneNumber : ''}</InfoContent>
+            <InfoContent>
+              {cafePhoneNumber ? cafePhoneNumber : '준비 중입니다.'}
+            </InfoContent>
           </Info>
           <Info>
-            <InfoTitle>안녕</InfoTitle>
-            <InfoContent>나는 텍스트야</InfoContent>
+            <InfoTitle>휴일</InfoTitle>
+            <InfoContent>{holiday ? holiday : '준비 중입니다.'}</InfoContent>
           </Info>
           <SvgContainer>
-            <div></div>
             <SvgOneContainer>
-              <Table />
+              <ContentFigure src={Table}></ContentFigure>
               <SvgInfo>좌석</SvgInfo>
-              <H4>{cafeTable ? cafeTable : '없어'}</H4>
+              <H4>{cafeTable ? cafeTable : '정보없음'}</H4>
             </SvgOneContainer>
             <SvgOneContainer>
-              <Cup />
+              <ContentFigure src={Cup}></ContentFigure>
               <SvgInfo>아메리카노</SvgInfo>
-              <H4>{Americano ? Americano : '없어'}</H4>
+              <H4>{Americano ? Americano : '정보없음'}</H4>
             </SvgOneContainer>
             <SvgLastContainer>
-              <Time />
+              <ContentFigure src={Time}></ContentFigure>
               <SvgInfo>영업시간</SvgInfo>
-              <H4>{cafeDetail ? cafeDetail : '없어'} </H4>
+              <H4>{cafeDetail ? cafeDetail : '정보없음'} </H4>
             </SvgLastContainer>
-            <div></div>
           </SvgContainer>
 
           <TagContainer className="tagBox">
             {cafeTag
               ? cafeTag.map((el) => {
-                  return (
-                    <Tag
-                      isButton={true}
-                      color="#ffffff"
-                      isSmall={true}
-                      tagName={el}
-                    />
-                  );
+                  return <Tag color="#ffffff" isSmall={true} tagName={el} />;
                 })
               : ''}
           </TagContainer>
@@ -377,7 +410,7 @@ const ContentHeader = (props) => {
             </Slider>
           </Thumbnailcontainer>
         </SlideContainer>
-        <div></div>
+        <FakeDiv></FakeDiv>
       </Detail>
     </>
   );

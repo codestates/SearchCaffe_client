@@ -7,7 +7,7 @@ import { authService, dbService } from '../../firebase/mainbase';
 import { Link } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
 import { useHistory } from 'react-router-dom';
-import logo from './logo.png';
+import logo from './navLogo.png';
 import styled from 'styled-components';
 const LogOut = styled.span`
   margin-left: 30px;
@@ -15,7 +15,10 @@ const LogOut = styled.span`
 `;
 
 const LogoImg = styled.img`
-  width: 80px;
+  height: 35px;
+`;
+const NavStyle = styled.div`
+  z-index: 4;
 `;
 
 const Nav = ({ state, userHandler }) => {
@@ -32,7 +35,6 @@ const Nav = ({ state, userHandler }) => {
         const checkDB = await dbService.collection('users').doc(user.uid).get();
         const data = checkDB.data();
         userHandler({ ...data });
-        console.log('worowo');
       } else {
         setIsLogin(false);
       }
@@ -60,7 +62,7 @@ const Nav = ({ state, userHandler }) => {
     // document.body.style.overflow = 'unset'; // 스크롤 고정 해제
   };
   return (
-    <>
+    <NavStyle>
       <SignIn
         show={showSignin}
         handleClose={closeSignin}
@@ -90,7 +92,7 @@ const Nav = ({ state, userHandler }) => {
           )}
         </div>
       </div>
-    </>
+    </NavStyle>
   );
 };
 

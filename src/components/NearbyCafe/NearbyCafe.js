@@ -19,6 +19,16 @@ const NearbyCafeStyle = styled.div`
   height: auto;
   margin: 3rem 0 0 5px;
   background-color: #fafafa;
+  @media (max-width: 1400px) {
+    margin: 3rem auto auto auto;
+    width: 93.5%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+  @media (max-width: 1120px) {
+    flex-direction: column;
+  }
 `;
 
 const CafeList = styled.li`
@@ -59,7 +69,7 @@ const NearbyCafe = (state) => {
         .limit(4)
         .onSnapshot((snapshot) => {
           let cafes = snapshot.docs.map((doc) => doc.data());
-          console.log(cafes);
+
           setNearbyCafe(cafes);
         });
     }
@@ -72,17 +82,19 @@ const NearbyCafe = (state) => {
       <ul className="cafe-list">
         <h3 className="cafe-list-title">주변 카페 추천</h3>
         {nearbyCafe.map((cafe, index) => (
-          <LinkContent key={index} to={`/content/${cafe.id}`}>
-            <Cover id={cafe.id}></Cover>
-            <CafeList className="cafe">
-              <CafeImage src={cafe.cafeImg} />
+          <div className="cafe-link">
+            <LinkContent key={index} to={`/content/${cafe.id}`}>
+              <Cover id={cafe.id}></Cover>
+              <CafeList className="cafe">
+                <CafeImage src={cafe.cafeImg} />
 
-              <div className="cafe-info">
-                <div className="cafe-name">{cafe.cafeName}</div>
-                <div className="cafe-address">주소 : {cafe.cafeAddress}</div>
-              </div>
-            </CafeList>
-          </LinkContent>
+                <div className="cafe-info">
+                  <div className="cafe-name">{cafe.cafeName}</div>
+                  <div className="cafe-address">주소 : {cafe.cafeAddress}</div>
+                </div>
+              </CafeList>
+            </LinkContent>
+          </div>
         ))}
       </ul>
     </NearbyCafeStyle>

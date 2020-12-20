@@ -9,6 +9,7 @@ import { dbService } from '../../../firebase/mainbase';
 import { Link } from 'react-router-dom';
 import CardSkeleton from '../Card/CardSkeleton';
 import Fade from 'react-reveal/Fade';
+import { noAuto } from '@fortawesome/fontawesome-svg-core';
 
 // props
 // cafeImage:? 카페 대표 이미지
@@ -17,17 +18,18 @@ import Fade from 'react-reveal/Fade';
 // cafeTag:array - 카페 태그 배열
 
 const CardStyle = styled.span`
-  width: 345px;
-  display: inline-block; // inline-block => block으로 바꿨더니 해결
+  width: ${(props) => (props.inMypage ? '320px' : '345px')};
+  display: inline-block;
   break-inside: avoid-column;
   box-shadow: 1px 3px 3px rgba(34, 25, 25, 0.4);
-  margin: 13px 20px 10px 10px;
+  margin: 13px 10px 10px 10px;
   padding: 8px;
   padding-bottom: 10px;
   font-size: 1rem;
   border-radius: 10px;
   background-color: ${(props) => (props.inMypage ? '#eaeaea' : '#ffffff')};
-
+  height: ${(props) =>
+    props.isMain ? '410px' : props.inMypage ? '370px' : 'auto'};
   transition: opacity 0.4s ease-in-out;
   transition: 0.3s;
   :hover {
@@ -60,57 +62,57 @@ const CardStyle = styled.span`
   }
 `;
 
-const CardStyleInMain = styled(CardStyle)`
-  height: 470px;
-`;
-
 const CardImg = styled.img`
-  width: 345px;
+  width: ${(props) => (props.inMypage ? '320px' : '345px')};
   max-height: 400px;
-  height: ${(props) => (!props.inMypage ? 'auto' : '330px')};
-  min-height: 250px;
-
+  height: ${(props) =>
+    props.isMain ? '250px' : props.inMypage ? '230px' : 'auto'};
+  min-height: 200px;
+  object-fit: ${(props) => (props.isMain | props.inMypage ? 'cover' : '')};
   border-bottom: 1px solid #dfdfdf;
   padding-bottom: 13px;
   margin-bottom: 5px;
 `;
 
-const CardImgInMain = styled(CardImg)`
-  height: 250px;
-  object-fit: cover;
-`;
-
 const CardName = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   padding-left: 15px;
-  margin: 10px 0;
+  margin: 5px 0;
 `;
 
 const CardAddress = styled.div`
-  margin: 10px 0;
+  margin: 5px 0;
   padding-left: 15px;
+  white-space: pre-wrap;
 `;
 const CardLocationImg = styled.img`
   position: relative;
-  top: 3px;
-  width: 20px;
-  height: 20px;
+  top: ${(props) => (props.inMypage ? '' : '4px')}
+  width: 17px;
+  height: 17px;
 `;
 const CardAddressDetail = styled.span`
-  margin: 10px 0;
+  display: inline-block;
+  position: ${(props) => (props.inMypage ? 'absolute' : 'relative')};
+  width: 280px;
+  margin: 0px 0;
   padding-right: 10px;
   padding-left: 2px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 `;
 
 const CardTags = styled.div`
-  margin: 10px 0;
+  margin: 5px 0;
   padding-left: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const ScopeContain = styled.div`
-  margin: 10px 0;
-  padding-left: 15px;
+  margin: 6px 0;
+  padding-left: 20px;
+  margin-top: ${(props) => (props.inMypage ? '17px' : '')};
 `;
 
 const LinkContent = styled(Link)`
@@ -127,67 +129,14 @@ const FadeStyle = styled(Fade)`
 `;
 
 const Card = (props) => {
-  // console.log(props);
-  // const addCurrentCafe = async () => {
-  //   let currnetCafeObj = { ...props };
-  //   let cafeCommentArr = [];
-  //   currnetCafeObj['cafeid'] = props.cafeid;
-  //   await props.currentCafe(currnetCafeObj);
-  //   try {
-  //     const data = await dbService.collection('CafeComment').get();
-  //     data.forEach((doc) => {
-  //       if (props.cafeid === doc.data().cafeId) {
-  //         cafeCommentArr.push(doc.data());
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.log('error' + error);
-  //   }
-  //   await props.currentCafeComment(cafeCommentArr);
-  // };
-
   if (!props.cafeid & (props.cafeid !== 0)) {
     return <CardSkeleton size={props.skeletonSize}></CardSkeleton>;
-  }
-
-  if (props.isMain) {
-    return (
-      <CardStyleInMain
-        inMypage={props.inMypage}
-        cafeid={props.cafeid}
-        tag={props.cafeTag}
-      >
-        <LinkContent to={`/content/${props.cafeid}`}>
-          <CardImgInMain
-            inMypage={props.inMypage}
-            src={props.cafeImage || defaultImg}
-          />
-          <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
-          <CardAddress>
-            <CardLocationImg src={LocationImg}></CardLocationImg>
-            <CardAddressDetail>
-              {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
-            </CardAddressDetail>
-          </CardAddress>
-          <ScopeContain>
-            <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
-          </ScopeContain>
-
-          <CardTags>
-            {props.cafeTag
-              ? props.cafeTag.map((tag) => (
-                  <Tag key={tag} isSmall={true} tagName={tag}></Tag>
-                ))
-              : ''}
-          </CardTags>
-        </LinkContent>
-      </CardStyleInMain>
-    );
   }
 
   return (
     <CardStyle
       inMypage={props.inMypage}
+      isMain={props.isMain}
       cafeid={props.cafeid}
       tag={props.cafeTag}
     >
@@ -195,26 +144,30 @@ const Card = (props) => {
         <LinkContent to={`/content/${props.cafeid}`}>
           <CardImg
             inMypage={props.inMypage}
+            isMain={props.isMain}
             src={props.cafeImage || defaultImg}
           />
           <CardName>{props.cafeName ? props.cafeName : '제목'}</CardName>
-          <CardAddress>
+          <CardAddress inMypage={props.inMypage}>
             <CardLocationImg src={LocationImg}></CardLocationImg>
-            <CardAddressDetail>
+            <CardAddressDetail inMypage={props.inMypage}>
               {props.cafeAddress ? props.cafeAddress : '등록된 주소가 없습니다'}
             </CardAddressDetail>
           </CardAddress>
-          <ScopeContain>
-            <Scope isScope={true} size="20px" scope={props.cafeStar}></Scope>
+          <ScopeContain inMypage={props.inMypage}>
+            <Scope isScope={true} size="18px" scope={props.cafeStar}></Scope>
           </ScopeContain>
-
-          <CardTags>
-            {props.cafeTag
-              ? props.cafeTag.map((tag) => (
-                  <Tag key={tag} isSmall={true} tagName={tag}></Tag>
-                ))
-              : ''}
-          </CardTags>
+          {props.inMypage ? (
+            ''
+          ) : (
+            <CardTags>
+              {props.cafeTag
+                ? props.cafeTag.map((tag) => (
+                    <Tag key={tag} isSmall={true} tagName={tag}></Tag>
+                  ))
+                : ''}
+            </CardTags>
+          )}
         </LinkContent>
       </Fade>
     </CardStyle>

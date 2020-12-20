@@ -6,7 +6,6 @@ var geocoder = new kakao.maps.services.Geocoder();
 const setCafeInfo = () => {
   dbService.collection('CafeInformation').onSnapshot((snapshot) => {
     const cafeInfo = snapshot.docs.map((doc) => {
-      console.log(doc);
       if (!doc.data().addressname) {
         let keyword = doc.data().cafeName;
         let address = doc.data().cafeAddress;
@@ -23,7 +22,7 @@ const setCafeInfo = () => {
                   return cafe.road_address_name.includes(cafeAddr[i]);
                 });
               }
-              // console.log(filtered);
+
               geocoder.coord2Address(
                 filtered[0].x,
                 filtered[0].y,
@@ -31,8 +30,8 @@ const setCafeInfo = () => {
                   if (status === kakao.maps.services.Status.OK) {
                     // console.log(result[0]);
                     let address = result[0].address;
-                    console.log(address);
-                    console.log(doc.id);
+                    // console.log(address);
+                    // console.log(doc.id);
                     await dbService.doc(`CafeInformation/${doc.id}`).update({
                       addressname: address.address_name,
                       region_1depth: address.region_1depth_name,
@@ -50,7 +49,7 @@ const setCafeInfo = () => {
                 async (AddrResult, status) => {
                   if (status === kakao.maps.services.Status.OK) {
                     let address = AddrResult[0].address;
-                    console.log(address);
+                    // console.log(address);
                     await dbService.doc(`CafeInformation/${doc.id}`).update({
                       addressname: address.address_name,
                       region_1depth: address.region_1depth_name,

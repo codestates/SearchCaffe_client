@@ -1,7 +1,30 @@
 body {
-  background-color: #ebebeb;
-  font-family: 'Noto Sans KR', sans-serif;
-
+  background-color: #efefef;
+  font-family: 'Nanum Gothic', 'Noto Sans KR', sans-serif;
+  color: #424242;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  background-color: #efefef;
+}
+::-webkit-scrollbar-track {
+  width: #aaaaaa;
+  opacity: 1;
+}
+::-webkit-scrollbar-thumb {
+  /*  스크롤  */
+  background-color: #998d8a;
+  border-radius: 30px;
+}
+::-webkit-scrollbar-thumb:hover {
+  /*  스크롤  */
+  background-color: #796d6a;
+  border-radius: 30px;
+}
+@font-face {
+  font-family: 'Nanum Gothic';
+  src: url('./styles/NanumGothic-Regular.ttf');
 }
 
 .App-logo {

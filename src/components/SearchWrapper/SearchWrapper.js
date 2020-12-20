@@ -10,7 +10,7 @@ import Fade from 'react-reveal/Fade';
 const WrapperTitle = styled.div`
   margin-top: 40px;
   margin-bottom: 20px;
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   font-weight: bold;
 `;
 const SearchWrapperStyle = styled.div`
@@ -87,6 +87,12 @@ const SearchWrapper = (props) => {
               color="#ffffff"
               tagName={tagnames['테이크 아웃 전문']}
             ></Tag>
+            <Tag
+              isButton={true}
+              handleTags={handleTags}
+              color="#ffffff"
+              tagName={tagnames['장애 시설']}
+            ></Tag>
           </TagWrapperStyleDiv>
           <TagWrapperStyleDiv>
             <Tag
@@ -123,7 +129,7 @@ const SearchWrapper = (props) => {
               isButton={true}
               handleTags={handleTags}
               color="#ffffff"
-              tagName={tagnames['바다가 보이는']}
+              tagName={tagnames['24시간']}
             ></Tag>
           </TagWrapperStyleDiv>
           <TagWrapperStyleDiv>

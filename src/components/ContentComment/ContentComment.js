@@ -2,11 +2,12 @@ import Comment from '../utils/Comment/index';
 import CommentWrite from '../utils/CommentWrite/index';
 import { cafeComment } from '../../cafeInfos';
 import styled from 'styled-components';
+import { ImageModal } from '../utils/ImageModal/ImageModal';
 import { useState, useEffect, useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { actionCreators } from '../../reducer/store';
 import Button from '../utils/Button/Button';
-import reviewImg from './review.png';
+import reviewImg from './review.svg';
 import { act } from 'react-dom/cjs/react-dom-test-utils.production.min';
 import { dbService } from '../../firebase/mainbase';
 import SignIn from '../Signin/SignIn';
@@ -16,7 +17,7 @@ import Fade from 'react-reveal/Fade';
 const Detail3 = styled.div`
   width: 1000px;
   height: auto;
-  min-height: 400px;
+  min-height: 600px;
   margin: 3rem 0 0 0;
   max-width: 1200px;
   background: #fafafa;
@@ -26,6 +27,10 @@ const Detail3 = styled.div`
   padding-bottom: 24px;
   border-bottom: 1px solid #e9ecef;
   z-index: 1;
+  @media (max-width: 1400px) {
+    margin: 3rem auto auto auto;
+    width: 88%;
+  }
 `;
 const BackGroundCover = styled.div`
   position: fixed;
@@ -35,7 +40,7 @@ const BackGroundCover = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(220, 220, 220, 0.94);
-  z-index: 1;
+  z-index: 5;
 `;
 
 const ButtonStyle = styled.span`
@@ -93,27 +98,34 @@ const ContentComment = ({
   currentCafe,
   handleUserMyComment,
 }) => {
-  console.log('contentCommentsfsdf', currentCafe);
   const [commentModal, setModal] = useState(false);
   const [commentArr, setCommentArr] = useState([]);
   const [showSignin, setShowSignin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [isLogin, setIsLogin] = useState(!!user);
+  const [currentImg, setCurrentImg] = useState('');
+  const [currentImageModal, setImageModal] = useState(false);
+  const [beforeModify, setBeforeModify] = useState(false);
+  const handleImageEnlarge = (image) => {
+    setCurrentImg(image);
+    setImageModal((pres) => !pres);
+  };
 
+  const handleUnEnlarge = () => {
+    setImageModal((pres) => !pres);
+  };
   useEffect(() => {
-    console.log('work!');
-    if (user & currentCafe) {
+    if (!!user & !!currentCafe) {
       let filtered = comment?.filter(
         (com) => com.username === user.displayName
       );
       let userCommentArray = user.comment ? user.comment : [];
-      console.log(filtered);
+
       if (
         (filtered?.length === 0) &
         (userCommentArray.indexOf(currentCafe.cafeName) !== -1)
       ) {
         let tempComment = user.comment ? user.comment : [];
-        console.log('removing....');
         tempComment.splice(user.comment.indexOf(currentCafe.cafeName), 1);
         handleUserMyComment(tempComment);
         dbService.collection('users').doc(user.uid).update({
@@ -121,7 +133,15 @@ const ContentComment = ({
         });
       }
     }
-  }, [comment?.length]);
+  }, [comment]);
+
+  useEffect(() => {
+    if (user) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, [!user]);
   // const comment =  useSelector(async(state) => await comment);
   const handleModal = () => {
     setModal((pres) => !pres);
@@ -141,10 +161,18 @@ const ContentComment = ({
   };
   return (
     <Detail3>
+      {currentImageModal ? (
+        <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
+      ) : (
+        ''
+      )}
       {commentModal ? (
         <>
           <BackGroundCover>
-            <CommentWrite handleModal={handleModal}></CommentWrite>
+            <CommentWrite
+              handleModal={handleModal}
+              beforeModify={beforeModify}
+            ></CommentWrite>
           </BackGroundCover>
         </>
       ) : (
@@ -175,10 +203,12 @@ const ContentComment = ({
             fontColor="#333333"
             hoverFontColor="#8a705a"
             noBorder={true}
-            marginLeft="5px"
-            imgSize="50px"
-            fontSize="16px"
+            marginLeft="6px"
+            imgSize="40px"
+            fontSize="13px"
             flexDirection="column"
+            iconRight="1px"
+            iconTop="-1px"
           ></Button>
         </ButtonStyleReview>
       </div>
@@ -192,7 +222,13 @@ const ContentComment = ({
           comment.map((userComment, index) => {
             return (
               <Fade top collpase>
-                <Comment key={index} userComment={userComment}></Comment>
+                <Comment
+                  handleImageEnlarge={handleImageEnlarge}
+                  key={index}
+                  userComment={userComment}
+                  setCommentModal={setModal}
+                  setBeforeModify={setBeforeModify}
+                ></Comment>
               </Fade>
             );
           })
@@ -203,7 +239,6 @@ const ContentComment = ({
   );
 };
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return { ...state, ownProps };
 }
 

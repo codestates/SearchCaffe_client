@@ -8,12 +8,11 @@ const Map = ({ cafeInfo }) => {
       const callback = (result, status) => {
         // 카카오맵에서 장소를 검색한 후 실행
         if (status === kakao.maps.services.Status.OK) {
-          console.log(result.length);
           let position, text;
           if (result.length > 1) {
             let filtered = [],
               cafeAddr = cafeInfo.cafeAddress.split(' ');
-            console.log(cafeAddr);
+
             for (let i = 0; i < cafeAddr.length; i++) {
               if (filtered.length === 1) {
                 break;
@@ -48,7 +47,7 @@ const Map = ({ cafeInfo }) => {
     }
   }, cafeInfo);
 
-  return <div id="staticMap" style={{ width: '400px', height: '300px' }}></div>;
+  return <div id="staticMap"></div>;
 };
 
 export default Map;

@@ -26,11 +26,27 @@ const CommentStyle = styled.div`
     transition: 0.2s;
   }
 `;
-const UserAndScope = styled.div`
-  display: inline;
-  padding-left: 5%;
+const ChangeComment = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  right: 90px;
+  bottom: 20px;
+`;
 
-  display: relative;
+const TimeStamp = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.85rem;
+  position: relative;
+`;
+
+const UserAndScope = styled.div`
+  display: grid;
+  grid-template-columns: 0.5fr 4.5fr 3fr 3fr 1fr 1fr;
+  align-items: center;
+  padding-left: 5%;
+  justify-content: center;
 `;
 
 const UserProfile = styled.img`
@@ -39,17 +55,20 @@ const UserProfile = styled.img`
   border-radius: 50%;
   margin-right: 15px;
   position: relative;
-  top: 10px;
+  border: 1px solid #555555;
 `;
 
 const DeleteButton = styled.button`
-  display: inline-block;
+  /* display: inline-block;
   text-align: center;
   text-decoration: none;
-  position: relative;
+  position: absolute;
+  margin-left: 10%;
+  
+   */
   border: none;
   background-color: inherit;
-  color: #555555;
+  color: #222222;
   transition: 0.2s;
   cursor: pointer;
   :hover {
@@ -64,17 +83,15 @@ const DeleteButton = styled.button`
     transition: 0.2s;
   }
 `;
-
 const ModifyButton = styled.button`
-  display: inline-block;
-  margin-left: 30%;
-  margin-right: 7px;
-  text-align: center;
+  /* display: inline-block;
+  margin-left: 14%;
   text-decoration: none;
-  position: relative;
+  position: absolute;
+  */
   border: none;
   background-color: inherit;
-  color: #555555;
+  color: #222222;
   transition: 0.2s;
   cursor: pointer;
   :hover {
@@ -90,7 +107,10 @@ const ModifyButton = styled.button`
   }
 `;
 
-const UserName = styled.span``;
+const UserName = styled.span`
+  justify-items: start;
+  margin-left: 1%;
+`;
 const ScopeContainer = styled.span`
   margin-left: 30px;
   position: relative;
@@ -104,11 +124,13 @@ const CommentInput = styled.div`
   margin-top: 10px;
   margin-left: 8%;
   padding-left: 2%;
+  padding-top: 1%;
   width: 80%;
   height: auto;
   min-height: 50px;
-
-  background-color: #ffffff;
+  word-break: break-all;
+  background-color: #f2f2f2;
+  border-radius: 10px;
 `;
 const CommentImages = styled.div`
   margin-top: 13px;
@@ -166,7 +188,7 @@ const BackGroundCover = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(220, 220, 220, 0.94);
-  z-index: 1;
+  z-index: 5;
 `;
 
 const Detail3 = styled.div`
@@ -186,12 +208,19 @@ const Detail3 = styled.div`
   border-bottom: 1px solid #e9ecef;
 `;
 
-const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
-  const [commentModal, setCommentModal] = useState(false);
+const Comment = ({
+  handleImageEnlarge,
+  userComment,
+  currentCafe,
+  user,
+  currentCafeComment,
+  setCommentModal,
+  setBeforeModify,
+}) => {
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-  const [beforeModify, setBeforeModify] = useState();
+
   const [userProfileImg, setUserProfileImg] = useState(defaultUser);
 
   useEffect(() => {
@@ -220,14 +249,6 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
   }, []);
   const handleModal = () => {
     setCommentModal((pres) => !pres);
-  };
-
-  const handleImageEnlarge = (index) => {
-    setCurrentImg(images[index]);
-    setModal((pres) => !pres);
-  };
-  const handleUnEnlarge = () => {
-    setModal((pres) => !pres);
   };
 
   const deleteComment = async () => {
@@ -270,37 +291,39 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
       console.error(`can't find ModifyComment:` + error);
     }
   };
-
+  const returnHistoryTime = (time) => {
+    let beforeTime = new Date().getTime() - time;
+    beforeTime = parseInt(beforeTime / 1000);
+    if (beforeTime / 60 < 1) {
+      return '1분 전';
+    } else if (1 <= beforeTime / 60 < 60) {
+      return `${parseInt(beforeTime / 60)}분 전`;
+    } else if (1 <= beforeTime / 60 / 60 < 24) {
+      return `${parseInt(beforeTime / 60 / 60)}시간 전`;
+    } else if (1 <= beforeTime / 60 / 60 / 24 < 31) {
+      return `${parseInt(beforeTime / 60 / 60)}일 전`;
+    } else if (1 <= beforeTime / 60 / 60 / 24 / 31 < 1) {
+      return `${parseInt(beforeTime / 60 / 60)}달 전`;
+    } else if (1 <= beforeTime / 60 / 60 / 24 / 31 / 12 < 1) {
+      return `${parseInt(beforeTime / 60 / 60)}년 전`;
+    }
+  };
   return (
-    <CommentStyle>
-      <UserAndScope>
-        <UserProfile src={userProfileImg}></UserProfile>
-        <UserName>
-          {userComment.username ? userComment.username : '게스트'}
-        </UserName>
-        {commentModal ? (
-          <>
-            <Detail3>
-              <BackGroundCover>
-                <CommentWrite
-                  onChange={commentModal}
-                  beforeModify={beforeModify}
-                  handleModal={handleModal}
-                ></CommentWrite>
-              </BackGroundCover>
-            </Detail3>
-          </>
-        ) : (
-          ''
-        )}
-        <ScopeContainer>
-          <Scope
-            isScope={true}
-            size="20px"
-            scope={userComment.userStar ? userComment.userStar : -1}
-          ></Scope>
-        </ScopeContainer>
-        <span>
+    <>
+      {/* {commentModal ? (
+        <>
+          <BackGroundCover>
+            <CommentWrite
+              beforeModify={beforeModify}
+              handleModal={handleModal}
+            ></CommentWrite>
+          </BackGroundCover>
+        </>
+      ) : (
+        ''
+      )} */}
+      <CommentStyle>
+        <ChangeComment>
           {!user ? (
             ''
           ) : userComment.username === user.displayName ? (
@@ -310,8 +333,7 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
           ) : (
             ''
           )}
-        </span>
-        <span>
+
           {!user ? (
             ''
           ) : userComment.username === user.displayName ? (
@@ -321,53 +343,73 @@ const Comment = ({ userComment, currentCafe, user, currentCafeComment }) => {
           ) : (
             ''
           )}
-        </span>
-      </UserAndScope>
+        </ChangeComment>
 
-      <TagWrapper>
-        {userComment.userTag
-          ? userComment.userTag.map((tag) => {
-              return (
-                <Tag key={tag} tagName={tag} isSmall={true} color="white"></Tag>
-              );
-            })
-          : ''}
-      </TagWrapper>
-      {userComment.userComment ? (
-        <CommentInput>
-          <span>{userComment.userComment}</span>
-        </CommentInput>
-      ) : (
-        ''
-      )}
+        <UserAndScope>
+          <UserProfile src={userProfileImg}></UserProfile>
+          <UserName>
+            {userComment.username ? userComment.username : '게스트'}
+          </UserName>
 
-      <CommentImages>
-        {userComment.userImg
-          ? userComment.userImg.map((img, index) => {
-              return (
-                <Uploaded key={index}>
-                  <UploadedImgCover>
-                    <EnlargeImg
-                      data-index={index}
-                      onClick={(e) => {
-                        handleImageEnlarge(e.target.dataset.index);
-                      }}
-                      src={enlargeImg}
-                    ></EnlargeImg>
-                  </UploadedImgCover>
-                  <UploadedImg src={img}></UploadedImg>
-                </Uploaded>
-              );
-            })
-          : ''}
-      </CommentImages>
-      {imageModal ? (
-        <ImageModal image={currentImg} unEnlarge={handleUnEnlarge}></ImageModal>
-      ) : (
-        ''
-      )}
-      <Divide></Divide>
-    </CommentStyle>
+          <ScopeContainer>
+            <Scope
+              isScope={true}
+              size="20px"
+              scope={userComment.userStar ? userComment.userStar : -1}
+            ></Scope>
+          </ScopeContainer>
+
+          <TimeStamp>
+            {userComment.commentTime
+              ? returnHistoryTime(userComment.commentTime)
+              : ''}
+          </TimeStamp>
+        </UserAndScope>
+
+        <TagWrapper>
+          {userComment.userTag
+            ? userComment.userTag.map((tag) => {
+                return (
+                  <Tag
+                    key={tag}
+                    tagName={tag}
+                    isSmall={true}
+                    color="white"
+                  ></Tag>
+                );
+              })
+            : ''}
+        </TagWrapper>
+        {userComment.userComment ? (
+          <CommentInput>{userComment.userComment}</CommentInput>
+        ) : (
+          ''
+        )}
+
+        <CommentImages>
+          {userComment.userImg
+            ? userComment.userImg.map((img, index) => {
+                return (
+                  <Uploaded key={index}>
+                    <UploadedImgCover>
+                      <EnlargeImg
+                        data-index={index}
+                        onClick={(e) => {
+                          handleImageEnlarge(images[e.target.dataset.index]);
+                        }}
+                        src={enlargeImg}
+                      ></EnlargeImg>
+                    </UploadedImgCover>
+                    <UploadedImg src={img}></UploadedImg>
+                  </Uploaded>
+                );
+              })
+            : ''}
+        </CommentImages>
+
+        <Divide></Divide>
+      </CommentStyle>
+    </>
   );
 };
 

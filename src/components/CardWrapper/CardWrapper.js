@@ -46,34 +46,6 @@ const WrapperTitle = styled.div`
   font-weight: bold;
   text-align: center;
 `;
-const CardWrapperStyle = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  width: 95%;
-  max-width: 1130px;
-  margin: 20px auto;
-  background-color: #ebebeb;
-
-  /* &.appearingCard-enter {
-    opacity: 0;
-  }
-  &.appearingCard-enter-active {
-    opacity: 1;
-  }
-  &.appearingCard-exit {
-    opacity: 1;
-  }
-  &.appearingCard-exit-active {
-    opacity: 0;
-  }
-  &.appearingCard-appear {
-    opacity: 1;
-  }
-  &.appearingCard-appear-active {
-    opacity: 0;
-  } */
-`;
 
 const NoSearchResultContainer = styled.div`
   margin: auto;
@@ -135,7 +107,7 @@ const CardWrapper = ({ state, cardList }) => {
         });
       })
       .catch(function (error) {
-        console.log('Error getting documents: ', error);
+        // console.log('Error getting documents: ', error);
         cardList(cafes);
         setCards(cafes);
       })
@@ -156,13 +128,13 @@ const CardWrapper = ({ state, cardList }) => {
         cozyCafe.length > 6
           ? (cozyCafe = cozyCafe.slice(0, 6))
           : cozyCafe.length > 3
-            ? cozyCafe.slice(0, 3)
-            : (cozyCafe = []);
+          ? cozyCafe.slice(0, 3)
+          : (cozyCafe = []);
         goodForTask.length > 6
           ? (goodForTask = goodForTask.slice(0, 6))
           : goodForTask.length > 3
-            ? goodForTask.slice(0, 3)
-            : (goodForTask = []);
+          ? goodForTask.slice(0, 3)
+          : (goodForTask = []);
 
         setCozyCafe(cozyCafe);
         setGoodForTask(goodForTask);
@@ -179,8 +151,6 @@ const CardWrapper = ({ state, cardList }) => {
       let tags = state.tagArr ? state.tagArr : [];
       if (tags.includes('가까운')) {
         results = nearbyCafe;
-        console.log(results);
-        console.log(tags);
       }
 
       for (let tag of tags) {
@@ -192,7 +162,7 @@ const CardWrapper = ({ state, cardList }) => {
           return card.cafeTag.indexOf(tag) !== -1;
         });
       }
-      console.log(results);
+
       setCards(results);
     }
 
@@ -223,11 +193,8 @@ const CardWrapper = ({ state, cardList }) => {
   }, [state.keyword]);
 
   // NOTE 검색 결과 없음'
-  if (cards) {
-    if (
-      ((tags !== '') | (state?.keyword?.length !== '')) &
-      (cards?.length === 0)
-    ) {
+  if (!!cards) {
+    if ((!tags | !state?.keyword?.length) & (cards?.length === 0)) {
       return (
         <Fade>
           <>
@@ -236,12 +203,11 @@ const CardWrapper = ({ state, cardList }) => {
               <NoSearchResultImg src={noResultImg}></NoSearchResultImg>이런
               카페는 어떠신가요?
             </NoSearchResultTitle>
-            <CardWrapperStyle>
-              <Recommendation
-                isMain={true}
-                recommendation={isGoodForTask}
-              ></Recommendation>
-            </CardWrapperStyle>
+
+            <Recommendation
+              isMain={true}
+              recommendation={isGoodForTask}
+            ></Recommendation>
           </>
         </Fade>
       );
@@ -258,12 +224,10 @@ const CardWrapper = ({ state, cardList }) => {
         </WrapperTitle>
       </Fade>
       <Fade>
-        <CardWrapperStyle>
-          <Recommendation
-            isMain={true}
-            recommendation={isCozyCafe}
-          ></Recommendation>
-        </CardWrapperStyle>
+        <Recommendation
+          isMain={true}
+          recommendation={isCozyCafe}
+        ></Recommendation>
       </Fade>
       <Fade>
         <WrapperTitle>
@@ -273,12 +237,10 @@ const CardWrapper = ({ state, cardList }) => {
         </WrapperTitle>
       </Fade>
       <Fade>
-        <CardWrapperStyle>
-          <Recommendation
-            isMain={true}
-            recommendation={isGoodForTask}
-          ></Recommendation>
-        </CardWrapperStyle>
+        <Recommendation
+          isMain={true}
+          recommendation={isGoodForTask}
+        ></Recommendation>
       </Fade>
       {nearbyCafe.length !== 0 ? (
         <Fade>
@@ -288,45 +250,40 @@ const CardWrapper = ({ state, cardList }) => {
               <span>내 주변 카페</span>
               <WrapperLineLeft />
             </WrapperTitle>
-            <CardWrapperStyle>
-              <Recommendation
-                isMain={true}
-                recommendation={nearbyCafe}
-              ></Recommendation>
-            </CardWrapperStyle>
+
+            <Recommendation
+              isMain={true}
+              recommendation={nearbyCafe}
+            ></Recommendation>
           </>
         </Fade>
       ) : (
-          ''
-        )}
+        ''
+      )}
     </CardWrapperCover>
   ) : (
-      // NOTE 검색결과(키워드 또는 태그 => 아직은 둘 중 하나만 가능)
-      <CardWrapperCover>
+    // NOTE 검색결과(키워드 또는 태그 => 아직은 둘 중 하나만 가능)
+    <CardWrapperCover>
+      <Fade>
+        <WrapperTitle>
+          <WrapperLineRight />
+          <span>검색 결과</span>
+          <WrapperLineLeft />
+        </WrapperTitle>
+      </Fade>
+      <CSSTransition
+        in={true}
+        timeout={300}
+        classNames="appearingCard"
+        mountOnEnter
+        unmountOnExit
+      >
         <Fade>
-          <WrapperTitle>
-            <WrapperLineRight />
-            <span>검색 결과</span>
-            <WrapperLineLeft />
-          </WrapperTitle>
+          <Recommendation recommendation={cards}></Recommendation>
         </Fade>
-        <CSSTransition
-          in={true}
-          timeout={300}
-          classNames="appearingCard"
-          mountOnEnter
-          unmountOnExit
-        >
-          <Fade>
-            <CardWrapperStyle>
-              <TransitionGroup component={null}>
-                <Recommendation recommendation={cards}></Recommendation>
-              </TransitionGroup>
-            </CardWrapperStyle>
-          </Fade>
-        </CSSTransition>
-      </CardWrapperCover>
-    );
+      </CSSTransition>
+    </CardWrapperCover>
+  );
 };
 function mapStateToProps(state, ownProps) {
   return { state };
