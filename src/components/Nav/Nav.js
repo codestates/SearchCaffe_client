@@ -7,7 +7,7 @@ import { authService, dbService } from '../../firebase/mainbase';
 import { Link } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
 import { useHistory } from 'react-router-dom';
-import logo from './logo.png';
+import logo from './navLogo.png';
 import styled from 'styled-components';
 const LogOut = styled.span`
   margin-left: 30px;
@@ -15,7 +15,7 @@ const LogOut = styled.span`
 `;
 
 const LogoImg = styled.img`
-  width: 80px;
+  height: 35px;
 `;
 const NavStyle = styled.div`
   z-index: 4;

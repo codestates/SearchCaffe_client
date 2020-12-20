@@ -10,7 +10,7 @@ import Fade from 'react-reveal/Fade';
 const WrapperTitle = styled.div`
   margin-top: 40px;
   margin-bottom: 20px;
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   font-weight: bold;
 `;
 const SearchWrapperStyle = styled.div`

@@ -11,7 +11,7 @@ const CardWrapperStyle = styled.div`
   width: auto;
   max-width: 1200px;
   margin: 20px auto;
-  background-color: #ebebeb;
+  background-color: inherit;
 `;
 const CardColumn = styled.div``;
 

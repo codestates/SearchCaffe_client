@@ -25,7 +25,7 @@ const Detail = styled.div`
   width: 90%;
   max-width: 1424px;
   min-width: 600px;
-  height: 700px;
+  height: 660px;
   background: #fafafa;
   padding: 20px 20px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
@@ -61,13 +61,14 @@ const TittleWrap = styled.div`
   font-weight: bold;
 `;
 const Title = styled.span`
+  margin-bottom: 30px;
   padding: 5px;
   font-size: ${(props) =>
     props.cafeName ? 3 - props.cafeName.length * 0.07 + 'rem' : '2rem'};
 `;
 const ActionButtonWrap = styled.div`
   position: relative;
-  bottom: 0px;
+  bottom: 35px;
   right: 20px;
 `;
 const LikeCss = styled(Like)`
@@ -108,6 +109,7 @@ const Location = styled.img`
 `;
 const InfoTitle = styled.span`
   color: #4f4f4f;
+  font-weight: 600;
 `;
 const InfoContent = styled.span`
   color: #272727;
@@ -120,7 +122,7 @@ const SvgContainer = styled.div`
   grid-template-columns: 1fr 1fr 1.2fr;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  margin-top: 20px;
   right: 30px;
   top: 5px;
 `;
@@ -144,13 +146,17 @@ const SvgLastContainer = styled.div`
   align-items: center;
 `;
 
-const H4 = styled.h4`
-  font-size: 18px;
+const H4 = styled.span`
+  font-size: 16px;
   margin: auto;
+  padding: 1px;
+  font-weight: 500;
 `;
 const SvgInfo = styled.span`
   margin: auto;
-  font-size: 15px;
+  font-size: 16px;
+  padding: 10px 7px;
+  font-weight: 600;
 `;
 
 const TagContainer = styled.div`
@@ -185,7 +191,7 @@ const SlickSlide = styled.div`
 `;
 
 const Image = styled.img`
-  max-width: 550px;
+  max-width: 600px;
   width: 100%;
   height: 400px;
   object-fit: cover;
@@ -195,15 +201,16 @@ const Image = styled.img`
 `;
 
 const Thumbnailcontainer = styled.div`
-  margin-top: 2rem;
-  height: auto;
-  max-width: 550px;
-  width: 90%;
+  margin: 30px auto auto auto;
+  height: 120px;
+  max-width: 580px;
+  width: 100%;
   position: relative;
-  right: 10px;
-  overflow-x: scroll;
-
+  overflow-y: scroll;
   white-space: nowrap;
+  /* @media (max-width: 1400px) {
+    margin-right: 12%;
+  } */
 `;
 
 const ThumbSlickSlide = styled.div`
@@ -223,6 +230,9 @@ const ThumbnailImg = styled.img`
   border-radius: 4px;
   box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25),
     0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+  padding-left: 10px;
+  @media (max-width: 1400px) {
+  }
 `;
 const Divide = styled.div`
   border-left: 1px solid #cccccc;
@@ -237,16 +247,19 @@ const Divide = styled.div`
 `;
 
 const ContentHeader = (props) => {
+  console.log(props);
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
   const [slider2, setSlider2] = useState(null);
+  const [cafeImg, setCafeImg] = useState(
+    !props.currentCafe ? [blank] : props.currentCafe.cafeImg
+  );
   let cafeid = !props.currentCafe ? '' : props.currentCafe.cafeid;
   let cafeTag = !props.currentCafe ? '' : props.currentCafe.cafeTag;
   let cafeName = !props.currentCafe ? '' : props.currentCafe.cafeName;
   let cafeAddress = !props.currentCafe ? '' : props.currentCafe.cafeAddress;
   let addressname = !props.currentCafe ? '' : props.currentCafe.addressname;
-  let cafeImg = !props.currentCafe ? '' : props.currentCafe.cafeImg;
   let cafePhoneNumber = !props.currentCafe
     ? ''
     : props.currentCafe.cafePhoneNumber;
@@ -258,7 +271,17 @@ const ContentHeader = (props) => {
     setNav1(slider1);
     setNav2(slider2);
   }, []);
-
+  useEffect(() => {
+    if (props.comment) {
+      let temp = props.currentCafe.cafeImg;
+      for (let commentObj of props.comment) {
+        if (!!commentObj.userImg) {
+          temp = temp.concat(commentObj.userImg);
+        }
+      }
+      setCafeImg(temp);
+    }
+  }, [props.comment?.length]);
   const settingsMain = {
     centerMode: true,
     slidesToShow: 1,
@@ -267,7 +290,7 @@ const ContentHeader = (props) => {
     fade: true,
     dots: true,
     autoplay: true,
-    centerPadding: '60px',
+    centerPadding: '50px',
     speed: 1000,
   };
 

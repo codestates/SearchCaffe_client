@@ -299,6 +299,7 @@ const CommentWrite = ({
     // console.log(
     //   'Set Cafe Info :' + `${currentCafe.cafeid}&${comment.length + 1}`
     // );
+
     await dbService
       .collection('CafeComment')
       .doc(`${currentCafe.cafeid}&${comment.length + 1}`)
@@ -311,6 +312,7 @@ const CommentWrite = ({
         username: user.displayName,
         userEmail: user.email,
         userTag: selectedTags,
+        commentTime: `${new Date().getTime()}`,
       });
     // 처음 올릴떄 처리
     if (comment.length + 1 === 1) {
@@ -353,6 +355,7 @@ const CommentWrite = ({
         userImg: images,
         userStar: scope ? scope : beforeModify.userStar,
         userTag: selectedTags,
+        commentTime: `${new Date().getTime()}`,
       });
     // 평균값
     const data = await dbService.collection('CafeComment').get();

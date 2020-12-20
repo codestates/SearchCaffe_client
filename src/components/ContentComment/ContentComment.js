@@ -40,7 +40,7 @@ const BackGroundCover = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(220, 220, 220, 0.94);
-  z-index: 1;
+  z-index: 5;
 `;
 
 const ButtonStyle = styled.span`
@@ -105,6 +105,7 @@ const ContentComment = ({
   const [isLogin, setIsLogin] = useState(!!user);
   const [currentImg, setCurrentImg] = useState('');
   const [currentImageModal, setImageModal] = useState(false);
+  const [beforeModify, setBeforeModify] = useState(false);
   const handleImageEnlarge = (image) => {
     setCurrentImg(image);
     setImageModal((pres) => !pres);
@@ -168,7 +169,10 @@ const ContentComment = ({
       {commentModal ? (
         <>
           <BackGroundCover>
-            <CommentWrite handleModal={handleModal}></CommentWrite>
+            <CommentWrite
+              handleModal={handleModal}
+              beforeModify={beforeModify}
+            ></CommentWrite>
           </BackGroundCover>
         </>
       ) : (
@@ -222,6 +226,8 @@ const ContentComment = ({
                   handleImageEnlarge={handleImageEnlarge}
                   key={index}
                   userComment={userComment}
+                  setCommentModal={setModal}
+                  setBeforeModify={setBeforeModify}
                 ></Comment>
               </Fade>
             );

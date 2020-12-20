@@ -1,7 +1,12 @@
 body {
-  background-color: #ebebeb;
-  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #efefef;
+  font-family: 'Nanum Gothic', 'Noto Sans KR', sans-serif;
   color: #424242;
+}
+
+@font-face {
+  font-family: 'Nanum Gothic';
+  src: url('./styles/NanumGothic-Regular.ttf');
 }
 
 .App-logo {

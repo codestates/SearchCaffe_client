@@ -26,6 +26,21 @@ const CommentStyle = styled.div`
     transition: 0.2s;
   }
 `;
+const ChangeComment = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  right: 90px;
+  bottom: 20px;
+`;
+
+const TimeStamp = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.85rem;
+  position: relative;
+`;
+
 const UserAndScope = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 4.5fr 3fr 3fr 1fr 1fr;
@@ -53,7 +68,7 @@ const DeleteButton = styled.button`
    */
   border: none;
   background-color: inherit;
-  color: #555555;
+  color: #222222;
   transition: 0.2s;
   cursor: pointer;
   :hover {
@@ -76,7 +91,7 @@ const ModifyButton = styled.button`
   */
   border: none;
   background-color: inherit;
-  color: #555555;
+  color: #222222;
   transition: 0.2s;
   cursor: pointer;
   :hover {
@@ -109,11 +124,13 @@ const CommentInput = styled.div`
   margin-top: 10px;
   margin-left: 8%;
   padding-left: 2%;
+  padding-top: 1%;
   width: 80%;
   height: auto;
   min-height: 50px;
   word-break: break-all;
-  background-color: #ffffff;
+  background-color: #f2f2f2;
+  border-radius: 10px;
 `;
 const CommentImages = styled.div`
   margin-top: 13px;
@@ -171,7 +188,7 @@ const BackGroundCover = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(220, 220, 220, 0.94);
-  z-index: 1;
+  z-index: 5;
 `;
 
 const Detail3 = styled.div`
@@ -197,12 +214,13 @@ const Comment = ({
   currentCafe,
   user,
   currentCafeComment,
+  setCommentModal,
+  setBeforeModify,
 }) => {
-  const [commentModal, setCommentModal] = useState(false);
   const [images, setImages] = useState([commentLoading, commentLoading]);
   const [imageModal, setModal] = useState(false);
   const [currentImg, setCurrentImg] = useState('');
-  const [beforeModify, setBeforeModify] = useState();
+
   const [userProfileImg, setUserProfileImg] = useState(defaultUser);
 
   useEffect(() => {
@@ -273,30 +291,66 @@ const Comment = ({
       console.error(`can't find ModifyComment:` + error);
     }
   };
-
+  const returnHistoryTime = (time) => {
+    let beforeTime = new Date().getTime() - time;
+    beforeTime = parseInt(beforeTime / 1000);
+    if (beforeTime / 60 < 1) {
+      return '1분 전';
+    } else if (1 <= beforeTime / 60 < 60) {
+      return `${parseInt(beforeTime / 60)}분 전`;
+    } else if (1 <= beforeTime / 60 / 60 < 24) {
+      return `${parseInt(beforeTime / 60 / 60)}시간 전`;
+    } else if (1 <= beforeTime / 60 / 60 / 24 < 31) {
+      return `${parseInt(beforeTime / 60 / 60)}일 전`;
+    } else if (1 <= beforeTime / 60 / 60 / 24 / 31 < 1) {
+      return `${parseInt(beforeTime / 60 / 60)}달 전`;
+    } else if (1 <= beforeTime / 60 / 60 / 24 / 31 / 12 < 1) {
+      return `${parseInt(beforeTime / 60 / 60)}년 전`;
+    }
+  };
   return (
     <>
+      {/* {commentModal ? (
+        <>
+          <BackGroundCover>
+            <CommentWrite
+              beforeModify={beforeModify}
+              handleModal={handleModal}
+            ></CommentWrite>
+          </BackGroundCover>
+        </>
+      ) : (
+        ''
+      )} */}
       <CommentStyle>
+        <ChangeComment>
+          {!user ? (
+            ''
+          ) : userComment.username === user.displayName ? (
+            <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+          ) : userComment.userEmail === user?.email ? (
+            <ModifyButton onClick={modifyComment}>수정</ModifyButton>
+          ) : (
+            ''
+          )}
+
+          {!user ? (
+            ''
+          ) : userComment.username === user.displayName ? (
+            <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+          ) : userComment.userEmail === user.email ? (
+            <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
+          ) : (
+            ''
+          )}
+        </ChangeComment>
+
         <UserAndScope>
           <UserProfile src={userProfileImg}></UserProfile>
           <UserName>
             {userComment.username ? userComment.username : '게스트'}
           </UserName>
-          {commentModal ? (
-            <>
-              <Detail3>
-                <BackGroundCover>
-                  <CommentWrite
-                    onChange={commentModal}
-                    beforeModify={beforeModify}
-                    handleModal={handleModal}
-                  ></CommentWrite>
-                </BackGroundCover>
-              </Detail3>
-            </>
-          ) : (
-            ''
-          )}
+
           <ScopeContainer>
             <Scope
               isScope={true}
@@ -304,29 +358,12 @@ const Comment = ({
               scope={userComment.userStar ? userComment.userStar : -1}
             ></Scope>
           </ScopeContainer>
-          <div></div>
-          <span>
-            {!user ? (
-              ''
-            ) : userComment.username === user.displayName ? (
-              <ModifyButton onClick={modifyComment}>수정</ModifyButton>
-            ) : userComment.userEmail === user?.email ? (
-              <ModifyButton onClick={modifyComment}>수정</ModifyButton>
-            ) : (
-              ''
-            )}
-          </span>
-          <span>
-            {!user ? (
-              ''
-            ) : userComment.username === user.displayName ? (
-              <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
-            ) : userComment.userEmail === user.email ? (
-              <DeleteButton onClick={deleteComment}>삭제</DeleteButton>
-            ) : (
-              ''
-            )}
-          </span>
+
+          <TimeStamp>
+            {userComment.commentTime
+              ? returnHistoryTime(userComment.commentTime)
+              : ''}
+          </TimeStamp>
         </UserAndScope>
 
         <TagWrapper>
