@@ -1,4 +1,5 @@
-const tagName = {
+
+export const tagName = {
   가까운: '가까운',
   '주차 가능': '주차 가능',
   단체석: '단체석',
@@ -21,7 +22,7 @@ const tagName = {
   '24시': '24시',
 };
 
-let cafes = [
+export const cafes = [
   {
     cafeName: '늘솜당',
     cafeAddress: '경기 시흥시 하우로122번길 50-3 (우)14900',
@@ -32,8 +33,10 @@ let cafes = [
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F20208172316_editor_image.jpg?alt=media&token=c5b05234-8a38-4f0a-9054-42565f2f7d2f',
       'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
     ],
-    cafeComment: [],
+
     cafeDetail: ['10:00 ~ 22:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '',
   },
   {
@@ -47,7 +50,9 @@ let cafes = [
     cafeStar: -1,
     cafeTag: [tagName['주차 가능'], tagName['대화하기 좋은'], tagName.편안한],
     cafeComment: [],
-    cafeDetail: [],
+    cafeDetail: ['10:00 ~ 22:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '0507-1308-8069',
   },
   {
@@ -62,6 +67,8 @@ let cafes = [
     cafeTag: [tagName['테이크 아웃 전문'], tagName['커피가 맛있는']],
     cafeComment: [],
     cafeDetail: ['10:00 ~ 20:00'],
+    cafeTable: "10",
+    Americano: "3.8",
     cafePhoneNumber: '02-6212-6998',
   },
   {
@@ -80,6 +87,8 @@ let cafes = [
     ],
     cafeComment: [],
     cafeDetail: ['07:30 ~ 20:30'],
+    cafeTable: "11",
+    Americano: "3.7",
     cafePhoneNumber: '02-6250-0699',
   },
   {
@@ -94,6 +103,8 @@ let cafes = [
     cafeTag: [tagName['주차 가능'], tagName.편안한, tagName['디저트가 맛있는']],
     cafeComment: [],
     cafeDetail: ['10:00 ~ 22:00'],
+    cafeTable: "10",
+    Americano: "3.3",
     cafePhoneNumber: '',
   },
   {
@@ -108,6 +119,8 @@ let cafes = [
     cafeTag: [tagName.스타벅스, tagName.단체석, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['07:00 ~ 20:00'],
+    cafeTable: "11",
+    Americano: "3.8",
     cafePhoneNumber: '1522-3232',
   },
   {
@@ -122,6 +135,8 @@ let cafes = [
     cafeTag: [tagName.스타벅스, tagName.단체석, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['07:00 ~ 19:00'],
+    cafeTable: "12",
+    Americano: "3.8",
     cafePhoneNumber: '1522-3232',
   },
   {
@@ -136,6 +151,8 @@ let cafes = [
     cafeTag: [tagName.스타벅스, tagName.단체석, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['10:30 ~ 21:00'],
+    cafeTable: "10",
+    Americano: "3.8",
     cafePhoneNumber: '1522-3232',
   },
   {
@@ -150,6 +167,8 @@ let cafes = [
     cafeTag: [tagName.스타벅스, tagName.단체석, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['08:00 ~ 19:00'],
+    cafeTable: "12",
+    Americano: "3.8",
     cafePhoneNumber: '1522-3232',
   },
   {
@@ -164,6 +183,8 @@ let cafes = [
     cafeTag: [tagName.스타벅스, tagName.단체석, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['07:30 ~ 17:30'],
+    cafeTable: "14",
+    Americano: "3.8",
     cafePhoneNumber: '1522-3232',
   },
   {
@@ -178,6 +199,8 @@ let cafes = [
     cafeTag: [tagName.스타벅스, tagName.단체석, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['07:30 ~ 19:00'],
+    cafeTable: "11",
+    Americano: "3.8",
     cafePhoneNumber: '1522-3232',
   },
   {
@@ -192,6 +215,8 @@ let cafes = [
     cafeTag: [tagName.스타벅스, tagName.단체석, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['07:00 ~ 19:00'],
+    cafeTable: "10",
+    Americano: "3.8",
     cafePhoneNumber: '1522-3232',
   },
   {
@@ -206,6 +231,8 @@ let cafes = [
     cafeTag: [tagName['애완 동물 동반'], tagName['주차 가능'], tagName.편안한],
     cafeComment: [],
     cafeDetail: ['10:00 ~ 21:00'],
+    cafeTable: "11",
+    Americano: "3.8",
     cafePhoneNumber: '010-4274-2055',
   },
   {
@@ -220,6 +247,8 @@ let cafes = [
     cafeTag: ['장애 시설', tagName['주차 가능'], tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['09:00 ~ 22:00'],
+    cafeTable: "13",
+    Americano: "3.8",
     cafePhoneNumber: '0507-1324-4092',
   },
   {
@@ -234,6 +263,8 @@ let cafes = [
     cafeTag: [tagName['주차 가능'], tagName.편안한, tagName['디저트가 맛있는']],
     cafeComment: [],
     cafeDetail: ['11:00 ~ 22:00'],
+    cafeTable: "11",
+    Americano: "3.8",
     cafePhoneNumber: '',
   },
   {
@@ -247,7 +278,9 @@ let cafes = [
     cafeStar: -1,
     cafeTag: [tagName.이디야, tagName['대화하기 좋은']],
     cafeComment: [],
-    cafeDetail: [''],
+    cafeDetail: ['10:00 ~ 22:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-738-0303',
   },
   {
@@ -262,6 +295,8 @@ let cafes = [
     cafeTag: [tagName.이디야, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['08:00 ~ 22:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-3789-1064',
   },
   {
@@ -276,6 +311,8 @@ let cafes = [
     cafeTag: [tagName.이디야, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['08:00 ~ 23:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-711-5498',
   },
   {
@@ -290,6 +327,8 @@ let cafes = [
     cafeTag: [tagName.이디야, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['08:00 ~ 22:30'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '',
   },
   {
@@ -304,6 +343,8 @@ let cafes = [
     cafeTag: [tagName.이디야, tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['08:00 ~ 23:10'],
+    cafeTable: "10",
+    Americano: "3.5",
     cafePhoneNumber: '02-2265-3690',
   },
   {
@@ -318,6 +359,8 @@ let cafes = [
     cafeTag: [tagName['주차 가능'], tagName['디저트가 맛있는'], tagName.편안한],
     cafeComment: [],
     cafeDetail: ['11:00 ~ 22:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-2603-3342',
   },
   {
@@ -336,6 +379,8 @@ let cafes = [
     ],
     cafeComment: [],
     cafeDetail: ['08:00 ~ 22:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-2612-5757',
   },
   {
@@ -350,6 +395,8 @@ let cafes = [
     cafeTag: [tagName['주차 가능'], tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['10:00 ~ 23:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '032-661-2274',
   },
   {
@@ -364,6 +411,8 @@ let cafes = [
     cafeTag: [tagName['대화하기 좋은']],
     cafeComment: [],
     cafeDetail: ['10:30 ~ 01:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '',
   },
   {
@@ -378,6 +427,8 @@ let cafes = [
     cafeTag: [tagName['작업하기 좋은'], tagName.커피빈],
     cafeComment: [],
     cafeDetail: ['07:00 ~ 23:30'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-3210-2326',
   },
   {
@@ -392,6 +443,8 @@ let cafes = [
     cafeTag: [tagName.커피빈, tagName['작업하기 좋은'], tagName.편안한],
     cafeComment: [],
     cafeDetail: ['07:00 ~ 23:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-2264-8247',
   },
   {
@@ -410,6 +463,8 @@ let cafes = [
     ],
     cafeComment: [],
     cafeDetail: ['08:00 ~ 22:30'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '070-4148-4242',
   },
   {
@@ -424,6 +479,8 @@ let cafes = [
     cafeTag: [],
     cafeComment: [tagName.탐앤탐스, tagName['작업하기 좋은']],
     cafeDetail: ['07:00 ~ 02:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-542-4565',
   },
   {
@@ -438,6 +495,8 @@ let cafes = [
     cafeTag: [tagName.탐앤탐스, tagName['작업하기 좋은'], '24시간'],
     cafeComment: [],
     cafeDetail: ['00:00 ~ 24:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-3452-4565',
   },
   {
@@ -452,6 +511,8 @@ let cafes = [
     cafeTag: [tagName.탐앤탐스, tagName['작업하기 좋은'], '24시간'],
     cafeComment: [],
     cafeDetail: ['00:00 ~ 24:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-3442-0232',
   },
   {
@@ -466,6 +527,8 @@ let cafes = [
     cafeTag: [tagName.투썸플레이스, tagName['대화하기 좋은'], tagName.단체석],
     cafeComment: [],
     cafeDetail: ['07:00 ~ 23:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-734-2368',
   },
   {
@@ -486,6 +549,8 @@ let cafes = [
     ],
     cafeComment: [],
     cafeDetail: ['00:00 ~ 24:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-540-2388',
   },
   {
@@ -507,6 +572,8 @@ let cafes = [
     ],
     cafeComment: [],
     cafeDetail: ['00:00 ~ 24:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-782-2332',
   },
   {
@@ -527,6 +594,8 @@ let cafes = [
     ],
     cafeComment: [],
     cafeDetail: ['07:00 ~ 23:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-725-2388',
   },
   {
@@ -545,6 +614,8 @@ let cafes = [
     ],
     cafeComment: [],
     cafeDetail: ['09:00 ~ 18:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '070-4108-3145',
   },
   {
@@ -559,6 +630,8 @@ let cafes = [
     cafeTag: [tagName.폴바셋, tagName['커피가 맛있는']],
     cafeComment: [],
     cafeDetail: ['07:00 ~ 22:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-3701-9170',
   },
   {
@@ -573,6 +646,8 @@ let cafes = [
     cafeTag: [tagName.폴바셋, tagName['커피가 맛있는']],
     cafeComment: [],
     cafeDetail: ['08:00 ~ 22:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-792-3231',
   },
   {
@@ -592,6 +667,8 @@ let cafes = [
     ],
     cafeComment: [],
     cafeDetail: ['00:00 ~ 24:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-511-1473',
   },
   {
@@ -606,6 +683,8 @@ let cafes = [
     cafeTag: [tagName['24시'], tagName.할리스, tagName['작업하기 좋은']],
     cafeComment: [],
     cafeDetail: ['00:00 ~ 24:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-388-3977',
   },
   {
@@ -620,11 +699,159 @@ let cafes = [
     cafeTag: [tagName['24시'], tagName.할리스, tagName['작업하기 좋은']],
     cafeComment: [],
     cafeDetail: ['00:00 ~ 24:00'],
+    cafeTable: "12",
+    Americano: "3.5",
     cafePhoneNumber: '02-734-2838',
   },
 ];
 
-export default cafes;
+export const cafeComment = [
+  {
+    cafeId: 0,
+    commentId: 0,
+    username: 'aamm10@naver.com',
+    userStar: 5,
+    userComment: '좋아요 너무',
+    userTag: ['커피가 맛있는', '디저트가 맛있는'],
+    userImg: [
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/commentImage%2Fpatrick-tomasso-GXXYkSwndP4-unsplash.jpg?alt=media&token=97652da3-573f-4a15-8e4c-bc0aa1329429',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+    ],
+  },
+  {
+    cafeId: 0,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 5,
+    userComment: '좋아요 너무',
+    userTag: ['커피가 맛있는', '디저트가 맛있는'],
+    userImg: [
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+    ],
+  },
+  {
+    cafeId: 0,
+    commentId: 2,
+    username: 'aamm10@naver.com',
+    userStar: -1,
+    userComment: '좋아서 또 갔어요',
+
+    userImg: [
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+      'https://firebasestorage.googleapis.com/v0/b/searchcafe-17018.appspot.com/o/cafeImage%2F%EB%8A%98%EC%86%9C%EB%8B%B9%2F2020846016_editor_image.jpg?alt=media&token=1835984f-a8ed-405e-8f4e-df97175beab4',
+    ],
+  },
+  {
+    cafeId: 0,
+    commentId: 3,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 1,
+    commentId: 0,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 1,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 1,
+    commentId: 2,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 2,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 5,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 8,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 10,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 12,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 15,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 17,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+  {
+    cafeId: 19,
+    commentId: 1,
+    username: 'aamm100@naver.com',
+    userStar: 3,
+    userComment: '',
+    userTag: [],
+    userImg: [],
+  },
+];
 
 // useEffect(() => {
 //   for (let i = 0; i < cafes.length; i++) {
@@ -632,6 +859,8 @@ export default cafes;
 //     dbService
 //       .collection('CafeInformation')
 //       .doc(cafes[i].cafeName)
-//       .set(cafes[i]);
+//       .set({
+//         capital: true
+//       }, { merge: true });
 //   }
 // }, []);

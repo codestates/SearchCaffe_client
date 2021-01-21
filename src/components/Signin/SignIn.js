@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
-import { authService } from '../../firebase/mainbase';
+import {
+  dbService,
+  authService,
+  storageService,
+} from '../../firebase/mainbase';
 import Auth from './auth';
+import { actionCreators } from '../../reducer/store';
+import { connect } from 'react-redux';
+import removeImg from './remove.png';
 import './SignIn.css';
+import styled from 'styled-components';
 
-const SignIn = ({ handleClose, handleOpen, show }) => {
-  const showHideClassName = show ? 'modal-signin display-block' : 'modal-signin display-none';
+const Cover = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+const SignIn = ({ handleClose, handleOpen, show, state, userHandler }) => {
+  const showHideClassName = show
+    ? 'modal-signin display-block'
+    : 'modal-signin display-none';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,15 +36,32 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await authService.signInWithEmailAndPassword(email, password);
+      let check = await authService
+        .signInWithEmailAndPassword(email, password)
+        .then((user) => {
+          let currentUserData;
+          dbService
+            .collection('users')
+            .get()
+            .then((userData) => {
+              userData.forEach((doc) => {
+                if (doc.data().email === email) {
+                  currentUserData = doc.data();
 
-      setEmail('');
-      setError('');
-      setPassword('');
-      handleClose();
+                  userHandler(currentUserData);
+                }
+              });
+              setEmail('');
+              setError('');
+              setPassword('');
+            })
+            .then((res) => {
+              handleClose();
+            });
+        });
     } catch (error) {
       let code = error.code;
-      console.log(code);
+
       if (code === 'auth/user-not-found') {
         setError('존재하지 않는 이메일입니다.');
       } else if (code === 'auth/invalid-email') {
@@ -37,18 +72,16 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
     }
   };
   const onClick = () => {
-    handleClose();
-    handleOpen();
     setEmail('');
     setError('');
     setPassword('');
+    handleClose();
+    handleOpen();
   };
   return (
     <div className={showHideClassName}>
       <section className="modal-signin-main">
-        <div className="close-btn" onClick={handleClose}>
-          x
-        </div>
+        <img src={removeImg} className="close-btn" onClick={handleClose}></img>
         <h1 className="header-signin">로그인</h1>
         <div className="email-login container">
           <form className="login-form" onSubmit={onSubmit}>
@@ -72,7 +105,7 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
             />
             <div className="wrap-checkbox">
               <input type="checkbox" id="chk" />
-              <label for="chk">이메일 기억하기</label>
+              <label htmlFor="chk">이메일 기억하기</label>
             </div>
             <button className="signin-btn" type="submit">
               이메일 로그인
@@ -80,13 +113,26 @@ const SignIn = ({ handleClose, handleOpen, show }) => {
           </form>
           <div className="errorMsg">{error}</div>
         </div>
-        <Auth />
+
+        <Auth handleClose={handleClose} />
+
         <span className="link-signup" onClick={onClick}>
           이메일로 회원가입
         </span>
       </section>
+      <Cover onClick={handleClose}></Cover>
     </div>
   );
 };
 
-export default SignIn;
+function mapStateToProps(state, ownProps) {
+  return { state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userHandler: (user) => dispatch(actionCreators.currentUser(user)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

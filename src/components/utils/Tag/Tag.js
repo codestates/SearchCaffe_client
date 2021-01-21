@@ -17,8 +17,10 @@ import tasking from './asset/tasking.png';
 import tomtom from './asset/tomtom.png';
 import twosome from './asset/twosome.png';
 import conversation from './asset/conversation.png';
+import allTime from './asset/24.png';
+import disabled from './asset/disabled.png';
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../../reducer/store';
 
@@ -41,7 +43,6 @@ const tagName = {
   편안한: cozy,
   '작업하기 좋은': tasking,
   '대화하기 좋은': conversation,
-  '바다가 보이는': sea,
   스타벅스: stab,
   투썸플레이스: twosome,
   이디야: ediya,
@@ -49,36 +50,16 @@ const tagName = {
   탐앤탐스: tomtom,
   커피빈: coffeebean,
   폴바셋: paul,
-};
-
-const tagObj = {
-  가까운: false,
-  '주차 가능': false,
-  단체석: false,
-  '배달 가능': false,
-  '애완 동물 동반': false,
-  '테이크 아웃 전문': false,
-  '커피가 맛있는': false,
-  '디저트가 맛있는': false,
-  편안한: false,
-  '작업하기 좋은': false,
-  '대화하기 좋은': false,
-  '바다가 보이는': false,
-  스타벅스: false,
-  투썸플레이스: false,
-  이디야: false,
-  할리스: false,
-  탐앤탐스: false,
-  커피빈: false,
-  폴바셋: false,
+  '24시간': allTime,
+  '장애 시설': disabled,
 };
 
 const TagStyle = styled.button`
   background: ${(props) =>
     props.isClicked ? '#5A403A' : props.color || '#EFEFEF'};
   color: ${(props) => (props.isClicked ? 'white' : 'black')};
-  width: ${(props) => 4.5 + 0.7 * props.tagName.length + 'rem'};
-  height: 2.3rem;
+  width: ${(props) => 3.8 + 0.7 * props.tagName.length + 'rem'};
+  height: 2rem;
   margin: 0.2rem;
   border-radius: 30px;
   border: initial;
@@ -89,7 +70,11 @@ const TagStyle = styled.button`
   }
   :hover {
     background-color: ${(props) =>
-      props.isButton || props.isClicked ? '#5a403a' : props.color || '#EFEFEF'};
+      props.isClicked
+        ? '#5A403A'
+        : props.isButton
+        ? '#8A706A'
+        : props.color || '#EFEFEF'};
     color: ${(props) =>
       props.isButton || props.isClicked ? 'white' : 'black'};
     transition: 0.2s;
@@ -112,8 +97,8 @@ const SmallTagImg = styled.img`
   height: 12px;
   right: 2px;
   top: 2.2px;
-  padding-right: 3px;
-  margin-right: 2px;
+  padding-right: 0px;
+  margin-right: 0px;
   position: relative;
 `;
 
@@ -128,11 +113,21 @@ const SmallTagName = styled(TagName)`
   position: relative;
   top: 1%;
 `;
+const MoreSmallTagName = styled(TagName)``;
 
 const Tag = (props) => {
   const [isClick, setClick] = useState(false);
   const tagValue = useRef(null);
   const handleTags = props.handleTags ? props.handleTags : () => {};
+  useEffect(() => {
+    if (props.modifyTag) {
+      props.modifyTag.forEach((x) => {
+        if (x === props.tagName) {
+          setClick((pres) => !pres);
+        }
+      });
+    }
+  }, []);
   if (props.isSmall) {
     return (
       <SmallTagStyle
@@ -180,4 +175,4 @@ function mapDispatchToProps(dispatch) {
       dispatch(actionCreators.togleTagName(tagName, isTrue)),
   };
 }
-export default connect(mapStateToProps)(Tag);
+export default connect(mapStateToProps, mapDispatchToProps)(Tag);
